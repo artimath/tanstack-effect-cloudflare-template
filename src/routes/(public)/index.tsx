@@ -170,10 +170,9 @@ export default function LandingPage() {
           </div>
 
           <nav className="hidden md:flex items-center justify-center">
-            {/* <ThemeSwitcher /> */}
             <ModeToggle />
             <a
-              href="https://github.com/YOUR_REPO_LINK"
+              href="https://github.com/carlosziegler/fullstack-start-template"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"

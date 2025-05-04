@@ -40,6 +40,80 @@ Powered by [Better Auth](https://github.com/BetterTyped/better-auth), providing 
 
 ## Getting Started
 
+1.  **Install Bun:**
+    If you don't have Bun installed, you can install it using:
+    ```bash
+    # For macOS, Linux, and WSL
+    curl -fsSL https://bun.sh/install | bash
+    
+    # For Windows (via PowerShell)
+    powershell -c "irm bun.sh/install.ps1 | iex"
+    
+    # Verify installation
+    bun --version
+    ```
+
+2.  **Clone the repository:**
+    ```bash
+    git clone <repository-url>
+    cd <repository-name>
+    ```
+
+3.  **Install dependencies:**
+    ```bash
+    bun install
+    ```
+
+4.  **Set up environment variables:**
+    Copy the `.env.example` file to `.env` and configure the required values:
+    ```bash
+    cp .env.example .env
+    ```
+    
+    Key environment variables to configure:
+    
+    - **Database:** Set up a free Neon Postgres database
+      - Sign up at [Neon.tech](https://neon.tech/)
+      - Create a new project
+      - Get your connection string from the dashboard
+      - Set `DATABASE_URL` in your `.env` file:
+        ```
+        DATABASE_URL=postgresql://[user]:[password]@[endpoint]/[database]
+        ```
+    
+    - **Auth:** Generate a secure secret for Better Auth
+      ```bash
+      # Generate a secure random string
+      openssl rand -base64 32
+      ```
+      Add it to your `.env` file as `BETTER_AUTH_SECRET`
+    
+    - **Email:** Set up a [Resend](https://resend.com/) account for email sending
+      - Get your API key and add it as `RESEND_API_KEY`
+    
+    - **Monitoring (optional):** Configure Sentry for error tracking
+      - Get your DSN, organization, and project values from your Sentry dashboard
+      - Set the corresponding environment variables
+
+5.  **Database Setup:**
+    Ensure your PostgreSQL database is running and accessible.
+    Push the schema (for development/initial setup):
+    ```bash
+    bun run db:push
+    ```
+    *For production or more controlled migrations, generate migration files:* 
+    ```bash
+    # bun run db:generate
+    # Apply migrations (tool/command depends on setup)
+    ```
+    *Optional: Use `bun run db:studio` to explore the schema via Drizzle Studio.*
+
+6.  **Run the development server:**
+    ```bash
+    bun run dev
+    ```
+    The application should now be running on `http://localhost:3000`.
+
 ## Project Structure
 
 This project follows a structured organization pattern for better maintainability:
@@ -78,44 +152,6 @@ public/                   # Static assets
 ```
 
 The structure organizes code by feature and responsibility, keeping related code together for better maintainability.
-
-
-1.  **Clone the repository:**
-    ```bash
-    git clone <repository-url>
-    cd <repository-name>
-    ```
-
-2.  **Install dependencies:**
-    ```bash
-    bun install
-    ```
-
-3.  **Set up environment variables:**
-    Copy the `.env.example` file to `.env` and fill in the required values (Database URL, Auth secrets, Resend API Key, Sentry DSN, etc.).
-    ```bash
-    cp .env.example .env
-    ```
-    *Ensure you configure environment variables according to `src/env.mjs`.* 
-
-4.  **Database Setup:**
-    Ensure your PostgreSQL database is running and accessible.
-    Push the schema (for development/initial setup):
-    ```bash
-    bun run db:push
-    ```
-    *For production or more controlled migrations, generate migration files:* 
-    ```bash
-    # bun run db:generate
-    # Apply migrations (tool/command depends on setup)
-    ```
-    *Optional: Use `bun run db:studio` to explore the schema via Drizzle Studio.*
-
-5.  **Run the development server:**
-    ```bash
-    bun run dev
-    ```
-    The application should now be running on `http://localhost:3000`.
 
 ## Available Scripts
 

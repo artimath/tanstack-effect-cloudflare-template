@@ -170,24 +170,20 @@ The structure organizes code by feature and responsibility, keeping related code
 
 ## TODO List & Potential Improvements
 
-*   [ ] **Implement Planned Auth Features:**
-    *   [ ] Passkey Support
-    *   [ ] Admin Dashboard (User Management UI)
-    *   [ ] Organization Support (Multi-tenancy/Teams)
-*   [ ] **Refactor Auth Hooks:** Ensure auth logic (e.g., `useSession`) is cleanly extracted into custom hooks.
+*   [x] **Implement Planned Auth Features:**
+    *   [x] Passkey Support
+    *   [x] Admin Dashboard (User Management UI)
+    *   [x] Organization Support (Multi-tenancy/Teams)
+*   [x] **Refactor Auth Hooks:** Ensure auth logic (e.g., `useSession`) is cleanly extracted into custom hooks.
 *   [ ] **Standardize Form Usage:** Document preferred approach (React Hook Form vs. TanStack Form) or consolidate.
-*   [ ] **Enhance Testing:**
-    *   [ ] Add End-to-End tests (Playwright/Cypress).
-    *   [ ] Increase unit/integration test coverage (components, API routes, utils).
-*   [ ] **Component Library Documentation:** Set up Storybook for UI components.
 *   [ ] **Database Seeding:** Create scripts for populating development/testing data.
 *   [ ] **Advanced RBAC:** Implement fine-grained Role-Based Access Control if needed.
 *   [ ] **Performance Optimization:** Bundle analysis, code splitting, image optimization.
-*   [ ] **i18n Management:** Improve workflow (key extraction, translation platform integration).
+*   [x] **i18n Management:** Add Internationalization (translation platform integration).
 *   [ ] **AI SDK Examples:** Add examples using `@ai-sdk/react`.
-*   [ ] **Email Templates:** Add more examples/implementations using `react-email`.
-*   [ ] **Sentry Configuration:** Add details on advanced Sentry setup (sourcemaps, user identification).
-*   [ ] **Theme Toggle:** Implement UI for switching between light/dark themes (uses `next-themes`).
+*   [x] **Email Templates:** Add more examples/implementations using `react-email`.
+*   [x] **Sentry Configuration:** Add details on advanced Sentry setup (sourcemaps, user identification).
+*   [x] **Theme Toggle:** Implement UI for switching between light/dark themes (uses `next-themes`).
 *   [ ] **CI/CD:** Set up a basic CI/CD pipeline (e.g., GitHub Actions for linting, testing, building).
 *   [ ] **Deployment Guides:** Add specific guides (Vercel, Docker, etc.).
 

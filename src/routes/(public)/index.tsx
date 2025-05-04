@@ -3,56 +3,41 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import {
   Activity,
   ArrowRight,
-  BarChart3,
-  Bell,
   BookOpen,
   Box,
   CheckCircle,
-  ChevronRight,
   Code,
-  CreditCard,
   Database,
   Github,
   LayoutDashboard,
-  LineChart,
   Mail,
   Menu,
   Paintbrush,
-  PiggyBank,
-  Search,
-  Settings,
   Shield,
   Sparkles,
   TerminalSquare,
-  TrendingUp,
-  Type,
   UserCheck,
   Users,
-  Wallet,
   Wrench,
-  X,
 } from "lucide-react";
 
 import { useState } from "react";
 
-import { ThemeSwitcher } from "@/components/theme-switcher";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ModeToggle } from "@/components/theme-toggle";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 export const Route = createFileRoute("/(public)/")({
   component: LandingPage,
+  ssr: false,
 });
 
 const techStack = [
@@ -184,7 +169,8 @@ export default function LandingPage() {
           </div>
 
           <nav className="hidden md:flex items-center justify-center">
-            <ThemeSwitcher />
+            {/* <ThemeSwitcher /> */}
+            <ModeToggle />
             <a
               href="https://github.com/YOUR_REPO_LINK"
               target="_blank"
@@ -218,7 +204,7 @@ export default function LandingPage() {
                     </div>
                   </div>
                   <nav className="flex flex-col gap-4">
-                    <ThemeSwitcher />
+                    <ModeToggle />
                     <Button
                       variant="ghost"
                       className="w-full justify-start"

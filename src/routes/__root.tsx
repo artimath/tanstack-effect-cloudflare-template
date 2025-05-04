@@ -13,10 +13,9 @@ import { Toaster } from "@/components/ui/sonner";
 import { seo } from "@/lib/seo";
 import type { TRPCRouter } from "@/server/router";
 
-import { ThemeProvider } from "@/components/theme-provider";
 import i18n from "@/lib/intl/i18n";
-import { getThemeServerFn } from "@/lib/theme";
 import type { TRPCOptionsProxy } from "@trpc/tanstack-react-query";
+import { ThemeProvider } from "next-themes";
 import React from "react";
 import { I18nextProvider } from "react-i18next";
 
@@ -59,19 +58,23 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       },
     ],
   }),
-  loader: () => getThemeServerFn(),
   component: () => <RootDocument />,
+  ssr: false,
 });
 
 function RootDocument() {
-  const theme = Route.useLoaderData();
   return (
-    <html lang="en" className={theme}>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
       <body>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           <I18nextProvider i18n={i18n} defaultNS={"translation"}>
             <Outlet />
             <Toaster />

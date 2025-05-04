@@ -13,12 +13,14 @@ import { emailOTP } from "better-auth/plugins/email-otp";
 import { passkey } from "better-auth/plugins/passkey";
 import { twoFactor } from "better-auth/plugins/two-factor";
 import { reactStartCookies } from "better-auth/react-start";
+import { env } from "../env.server";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
     schema: schema,
   }),
+  secret: env.BETTER_AUTH_SECRET,
   basePath: "/api/auth",
   rateLimit: {
     enabled: true,

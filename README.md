@@ -2,6 +2,18 @@
 
 This project provides a solid foundation for building modern web applications using a curated stack of technologies focused on developer experience, performance, and type safety.
 
+<img width="1599" alt="image" src="https://github.com/user-attachments/assets/e53f8665-ecf6-422b-a04a-014b99bdc922" />
+
+<img width="1597" alt="image" src="https://github.com/user-attachments/assets/01bccb09-b700-41e3-815c-be5dc02c5e7c" />
+
+<img width="1597" alt="image" src="https://github.com/user-attachments/assets/e1b3ac60-d95d-4add-b31b-807322d20605" />
+
+<img width="1599" alt="image" src="https://github.com/user-attachments/assets/17d16240-279d-4c65-994e-6ba286d85cb9" />
+
+
+
+
+
 ## Core Technologies
 
 *   **Framework:** [TanStack Start](https://tanstack.com/start/v1) on [Vite](https://vitejs.dev/) + [Vinxi](https://vinxi.dev/) (Modern React foundation with SSR)

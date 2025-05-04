@@ -2,6 +2,17 @@
   "name": "fullstack-start-template",
   "private": true,
   "type": "module",
+  "author": {
+    "name": "Carlos Ziegler",
+    "url": "https://github.com/carlosziegler"
+  },
+  "contributors": [
+    {
+      "name": "Carlos Ziegler",
+      "url": "https://github.com/carlosziegler"
+    }
+  ],
+  "license": "MIT",
   "scripts": {
     "dev": "vinxi dev",
     "start": "vinxi start",

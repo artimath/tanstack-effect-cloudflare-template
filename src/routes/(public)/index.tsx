@@ -37,6 +37,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 export const Route = createFileRoute("/(public)/")({
   component: LandingPage,
+
   ssr: false,
 });
 

@@ -40,6 +40,46 @@ Powered by [Better Auth](https://github.com/BetterTyped/better-auth), providing 
 
 ## Getting Started
 
+## Project Structure
+
+This project follows a structured organization pattern for better maintainability:
+
+```
+src/
+├─ app/                   # App specific files
+├─ components/            # Reusable UI components (including shadcn/ui)
+├─ features/              # Feature-specific components and logic
+│  ├─ auth/               # Authentication related features
+│  └─ organization/       # Organization management features
+├─ hooks/                 # Custom React hooks
+├─ lib/                   # Core libraries and utilities
+│  ├─ auth/               # Better Auth implementation
+│  ├─ db/                 # Drizzle ORM setup and schema
+│  ├─ intl/               # i18next internationalization setup
+│  ├─ trpc/               # tRPC client and server setup
+│  ├─ env.client.ts       # Type-safe client environment variables (T3 Env)
+│  ├─ env.server.ts       # Type-safe server environment variables
+│  └─ resend.ts           # Email sending with Resend and React Email
+├─ routes/                # TanStack Router routes with file-based routing
+│  ├─ (auth)/             # Authentication related routes (protected)
+│  ├─ (public)/           # Public facing routes
+│  ├─ api/                # API routes
+│  ├─ dashboard/          # Dashboard related routes
+│  └─ _root.tsx           # Root layout component
+├─ server/                # Server-side code
+│  ├─ router.ts           # Main API router setup
+│  └─ routes/             # Server-side route handlers
+├─ api.ts                 # API client export
+├─ client.tsx             # Client entry point
+├─ router.tsx             # Router configuration
+└─ ssr.tsx                # Server-side rendering setup
+
+public/                   # Static assets
+```
+
+The structure organizes code by feature and responsibility, keeping related code together for better maintainability.
+
+
 1.  **Clone the repository:**
     ```bash
     git clone <repository-url>
@@ -114,3 +154,4 @@ Powered by [Better Auth](https://github.com/BetterTyped/better-auth), providing 
 *   [ ] **Theme Toggle:** Implement UI for switching between light/dark themes (uses `next-themes`).
 *   [ ] **CI/CD:** Set up a basic CI/CD pipeline (e.g., GitHub Actions for linting, testing, building).
 *   [ ] **Deployment Guides:** Add specific guides (Vercel, Docker, etc.).
+

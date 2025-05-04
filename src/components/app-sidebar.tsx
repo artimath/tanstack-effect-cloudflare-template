@@ -1,0 +1,89 @@
+import {
+  AudioWaveform,
+  BarChart3,
+  BookOpen,
+  Bot,
+  Command,
+  CreditCard,
+  CreditCardIcon,
+  DollarSign,
+  Frame,
+  GalleryVerticalEnd,
+  Home,
+  IdCardIcon,
+  Lightbulb,
+  Map as MapIcon,
+  PieChart,
+  PiggyBank,
+  Settings2,
+  Wallet,
+} from "lucide-react";
+import * as React from "react";
+
+import { NavItems } from "@/components/nav-items";
+
+import { NavUser } from "@/components/nav-user";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarRail,
+} from "@/components/ui/sidebar";
+import { OrganizationSwitcher } from "@/features/organization/organization-switcher";
+
+// This is sample data.
+const data = {
+  user: {
+    name: "shadcn",
+    email: "m@example.com",
+    avatar: "/avatars/shadcn.jpg",
+  },
+  organizations: [
+    {
+      name: "Acme Inc",
+      logo: GalleryVerticalEnd,
+      plan: "Enterprise",
+    },
+    {
+      name: "Acme Corp.",
+      logo: AudioWaveform,
+      plan: "Startup",
+    },
+    {
+      name: "Evil Corp.",
+      logo: Command,
+      plan: "Free",
+    },
+  ],
+  items: [
+    {
+      name: "Overview",
+      url: "/dashboard",
+      icon: Home,
+    },
+
+    {
+      name: "Settings",
+      url: "/dashboard/settings",
+      icon: Settings2,
+    },
+  ],
+};
+
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  return (
+    <Sidebar collapsible="icon" {...props}>
+      <SidebarHeader>
+        <OrganizationSwitcher organizations={data.organizations} />
+      </SidebarHeader>
+      <SidebarContent>
+        <NavItems items={data.items} label="" />
+      </SidebarContent>
+      <SidebarFooter>
+        <NavUser user={data.user} />
+      </SidebarFooter>
+      <SidebarRail />
+    </Sidebar>
+  );
+}

@@ -1,0 +1,42 @@
+import { authClient } from "@/lib/auth/auth-client";
+import { useQuery } from "@tanstack/react-query";
+import { Link, createFileRoute, useLoaderData } from "@tanstack/react-router";
+import AdminDashboard from "./-components/admin";
+import { OrganizationCard } from "./-components/organization-card";
+import UserCard from "./-components/user-card";
+
+export const Route = createFileRoute("/dashboard/settings/")({
+  component: RouteComponent,
+});
+
+function RouteComponent() {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["sessions"],
+    queryFn: async () => {
+      const getSession = authClient.getSession();
+      const getSessions = authClient.listSessions();
+      const getOrganization = authClient.organization.getFullOrganization();
+      const [session, organization, sessions] = await Promise.all([
+        getSession,
+        getOrganization,
+
+        getSessions,
+      ]);
+      return { session, organization, sessions } as const;
+    },
+  });
+
+  return (
+    <div>
+      {/* <h1>Settings</h1>
+      <pre>{JSON.stringify(sessions, null, 2)}</pre>
+      <Link to="/dashboard/settings">Sessions</Link> */}
+      <OrganizationCard
+        session={data?.session?.data}
+        activeOrganization={data?.organization?.data}
+      />
+      <AdminDashboard />
+      <UserCard activeSessions={data?.sessions?.data || []} />
+    </div>
+  );
+}

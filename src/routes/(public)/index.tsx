@@ -1,0 +1,388 @@
+import { Link, createFileRoute } from "@tanstack/react-router";
+
+import {
+  Activity,
+  ArrowRight,
+  BarChart3,
+  Bell,
+  BookOpen,
+  Box,
+  CheckCircle,
+  ChevronRight,
+  Code,
+  CreditCard,
+  Database,
+  Github,
+  LayoutDashboard,
+  LineChart,
+  Mail,
+  Menu,
+  Paintbrush,
+  PiggyBank,
+  Search,
+  Settings,
+  Shield,
+  Sparkles,
+  TerminalSquare,
+  TrendingUp,
+  Type,
+  UserCheck,
+  Users,
+  Wallet,
+  Wrench,
+  X,
+} from "lucide-react";
+
+import { useState } from "react";
+
+import { ThemeSwitcher } from "@/components/theme-switcher";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+
+export const Route = createFileRoute("/(public)/")({
+  component: LandingPage,
+});
+
+const techStack = [
+  {
+    category: "Frontend Framework",
+    icon: LayoutDashboard,
+    description: "Modern React foundation with server-side rendering.",
+    libs: [
+      { name: "TanStack Start", href: "https://tanstack.com/start/v1" },
+      { name: "React 19", href: "https://react.dev/" },
+      { name: "Vite", href: "https://vitejs.dev/" },
+      { name: "Vinxi", href: "https://vinxi.dev/" },
+    ],
+  },
+  {
+    category: "Routing",
+    icon: ArrowRight,
+    description: "Type-safe routing for seamless navigation.",
+    libs: [{ name: "TanStack Router", href: "https://tanstack.com/router/v1" }],
+  },
+  {
+    category: "Backend & API",
+    icon: Code,
+    description: "End-to-end typesafe APIs for robust backend communication.",
+    libs: [{ name: "tRPC", href: "https://trpc.io/" }],
+  },
+  {
+    category: "Database & ORM",
+    icon: Database,
+    description: "Type-safe SQL database interactions.",
+    libs: [
+      { name: "Drizzle ORM", href: "https://orm.drizzle.team/" },
+      { name: "PostgreSQL (Neon Ready)", href: "https://neon.tech/" },
+    ],
+  },
+  {
+    category: "UI & Styling",
+    icon: Paintbrush,
+    description: "Beautiful, accessible components and utility-first CSS.",
+    libs: [
+      { name: "shadcn/ui", href: "https://ui.shadcn.com/" },
+      { name: "Tailwind CSS", href: "https://tailwindcss.com/" },
+      { name: "Lucide Icons", href: "https://lucide.dev/" },
+    ],
+  },
+  {
+    category: "State Management",
+    icon: Box,
+    description: "Powerful server state and local state management.",
+    libs: [
+      { name: "TanStack Query", href: "https://tanstack.com/query/v5" },
+      { name: "TanStack Store", href: "https://tanstack.com/store/v0" },
+    ],
+  },
+  {
+    category: "Forms",
+    icon: CheckCircle,
+    description: "Flexible and type-safe form handling.",
+    libs: [
+      { name: "React Hook Form", href: "https://react-hook-form.com/" },
+      { name: "TanStack Form", href: "https://tanstack.com/form/v1" },
+      { name: "Zod", href: "https://zod.dev/" },
+    ],
+  },
+  {
+    category: "Authentication",
+    icon: Shield,
+    description: "Secure and easy-to-implement authentication.",
+    libs: [
+      {
+        name: "Better Auth",
+        href: "https://github.com/BetterTyped/better-auth",
+      },
+    ],
+  },
+  {
+    category: "Tooling & DX",
+    icon: Wrench,
+    description: "Enhanced developer experience and code quality tools.",
+    libs: [
+      { name: "Biome", href: "https://biomejs.dev/" },
+      { name: "Vitest", href: "https://vitest.dev/" },
+      { name: "T3 Env", href: "https://github.com/t3-oss/t3-env" },
+      { name: "TypeScript", href: "https://www.typescriptlang.org/" },
+    ],
+  },
+  {
+    category: "AI Integration",
+    icon: Sparkles,
+    description: "Ready for building AI-powered features.",
+    libs: [
+      { name: "@ai-sdk/react", href: "https://sdk.vercel.ai/" },
+      { name: "ai", href: "https://sdk.vercel.ai/" },
+    ],
+  },
+  {
+    category: "Email Sending",
+    icon: Mail,
+    description: "Reliable transactional email delivery and templating.",
+    libs: [
+      { name: "Resend", href: "https://resend.com/" },
+      { name: "React Email", href: "https://react.email/" },
+    ],
+  },
+  {
+    category: "Monitoring",
+    icon: Activity,
+    description: "Application monitoring and error tracking.",
+    libs: [{ name: "Sentry", href: "https://sentry.io/" }],
+  },
+  {
+    category: "Internationalization",
+    icon: Users,
+    description: "Support for multiple languages.",
+    libs: [{ name: "i18next", href: "https://www.i18next.com/" }],
+  },
+];
+
+export default function LandingPage() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  return (
+    <div className="flex min-h-screen flex-col bg-background items-center justify-center">
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="w-full flex h-16 justify-between items-center px-4">
+          <div className="flex items-center gap-2">
+            <TerminalSquare className="h-6 w-6 text-primary" />
+            <span className="font-bold text-lg">Boilerplate</span>
+          </div>
+
+          <nav className="hidden md:flex items-center justify-center">
+            <ThemeSwitcher />
+            <a
+              href="https://github.com/YOUR_REPO_LINK"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+            >
+              <Github className="h-4 w-4" /> GitHub
+            </a>
+            <Link
+              to="/login"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors ml-8"
+            >
+              Login
+            </Link>
+          </nav>
+
+          <div className="flex items-center gap-4 md:hidden">
+            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <Menu className="h-5 w-5" />
+                  <span className="sr-only">Toggle menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                <div className="flex flex-col gap-6 pt-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <TerminalSquare className="h-6 w-6 text-primary" />
+                      <span className="font-bold text-lg">Boilerplate</span>
+                    </div>
+                  </div>
+                  <nav className="flex flex-col gap-4">
+                    <ThemeSwitcher />
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-start"
+                      asChild
+                    >
+                      <a
+                        href="https://github.com/YOUR_REPO_LINK"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        <Github className="h-4 w-4" /> GitHub
+                      </a>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-start"
+                      asChild
+                    >
+                      <Link
+                        to="/login"
+                        className="flex items-center gap-2"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Login
+                      </Link>
+                    </Button>
+                  </nav>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+        </div>
+      </header>
+
+      <main className="flex-1 py-12 md:py-16 lg:py-20 px-4">
+        <div className="text-center mb-12 md:mb-16">
+          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary via-violet-500 to-secondary">
+            Modern Full-Stack Boilerplate
+          </h1>
+          <p className="mx-auto max-w-2xl text-lg text-muted-foreground md:text-xl">
+            Jumpstart your next project with this feature-rich boilerplate,
+            built with a modern, type-safe stack focused on developer
+            experience.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {techStack.map((tech) => (
+            <Card
+              key={tech.category}
+              className="flex flex-col transition-shadow duration-200 hover:shadow-lg"
+            >
+              <CardHeader className="flex flex-row items-center gap-3 pb-4">
+                <tech.icon className="h-6 w-6 text-primary" />
+                <CardTitle className="text-lg font-semibold">
+                  {tech.category}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="flex-1">
+                <CardDescription className="mb-4">
+                  {tech.description}
+                </CardDescription>
+                <div className="flex flex-wrap gap-2">
+                  {tech.libs.map((lib) => (
+                    <Badge key={lib.name} variant="secondary">
+                      {lib.href ? (
+                        <a
+                          href={lib.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:underline flex items-center gap-1"
+                        >
+                          {lib.name}{" "}
+                          <BookOpen className="h-3 w-3 text-muted-foreground" />
+                        </a>
+                      ) : (
+                        lib.name
+                      )}
+                    </Badge>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        <section className="mt-16 md:mt-24">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl mb-4">
+              Robust Authentication Included
+            </h2>
+            <p className="mx-auto max-w-2xl text-lg text-muted-foreground md:text-xl">
+              Secure user management features ready out-of-the-box, powered by
+              Better Auth.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <Card>
+              <CardHeader className="flex flex-row items-center gap-3 pb-2">
+                <UserCheck className="h-6 w-6 text-blue-500" />
+                <CardTitle>Core Authentication</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <div className="flex items-center gap-2 text-sm">
+                  <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                  <span>Sign Up / Sign In</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                  <span>Password Reset Flow (Forgot/Reset)</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center gap-3 pb-2">
+                <Shield className="h-6 w-6 text-green-500" />
+                <CardTitle>Enhanced Security</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <div className="flex items-center gap-2 text-sm">
+                  <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                  <span>Two-Factor Authentication (OTP)</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <Shield className="h-4 w-4 text-yellow-500 flex-shrink-0" />
+                  <span>Passkey Support (Planned/Possible)</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center gap-3 pb-2">
+                <Users className="h-6 w-6 text-purple-500" />
+                <CardTitle>User & Org Management</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <div className="flex items-center gap-2 text-sm">
+                  <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                  <span>Invitation Acceptance Flow</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <LayoutDashboard className="h-4 w-4 text-yellow-500 flex-shrink-0" />
+                  <span>Admin Dashboard (Planned/Possible)</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <Users className="h-4 w-4 text-yellow-500 flex-shrink-0" />
+                  <span>Organization Support (Planned/Possible)</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+      </main>
+
+      <footer className="border-t mt-16">
+        <div className="container py-6 text-center text-sm text-muted-foreground">
+          Built with Modern Tech. &copy; {new Date().getFullYear()} Your
+          Company/Name.
+        </div>
+      </footer>
+    </div>
+  );
+}

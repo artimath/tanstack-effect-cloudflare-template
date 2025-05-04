@@ -1,0 +1,112 @@
+import { ResetPasswordEmail } from "@/components/emails/reset-password-email";
+import { SendMagicLinkEmail } from "@/components/emails/send-magic-link-email";
+import { SendVerificationOTP } from "@/components/emails/send-verification-otp";
+import { VerifyEmail } from "@/components/emails/verify-email";
+import { WelcomeEmail } from "@/components/emails/welcome-email";
+import { db } from "@/lib/db";
+import * as schema from "@/lib/db/schema/auth";
+import { sendEmail } from "@/lib/resend";
+import { betterAuth } from "better-auth";
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { admin, magicLink, openAPI, organization } from "better-auth/plugins";
+import { emailOTP } from "better-auth/plugins/email-otp";
+import { passkey } from "better-auth/plugins/passkey";
+import { twoFactor } from "better-auth/plugins/two-factor";
+import { reactStartCookies } from "better-auth/react-start";
+
+export const auth = betterAuth({
+  database: drizzleAdapter(db, {
+    provider: "pg",
+    schema: schema,
+  }),
+  basePath: "/api/auth",
+  rateLimit: {
+    enabled: true,
+    max: 100,
+    window: 10,
+  },
+  user: {
+    deleteUser: {
+      enabled: true,
+    },
+  },
+  logger: {
+    enabled: true,
+    level: "info",
+  },
+  databaseHooks: {
+    user: {
+      create: {
+        after: async (user) => {
+          await sendEmail({
+            subject: "Welcome to MyApp",
+            template: WelcomeEmail({
+              username: user.name || user.email,
+            }),
+            to: user.email,
+          });
+        },
+      },
+    },
+  },
+  emailAndPassword: {
+    enabled: true,
+    requireEmailVerification: false,
+    async sendResetPassword({ url, user }) {
+      await sendEmail({
+        subject: "Reset your password",
+        template: ResetPasswordEmail({
+          resetLink: url,
+          username: user.email,
+        }),
+        to: user.email,
+      });
+    },
+  },
+  emailVerification: {
+    sendVerificationEmail: async ({ url, user }) => {
+      await sendEmail({
+        subject: "Verify your email",
+        template: VerifyEmail({
+          url: url,
+          username: user.email,
+        }),
+        to: user.email,
+      });
+    },
+  },
+
+  plugins: [
+    openAPI(),
+    twoFactor(),
+    passkey(),
+    admin(),
+    organization(),
+    emailOTP({
+      async sendVerificationOTP({ email, otp, type }) {
+        await sendEmail({
+          subject: "Verify your email",
+          template: SendVerificationOTP({
+            username: email,
+            otp: otp,
+          }),
+          to: email,
+        });
+      },
+    }),
+    magicLink({
+      sendMagicLink: async ({ email, token, url }, request) => {
+        await sendEmail({
+          subject: "Magic Link",
+          template: SendMagicLinkEmail({
+            username: email,
+            url: url,
+            token: token,
+          }),
+          to: email,
+        });
+      },
+    }),
+    reactStartCookies(), // make sure this is the last plugin in the array
+  ],
+});

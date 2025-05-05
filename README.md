@@ -14,6 +14,9 @@ This project provides a solid foundation for building modern web applications us
 
 
 
+
+
+
 ## Core Technologies
 
 *   **Framework:** [TanStack Start](https://tanstack.com/start/v1) on [Vite](https://vitejs.dev/) + [Vinxi](https://vinxi.dev/) (Modern React foundation with SSR)
@@ -47,6 +50,15 @@ The boilerplate includes several AI-powered chat features and file handling capa
     *   Uses tRPC v11's FormData and non-JSON content type support
 
 The implementation leverages tRPC v11's support for FormData and various content types, making it easy to handle file uploads directly through your type-safe API without additional libraries.
+
+<img width="1591" alt="image" src="https://github.com/user-attachments/assets/9e87d828-60cb-4430-b690-44b8d635e14f" />
+
+<img width="1600" alt="image" src="https://github.com/user-attachments/assets/2cf7ab06-fc4b-441d-b1e6-88b391b0691b" />
+
+<img width="1599" alt="image" src="https://github.com/user-attachments/assets/473dd7f7-50b2-4a3b-af1c-bfb195d00800" />
+
+<img width="1595" alt="image" src="https://github.com/user-attachments/assets/5cc566fa-c885-4223-9c73-e8ddfe21e5a0" />
+
 
 ## Included Features
 

@@ -31,6 +31,23 @@ This project provides a solid foundation for building modern web applications us
 *   **AI:** [@ai-sdk/react](https://sdk.vercel.ai/), [ai](https://sdk.vercel.ai/) (Ready for AI features)
 *   **i18n:** [i18next](https://www.i18next.com/) (Internationalization)
 
+## AI Features
+
+The boilerplate includes several AI-powered chat features and file handling capabilities:
+
+*   **Basic Chat:** Simple streaming chat interface powered by OpenAI's GPT-4o.
+*   **Image Generation:** AI-based image generation within chat using the AI SDK.
+*   **RAG (Retrieval Augmented Generation):** Chat with context from your knowledge base:
+    *   Upload documents to be processed into embeddings
+    *   AI responses enhanced with information retrieved from your documents
+    *   Knowledge base searching before answering questions
+*   **File Upload:** PDF document processing for knowledge base:
+    *   Drag-and-drop interface with progress indicators
+    *   PDF text extraction and embedding generation
+    *   Uses tRPC v11's FormData and non-JSON content type support
+
+The implementation leverages tRPC v11's support for FormData and various content types, making it easy to handle file uploads directly through your type-safe API without additional libraries.
+
 ## Included Features
 
 ### Robust Authentication
@@ -135,6 +152,9 @@ src/
 ├─ app/                   # App specific files
 ├─ components/            # Reusable UI components (including shadcn/ui)
 ├─ features/              # Feature-specific components and logic
+│  ├─ ai-embedding.ts     # Vector embedding generation for RAG functionality
+│  ├─ resource-create.ts  # Knowledge base resource creation
+│  ├─ file-upload.schema.ts # File upload validation schemas
 │  ├─ auth/               # Authentication related features
 │  └─ organization/       # Organization management features
 ├─ hooks/                 # Custom React hooks
@@ -150,7 +170,12 @@ src/
 │  ├─ (auth)/             # Authentication related routes (protected)
 │  ├─ (public)/           # Public facing routes
 │  ├─ api/                # API routes
+│  │  ├─ ai/              # AI-related API endpoints 
+│  │  │  ├─ chat.ts       # Basic chat API
+│  │  │  ├─ chat.rag.ts   # RAG-enhanced chat API
+│  │  │  └─ chat.image.generation.ts # Image generation chat API
 │  ├─ dashboard/          # Dashboard related routes
+│  │  ├─ chat/            # Chat interface routes
 │  └─ _root.tsx           # Root layout component
 ├─ server/                # Server-side code
 │  ├─ router.ts           # Main API router setup
@@ -192,7 +217,7 @@ The structure organizes code by feature and responsibility, keeping related code
 *   [ ] **Advanced RBAC:** Implement fine-grained Role-Based Access Control if needed.
 *   [ ] **Performance Optimization:** Bundle analysis, code splitting, image optimization.
 *   [x] **i18n Management:** Add Internationalization (translation platform integration).
-*   [ ] **AI SDK Examples:** Add examples using `@ai-sdk/react`.
+*   [x] **AI SDK Examples:** Add examples using `@ai-sdk/react`.
 *   [x] **Email Templates:** Add more examples/implementations using `react-email`.
 *   [x] **Sentry Configuration:** Add details on advanced Sentry setup (sourcemaps, user identification).
 *   [x] **Theme Toggle:** Implement UI for switching between light/dark themes (uses `next-themes`).

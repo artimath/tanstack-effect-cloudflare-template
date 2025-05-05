@@ -34,9 +34,6 @@ export function OrganizationSwitcher({
     organizations[0],
   );
 
-  console.log(organizationList);
-  console.log(currentOrganization);
-
   if (!activeOrganization) {
     return null;
   }

@@ -1,5 +1,5 @@
 import { env } from "@/lib/env.server";
-import { renderAsync } from "@react-email/render";
+import { render } from "@react-email/render";
 import type { ReactElement } from "react";
 import { Resend } from "resend";
 
@@ -15,7 +15,7 @@ export async function sendEmail({
   const resend = new Resend(env.RESEND_API_KEY);
 
   try {
-    const html = await renderAsync(template);
+    const html = await render(template);
 
     const { data } = await resend.emails.send({
       from: "noreply@example.com", // TODO: Configure in env

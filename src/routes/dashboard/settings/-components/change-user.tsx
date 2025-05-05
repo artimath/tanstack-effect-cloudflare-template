@@ -16,7 +16,7 @@ import { Label } from "@/components/ui/label";
 import { useRouter } from "@tanstack/react-router";
 import { Edit, Loader2, X } from "lucide-react";
 
-import { useSession } from "@/features/auth/auth.hooks";
+import { useSession } from "@/hooks/auth-hooks";
 import { authClient } from "@/lib/auth/auth-client";
 import { convertImageToBase64 } from "@/lib/utils";
 import { useState } from "react";

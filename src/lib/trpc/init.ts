@@ -1,12 +1,13 @@
 import { auth } from "@/lib/auth/auth";
 import { TRPCError, initTRPC } from "@trpc/server";
-import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
+
 import superjson from "superjson";
 import { ZodError } from "zod";
 
-export const createTRPCContext = async (
-  opts: CreateNextContextOptions & { headers: Headers },
-) => {
+export const createTRPCContext = async (opts: {
+  headers: Headers;
+  req: Request;
+}) => {
   const session = await auth.api.getSession({
     headers: opts.headers,
   });
@@ -56,3 +57,15 @@ export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
   }
   return next();
 });
+
+/**
+ * Create a router
+ * @see https://trpc.io/docs/v11/router
+ */
+export const router = t.router;
+
+/**
+ * @see https://trpc.io/docs/v11/merging-routers
+ */
+export const mergeRouters = t.mergeRouters;
+export const createCallerFactory = t.createCallerFactory;

@@ -1,4 +1,4 @@
-import { useSession } from "@/features/auth/auth.hooks";
+import { useSession } from "@/hooks/auth-hooks";
 
 import { useLocation, useRouter } from "@tanstack/react-router";
 

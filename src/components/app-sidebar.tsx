@@ -1,28 +1,18 @@
 import {
   AudioWaveform,
-  BarChart3,
-  BookOpen,
-  Bot,
   Command,
-  CreditCard,
-  CreditCardIcon,
-  DollarSign,
-  Frame,
+  File,
   GalleryVerticalEnd,
   Home,
-  IdCardIcon,
-  Lightbulb,
-  Map as MapIcon,
-  PieChart,
-  PiggyBank,
+  MessageCircle,
   Settings2,
-  Wallet,
 } from "lucide-react";
 import * as React from "react";
 
 import { NavItems } from "@/components/nav-items";
 
 import { NavUser } from "@/components/nav-user";
+import { OrganizationSwitcher } from "@/components/organization-switcher";
 import {
   Sidebar,
   SidebarContent,
@@ -30,7 +20,6 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { OrganizationSwitcher } from "@/features/organization/organization-switcher";
 
 // This is sample data.
 const data = {
@@ -67,6 +56,16 @@ const data = {
       name: "Settings",
       url: "/dashboard/settings",
       icon: Settings2,
+    },
+    {
+      name: "Chat",
+      url: "/dashboard/chat",
+      icon: MessageCircle,
+    },
+    {
+      name: "RAG",
+      url: "/dashboard/chat/rag",
+      icon: File,
     },
   ],
 };

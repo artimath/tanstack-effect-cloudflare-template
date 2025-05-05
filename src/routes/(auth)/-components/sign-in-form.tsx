@@ -12,7 +12,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useLogin } from "@/features/auth/auth.hooks";
+import { useLogin } from "@/hooks/auth-hooks";
 
 import { useTranslation } from "@/lib/intl/react";
 import { cn } from "@/lib/utils";

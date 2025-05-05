@@ -66,8 +66,6 @@ export function OrganizationCard(props: {
     (member: any) => member.userId === session?.user.id,
   );
 
-  console.log(organizations);
-
   return (
     <div className="flex w-full flex-1 p-4">
       <Card className="w-full">

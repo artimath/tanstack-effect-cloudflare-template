@@ -36,7 +36,7 @@ import {
   ShieldOff,
 } from "lucide-react";
 
-import { useLogout } from "@/features/auth/auth.hooks";
+import { useLogout } from "@/hooks/auth-hooks";
 import { authClient } from "@/lib/auth/auth-client";
 import type { AuthClient } from "@/lib/auth/auth-client";
 import { useState } from "react";

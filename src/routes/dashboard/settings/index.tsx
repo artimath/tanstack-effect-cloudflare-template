@@ -1,6 +1,6 @@
 import { authClient } from "@/lib/auth/auth-client";
 import { useQuery } from "@tanstack/react-query";
-import { Link, createFileRoute, useLoaderData } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import AdminDashboard from "./-components/admin";
 import { OrganizationCard } from "./-components/organization-card";
 import UserCard from "./-components/user-card";
@@ -19,7 +19,6 @@ function RouteComponent() {
       const [session, organization, sessions] = await Promise.all([
         getSession,
         getOrganization,
-
         getSessions,
       ]);
       return { session, organization, sessions } as const;
@@ -28,9 +27,6 @@ function RouteComponent() {
 
   return (
     <div>
-      {/* <h1>Settings</h1>
-      <pre>{JSON.stringify(sessions, null, 2)}</pre>
-      <Link to="/dashboard/settings">Sessions</Link> */}
       <OrganizationCard
         session={data?.session?.data}
         activeOrganization={data?.organization?.data}

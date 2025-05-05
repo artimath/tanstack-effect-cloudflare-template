@@ -20,7 +20,9 @@ import { Route as authRegisterImport } from './routes/(auth)/register'
 import { Route as authLoginImport } from './routes/(auth)/login'
 import { Route as authForgotPasswordImport } from './routes/(auth)/forgot-password'
 import { Route as DashboardSettingsIndexImport } from './routes/dashboard/settings/index'
+import { Route as DashboardChatIndexImport } from './routes/dashboard/chat/index'
 import { Route as authTwoFactorIndexImport } from './routes/(auth)/two-factor/index'
+import { Route as DashboardChatRagImport } from './routes/dashboard/chat/rag'
 import { Route as authTwoFactorOtpImport } from './routes/(auth)/two-factor/otp'
 import { Route as authAcceptInvitationInvitationIdIndexImport } from './routes/(auth)/accept-invitation/$invitationId/index'
 
@@ -79,10 +81,22 @@ const DashboardSettingsIndexRoute = DashboardSettingsIndexImport.update({
   getParentRoute: () => DashboardLayoutRoute,
 } as any)
 
+const DashboardChatIndexRoute = DashboardChatIndexImport.update({
+  id: '/chat/',
+  path: '/chat/',
+  getParentRoute: () => DashboardLayoutRoute,
+} as any)
+
 const authTwoFactorIndexRoute = authTwoFactorIndexImport.update({
   id: '/two-factor/',
   path: '/two-factor/',
   getParentRoute: () => authLayoutRoute,
+} as any)
+
+const DashboardChatRagRoute = DashboardChatRagImport.update({
+  id: '/chat/rag',
+  path: '/chat/rag',
+  getParentRoute: () => DashboardLayoutRoute,
 } as any)
 
 const authTwoFactorOtpRoute = authTwoFactorOtpImport.update({
@@ -165,12 +179,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authTwoFactorOtpImport
       parentRoute: typeof authLayoutImport
     }
+    '/dashboard/chat/rag': {
+      id: '/dashboard/chat/rag'
+      path: '/chat/rag'
+      fullPath: '/dashboard/chat/rag'
+      preLoaderRoute: typeof DashboardChatRagImport
+      parentRoute: typeof DashboardLayoutImport
+    }
     '/(auth)/two-factor/': {
       id: '/(auth)/two-factor/'
       path: '/two-factor'
       fullPath: '/two-factor'
       preLoaderRoute: typeof authTwoFactorIndexImport
       parentRoute: typeof authLayoutImport
+    }
+    '/dashboard/chat/': {
+      id: '/dashboard/chat/'
+      path: '/chat'
+      fullPath: '/dashboard/chat'
+      preLoaderRoute: typeof DashboardChatIndexImport
+      parentRoute: typeof DashboardLayoutImport
     }
     '/dashboard/settings/': {
       id: '/dashboard/settings/'
@@ -218,11 +246,15 @@ const authLayoutRouteWithChildren = authLayoutRoute._addFileChildren(
 
 interface DashboardLayoutRouteChildren {
   DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardChatRagRoute: typeof DashboardChatRagRoute
+  DashboardChatIndexRoute: typeof DashboardChatIndexRoute
   DashboardSettingsIndexRoute: typeof DashboardSettingsIndexRoute
 }
 
 const DashboardLayoutRouteChildren: DashboardLayoutRouteChildren = {
   DashboardIndexRoute: DashboardIndexRoute,
+  DashboardChatRagRoute: DashboardChatRagRoute,
+  DashboardChatIndexRoute: DashboardChatIndexRoute,
   DashboardSettingsIndexRoute: DashboardSettingsIndexRoute,
 }
 
@@ -239,7 +271,9 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof authResetPasswordRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/two-factor/otp': typeof authTwoFactorOtpRoute
+  '/dashboard/chat/rag': typeof DashboardChatRagRoute
   '/two-factor': typeof authTwoFactorIndexRoute
+  '/dashboard/chat': typeof DashboardChatIndexRoute
   '/dashboard/settings': typeof DashboardSettingsIndexRoute
   '/accept-invitation/$invitationId': typeof authAcceptInvitationInvitationIdIndexRoute
 }
@@ -252,7 +286,9 @@ export interface FileRoutesByTo {
   '/reset-password': typeof authResetPasswordRoute
   '/dashboard': typeof DashboardIndexRoute
   '/two-factor/otp': typeof authTwoFactorOtpRoute
+  '/dashboard/chat/rag': typeof DashboardChatRagRoute
   '/two-factor': typeof authTwoFactorIndexRoute
+  '/dashboard/chat': typeof DashboardChatIndexRoute
   '/dashboard/settings': typeof DashboardSettingsIndexRoute
   '/accept-invitation/$invitationId': typeof authAcceptInvitationInvitationIdIndexRoute
 }
@@ -268,7 +304,9 @@ export interface FileRoutesById {
   '/(public)/': typeof publicIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/(auth)/two-factor/otp': typeof authTwoFactorOtpRoute
+  '/dashboard/chat/rag': typeof DashboardChatRagRoute
   '/(auth)/two-factor/': typeof authTwoFactorIndexRoute
+  '/dashboard/chat/': typeof DashboardChatIndexRoute
   '/dashboard/settings/': typeof DashboardSettingsIndexRoute
   '/(auth)/accept-invitation/$invitationId/': typeof authAcceptInvitationInvitationIdIndexRoute
 }
@@ -284,7 +322,9 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/dashboard/'
     | '/two-factor/otp'
+    | '/dashboard/chat/rag'
     | '/two-factor'
+    | '/dashboard/chat'
     | '/dashboard/settings'
     | '/accept-invitation/$invitationId'
   fileRoutesByTo: FileRoutesByTo
@@ -296,7 +336,9 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/dashboard'
     | '/two-factor/otp'
+    | '/dashboard/chat/rag'
     | '/two-factor'
+    | '/dashboard/chat'
     | '/dashboard/settings'
     | '/accept-invitation/$invitationId'
   id:
@@ -310,7 +352,9 @@ export interface FileRouteTypes {
     | '/(public)/'
     | '/dashboard/'
     | '/(auth)/two-factor/otp'
+    | '/dashboard/chat/rag'
     | '/(auth)/two-factor/'
+    | '/dashboard/chat/'
     | '/dashboard/settings/'
     | '/(auth)/accept-invitation/$invitationId/'
   fileRoutesById: FileRoutesById
@@ -359,6 +403,8 @@ export const routeTree = rootRoute
       "filePath": "dashboard/layout.tsx",
       "children": [
         "/dashboard/",
+        "/dashboard/chat/rag",
+        "/dashboard/chat/",
         "/dashboard/settings/"
       ]
     },
@@ -389,9 +435,17 @@ export const routeTree = rootRoute
       "filePath": "(auth)/two-factor/otp.tsx",
       "parent": "/(auth)"
     },
+    "/dashboard/chat/rag": {
+      "filePath": "dashboard/chat/rag.tsx",
+      "parent": "/dashboard"
+    },
     "/(auth)/two-factor/": {
       "filePath": "(auth)/two-factor/index.tsx",
       "parent": "/(auth)"
+    },
+    "/dashboard/chat/": {
+      "filePath": "dashboard/chat/index.tsx",
+      "parent": "/dashboard"
     },
     "/dashboard/settings/": {
       "filePath": "dashboard/settings/index.tsx",

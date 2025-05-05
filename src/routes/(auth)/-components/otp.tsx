@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuthHelpers } from "@/features/auth/auth.hooks";
+import { useAuthHelpers } from "@/hooks/auth-hooks";
 import { authClient } from "@/lib/auth/auth-client";
 import { useTranslation } from "@/lib/intl/react";
 import { useRouter } from "@tanstack/react-router";

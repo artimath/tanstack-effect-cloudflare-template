@@ -2,8 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 
-// import { useTranslation } from "@repo/intl/react";
-
 import { Check } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";

@@ -23,7 +23,7 @@ export const Route = createFileRoute("/dashboard")({
 function RouteComponent() {
   const location = useLocation();
   const pathname = location.pathname;
-  console.log(pathname);
+
   const paths = pathname.split("/");
   const breadcrumb = paths.map((path) => {
     return {

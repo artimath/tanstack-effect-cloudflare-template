@@ -13,7 +13,6 @@ function handler({ request }: { request: Request }) {
         ...opts,
         headers: opts.req.headers,
         req: opts.req,
-        res: undefined,
       });
     },
   });

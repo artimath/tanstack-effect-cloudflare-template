@@ -1,4 +1,4 @@
-import { QueryClient } from "@tanstack/react-query";
+import { QueryCache, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
   createTRPCClient,
@@ -13,9 +13,9 @@ import superjson, { SuperJSON } from "superjson";
 
 import { TRPCProvider } from "@/lib/trpc/react";
 import type { TRPCRouter } from "@/server/router";
-import type { TRPCCombinedDataTransformer } from "@trpc/server";
 import { createIsomorphicFn, createServerFn } from "@tanstack/react-start";
 import { getWebRequest } from "@tanstack/react-start/server";
+import type { TRPCCombinedDataTransformer } from "@trpc/server";
 
 export const transformer: TRPCCombinedDataTransformer = {
   input: {
@@ -35,12 +35,14 @@ export const transformer: TRPCCombinedDataTransformer = {
   output: SuperJSON,
 };
 
-const getRequestHeaders = createServerFn({ method: "GET" }).handler(async () => {
-  const request = getWebRequest()!;
-  const headers = new Headers(request.headers);
+const getRequestHeaders = createServerFn({ method: "GET" }).handler(
+  async () => {
+    const request = getWebRequest();
+    const headers = new Headers(request?.headers);
 
-  return Object.fromEntries(headers);
-});
+    return Object.fromEntries(headers);
+  },
+);
 
 const headers = createIsomorphicFn()
   .client(() => ({}))
@@ -70,7 +72,6 @@ export const trpcClient = createTRPCClient<TRPCRouter>({
           return fetch(url, {
             ...options,
             credentials: "include",
-
           });
         },
         headers,
@@ -90,26 +91,31 @@ export const trpcClient = createTRPCClient<TRPCRouter>({
   ],
 });
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    dehydrate: { serializeData: superjson.serialize },
-    hydrate: { deserializeData: superjson.deserialize },
-  },
-});
+export const createQueryClient = () => {
+  return new QueryClient({
+    defaultOptions: {
+      dehydrate: { serializeData: superjson.serialize },
+      hydrate: { deserializeData: superjson.deserialize },
+    },
+    queryCache: new QueryCache(),
+  });
+};
+export const createServerHelpers = ({
+  queryClient,
+}: {
+  queryClient: QueryClient;
+}) => {
+  const serverHelpers = createTRPCOptionsProxy({
+    client: trpcClient,
+    queryClient: queryClient,
+  });
+  return serverHelpers;
+};
 
-const serverHelpers = createTRPCOptionsProxy({
-  client: trpcClient,
-  queryClient: queryClient,
-});
-
-export function getContext() {
-  return {
-    queryClient,
-    trpc: serverHelpers,
-  };
-}
-
-export function Provider({ children }: { children: React.ReactNode }) {
+export function Provider({
+  children,
+  queryClient,
+}: { children: React.ReactNode; queryClient: QueryClient }) {
   return (
     <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
       {children}

@@ -14,11 +14,16 @@ import NotFound from "./components/not-found";
 
 // Create a new router instance
 export const createRouter = () => {
+  const queryClient = TanstackQuery.createQueryClient();
+  const serverHelpers = TanstackQuery.createServerHelpers({
+    queryClient,
+  });
   const router = routerWithQueryClient(
     createTanstackRouter({
       routeTree,
       context: {
-        ...TanstackQuery.getContext(),
+        queryClient,
+        trpc: serverHelpers,
       },
       scrollRestoration: true,
       defaultPreloadStaleTime: 0,
@@ -30,11 +35,13 @@ export const createRouter = () => {
       defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
       Wrap: (props: { children: React.ReactNode }) => {
         return (
-          <TanstackQuery.Provider>{props.children}</TanstackQuery.Provider>
+          <TanstackQuery.Provider queryClient={queryClient}>
+            {props.children}
+          </TanstackQuery.Provider>
         );
       },
     }),
-    TanstackQuery.getContext().queryClient,
+    queryClient,
   );
 
   return router;

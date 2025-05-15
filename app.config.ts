@@ -9,8 +9,8 @@ const config = defineConfig({
     appDirectory: "src",
     routeToken: "layout",
     autoCodeSplitting: true,
-  },
 
+  },
   vite: {
     plugins: [
       // this is the plugin that enables path aliases

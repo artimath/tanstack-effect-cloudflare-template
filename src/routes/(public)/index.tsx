@@ -37,8 +37,6 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 export const Route = createFileRoute("/(public)/")({
   component: LandingPage,
-
-  ssr: false,
 });
 
 const techStack = [
@@ -159,6 +157,7 @@ const techStack = [
 
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
 
   return (
     <div className="flex min-h-screen flex-col bg-background items-center justify-center">

@@ -19,12 +19,6 @@ import { useState } from "react";
 
 export const Route = createFileRoute("/dashboard/")({
   component: RouteComponent,
-  beforeLoad: async ({ context }) => {
-    const a = await context.queryClient.ensureQueryData(
-      context.trpc.todo.getAll.queryOptions(),
-    );
-    console.log({ a });
-  },
 });
 
 function RouteComponent() {

@@ -16,7 +16,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!session?.user && !isPending) {
-      console.log("session", session);
       if (!isAuthRoute(location.pathname)) {
         router.navigate({ to: "/login" });
       }

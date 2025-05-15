@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { publicProcedure } from "@/lib/trpc/init";
+import { protectedProcedure, } from "@/lib/trpc/init";
 import { router } from "@/lib/trpc/init";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { TRPCError } from "@trpc/server/unstable-core-do-not-import";
@@ -8,12 +8,12 @@ import { uploadFileSchema } from "@/features/file-upload.schema";
 import { createResource } from "@/features/resource-create";
 
 export const resourcesRouter = router({
-  list: publicProcedure.query(async () => {
+  list: protectedProcedure.query(async () => {
     const resources = await db.query.resources.findMany();
 
     return resources;
   }),
-  upload: publicProcedure.input(uploadFileSchema).mutation(async (opts) => {
+  upload: protectedProcedure.input(uploadFileSchema).mutation(async (opts) => {
     const { file } = opts.input;
 
     // TODO: Handle file upload with mime type

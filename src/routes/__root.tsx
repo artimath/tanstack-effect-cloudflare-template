@@ -59,16 +59,18 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     ],
   }),
   component: () => <RootDocument />,
+  wrapInSuspense: true,
   ssr: false,
 });
 
 function RootDocument() {
+ 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

@@ -60,6 +60,110 @@ The implementation leverages tRPC v11's support for FormData and various content
 <img width="1595" alt="image" src="https://github.com/user-attachments/assets/5cc566fa-c885-4223-9c73-e8ddfe21e5a0" />
 
 
+## MCP (Model Context Protocol) Integration
+
+This boilerplate includes a fully functional **Model Context Protocol (MCP)** server that allows AI assistants like Claude Desktop and Cursor to interact with your application's tools and data in real-time.
+
+### What is MCP?
+
+The Model Context Protocol is a standard for connecting AI assistants to external tools and data sources. It enables your AI assistant to execute functions, access APIs, and interact with your application directly from the chat interface.
+
+### Implementation
+
+The MCP server is implemented using the [`@vercel/mcp-adapter`](https://www.npmjs.com/package/@vercel/mcp-adapter) package, adapted for **TanStack Start** (instead of Next.js). The implementation consists of:
+
+- **MCP Handler**: Located at `src/routes/api/ai/mcp/$transport.ts`
+- **Tools Definition**: Located at `src/lib/ai/mcp-tools.ts`
+
+### Available Tools
+
+The boilerplate comes with several example tools that demonstrate different capabilities:
+
+- **`getCatFact`**: Fetches random cat facts from an external API
+- **`getQuote`**: Retrieves inspirational quotes from an external API  
+- **`getJoke`**: Gets random programming jokes from an external API
+- **`getUsers`**: Fetches user data from JSONPlaceholder API
+- **`getWelcomeMessage`**: Simple greeting with parameter input
+- **`calculateBMI`**: BMI calculator with weight and height parameters
+
+### Configuration for AI Assistants
+
+#### Claude Desktop
+
+Add the following configuration to your Claude Desktop config file:
+
+**macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`  
+**Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+
+```json
+{
+  "mcpServers": {
+    "your-app": {
+      "command": "npx",
+      "args": ["mcp-remote", "http://localhost:3000/api/ai/mcp/mcp"]
+    }
+  }
+}
+```
+
+#### Cursor
+
+Add the following configuration to your Cursor MCP config file at `~/.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "your-app": {
+      "command": "npx", 
+      "args": ["mcp-remote", "http://localhost:3000/api/ai/mcp/mcp"]
+    }
+  }
+}
+```
+
+### Adding New Tools
+
+To add new tools to your MCP server:
+
+1. **Define the tool function** in `src/lib/ai/mcp-tools.ts`:
+
+```typescript
+const yourNewTool = async ({ param }: { param: string }) => {
+  // Your tool logic here
+  return {
+    content: [{ type: "text", text: `Result: ${param}` }],
+  };
+};
+```
+
+2. **Add the tool to the tools array**:
+
+```typescript
+export const tools = [
+  // ... existing tools
+  {
+    name: "yourNewTool",
+    description: "Description of what your tool does",
+    callback: yourNewTool,
+    inputSchema: z.object({
+      param: z.string(),
+    }),
+  },
+];
+```
+
+3. **Restart your development server** and the AI assistant to pick up the new tool.
+
+### Usage
+
+Once configured, you can interact with your tools directly from your AI assistant:
+
+- Ask Claude or Cursor to "get a cat fact" → triggers `getCatFact`
+- Say "calculate my BMI for 70kg and 1.75m" → triggers `calculateBMI`
+- Request "tell me a joke" → triggers `getJoke`
+
+The AI assistant will automatically determine which tools to use based on your requests and execute them in real-time.
+
 ## Included Features
 
 ### Robust Authentication

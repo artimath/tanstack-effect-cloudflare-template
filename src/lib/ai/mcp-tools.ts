@@ -1,4 +1,11 @@
+import {
+  getHeader,
+  getHeaders,
+  getWebRequest,
+} from "@tanstack/react-start/server";
 import { z } from "zod";
+import { auth } from "../auth/auth";
+import { db } from "../db";
 
 const getCatFact = async () => {
   try {
@@ -47,23 +54,23 @@ const getJoke = async () => {
   }
 };
 
-const getUsers = async () => {
-  try {
-    const res = await fetch("https://jsonplaceholder.typicode.com/users");
-    const data = await res.json();
+// const getUsers = async () => {
+//   try {
+//     const res = await fetch("https://jsonplaceholder.typicode.com/users");
+//     const data = await res.json();
 
-    return {
-      content: [
-        {
-          type: "text",
-          text: `Users: ${JSON.stringify(data)}`,
-        },
-      ],
-    };
-  } catch (error) {
-    return { content: [{ type: "text", text: "Failed to fetch joke" }] };
-  }
-};
+//     return {
+//       content: [
+//         {
+//           type: "text",
+//           text: `Users: ${JSON.stringify(data)}`,
+//         },
+//       ],
+//     };
+//   } catch (error) {
+//     return { content: [{ type: "text", text: "Failed to fetch joke" }] };
+//   }
+// };
 
 const getWelcomeMessage = async ({ name }: { name: string }) => {
   return {
@@ -79,6 +86,14 @@ const calculateBMI = async ({
   console.log("💪 BMI", bmi);
   return {
     content: [{ type: "text", text: `Your BMI is ${bmi}` }],
+  };
+};
+
+const getTodos = async () => {
+  const todos = await db.query.todo.findMany();
+  console.log("🔑 Todos", todos);
+  return {
+    content: [{ type: "text", text: `Todos: ${JSON.stringify(todos)}` }],
   };
 };
 
@@ -98,11 +113,7 @@ export const tools = [
     description: "Get a random programming joke",
     callback: getJoke,
   },
-  {
-    name: "getUsers",
-    description: "Get the users from Example API",
-    callback: getUsers,
-  },
+
   {
     name: "getWelcomeMessage",
     description: "Get the welcome message",
@@ -119,5 +130,10 @@ export const tools = [
       weight: z.number(),
       height: z.number(),
     }),
+  },
+  {
+    name: "getTodos",
+    description: "Get the todos from the app",
+    callback: getTodos,
   },
 ];

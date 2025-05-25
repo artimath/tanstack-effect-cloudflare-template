@@ -82,9 +82,9 @@ The boilerplate comes with several example tools that demonstrate different capa
 - **`getCatFact`**: Fetches random cat facts from an external API
 - **`getQuote`**: Retrieves inspirational quotes from an external API  
 - **`getJoke`**: Gets random programming jokes from an external API
-- **`getUsers`**: Fetches user data from JSONPlaceholder API
 - **`getWelcomeMessage`**: Simple greeting with parameter input
 - **`calculateBMI`**: BMI calculator with weight and height parameters
+- **`getTodos`**: Retrieves todos from the application's database (demonstrates database integration)
 
 ### Configuration for AI Assistants
 
@@ -161,8 +161,10 @@ Once configured, you can interact with your tools directly from your AI assistan
 - Ask Claude or Cursor to "get a cat fact" → triggers `getCatFact`
 - Say "calculate my BMI for 70kg and 1.75m" → triggers `calculateBMI`
 - Request "tell me a joke" → triggers `getJoke`
+- Ask "show me my todos" or "what needs to be done" → triggers `getTodos`
+- Say "welcome me as John" → triggers `getWelcomeMessage`
 
-The AI assistant will automatically determine which tools to use based on your requests and execute them in real-time.
+The AI assistant will automatically determine which tools to use based on your requests and execute them in real-time, including accessing your application's database for dynamic data.
 
 ## Included Features
 
@@ -328,6 +330,7 @@ The structure organizes code by feature and responsibility, keeping related code
     *   [x] Admin Dashboard (User Management UI)
     *   [x] Organization Support (Multi-tenancy/Teams)
 *   [x] **Refactor Auth Hooks:** Ensure auth logic (e.g., `useSession`) is cleanly extracted into custom hooks.
+*   [x] **MCP Integration:** Model Context Protocol server implementation with example tools.
 *   [ ] **Standardize Form Usage:** Document preferred approach (React Hook Form vs. TanStack Form) or consolidate.
 *   [ ] **Database Seeding:** Create scripts for populating development/testing data.
 *   [ ] **Advanced RBAC:** Implement fine-grained Role-Based Access Control if needed.

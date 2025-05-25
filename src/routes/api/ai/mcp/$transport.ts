@@ -10,12 +10,13 @@ const handler = async (req: Request) => {
     headers: req.headers,
   });
 
-  // if (!session) {
-  //   console.log("🔑 No session");
-  //   return new Response(null, {
-  //     status: 401,
-  //   });
-  // }
+  // If commented this will register my MCP server to Cursor
+  if (!session) {
+    console.log("🔑 No session");
+    return new Response(null, {
+      status: 401,
+    });
+  }
 
   return createMcpHandler(
     async (server) => {

@@ -49,23 +49,21 @@ const handler = async (req: Request) => {
       basePath: "/api/ai/mcp",
       verboseLogs: true,
       maxDuration: 60,
+      onEvent(event) {
+        console.log("🔑 Event", event);
+      },
     },
   )(req);
 };
 
 export const APIRoute = createAPIFileRoute("/api/ai/mcp/$transport")({
   POST: async ({ request }) => {
-    const session = await auth.api.getMcpSession({
-      headers: request.headers,
-    });
-
-    console.log("🔑 Session", session);
-    if (!session) {
-      //this is important and you must return 401
-      return new Response(null, {
-        status: 401,
-      });
-    }
+    return handler(request);
+  },
+  GET: async ({ request }) => {
+    return handler(request);
+  },
+  DELETE: async ({ request }) => {
     return handler(request);
   },
 });

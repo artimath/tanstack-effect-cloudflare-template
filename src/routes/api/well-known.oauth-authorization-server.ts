@@ -1,10 +1,11 @@
+import { auth } from "@/lib/auth/auth";
+
 import { createAPIFileRoute } from "@tanstack/react-start/api";
 import { oAuthDiscoveryMetadata } from "better-auth/plugins";
-import { auth } from "../../../lib/auth/auth";
 
+// TODO: we are not able to use .well-known/oauth-authorization-server in tanstack start
 export const APIRoute = createAPIFileRoute(
-  ".well-known/oauth-authorization-server",
+  "/api/well-known/oauth-authorization-server",
 )({
-  // @ts-expect-error TODO: fix this type
   GET: oAuthDiscoveryMetadata(auth),
 });

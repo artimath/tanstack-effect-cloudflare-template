@@ -29,6 +29,13 @@
       "when": 1745397936833,
       "tag": "0003_past_molten_man",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1748181796969,
+      "tag": "0004_steep_norrin_radd",
+      "breakpoints": true
     }
   ]
 }

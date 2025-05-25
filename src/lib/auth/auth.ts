@@ -9,6 +9,7 @@ import { sendEmail } from "@/lib/resend";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { admin, magicLink, openAPI, organization } from "better-auth/plugins";
+import { mcp } from "better-auth/plugins";
 import { emailOTP } from "better-auth/plugins/email-otp";
 import { passkey } from "better-auth/plugins/passkey";
 import { twoFactor } from "better-auth/plugins/two-factor";
@@ -84,6 +85,9 @@ export const auth = betterAuth({
     passkey(),
     admin(),
     organization(),
+    mcp({
+      loginPage: "/login",
+    }),
     emailOTP({
       async sendVerificationOTP({ email, otp, type }) {
         await sendEmail({

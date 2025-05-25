@@ -1,10 +1,5 @@
-import {
-  getHeader,
-  getHeaders,
-  getWebRequest,
-} from "@tanstack/react-start/server";
 import { z } from "zod";
-import { auth } from "../auth/auth";
+
 import { db } from "../db";
 
 const getCatFact = async () => {
@@ -53,24 +48,6 @@ const getJoke = async () => {
     return { content: [{ type: "text", text: "Failed to fetch joke" }] };
   }
 };
-
-// const getUsers = async () => {
-//   try {
-//     const res = await fetch("https://jsonplaceholder.typicode.com/users");
-//     const data = await res.json();
-
-//     return {
-//       content: [
-//         {
-//           type: "text",
-//           text: `Users: ${JSON.stringify(data)}`,
-//         },
-//       ],
-//     };
-//   } catch (error) {
-//     return { content: [{ type: "text", text: "Failed to fetch joke" }] };
-//   }
-// };
 
 const getWelcomeMessage = async ({ name }: { name: string }) => {
   return {

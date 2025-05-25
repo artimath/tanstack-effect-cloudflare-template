@@ -209,7 +209,7 @@ const MessageList = ({
   );
 };
 
-export function Chat() {
+export function Chat({ api }: { api?: string }) {
   const {
     messages,
     input,
@@ -219,7 +219,7 @@ export function Chat() {
     setMessages,
     stop,
   } = useChat({
-    api: "/api/ai/chat/rag",
+    api: api || "/api/ai/chat/rag",
   });
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);

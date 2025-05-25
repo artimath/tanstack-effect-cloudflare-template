@@ -22,6 +22,7 @@ import { Route as authForgotPasswordImport } from './routes/(auth)/forgot-passwo
 import { Route as DashboardSettingsIndexImport } from './routes/dashboard/settings/index'
 import { Route as DashboardChatIndexImport } from './routes/dashboard/chat/index'
 import { Route as authTwoFactorIndexImport } from './routes/(auth)/two-factor/index'
+import { Route as DashboardChatVercelImport } from './routes/dashboard/chat/vercel'
 import { Route as DashboardChatRagImport } from './routes/dashboard/chat/rag'
 import { Route as authTwoFactorOtpImport } from './routes/(auth)/two-factor/otp'
 import { Route as authAcceptInvitationInvitationIdIndexImport } from './routes/(auth)/accept-invitation/$invitationId/index'
@@ -91,6 +92,12 @@ const authTwoFactorIndexRoute = authTwoFactorIndexImport.update({
   id: '/two-factor/',
   path: '/two-factor/',
   getParentRoute: () => authLayoutRoute,
+} as any)
+
+const DashboardChatVercelRoute = DashboardChatVercelImport.update({
+  id: '/chat/vercel',
+  path: '/chat/vercel',
+  getParentRoute: () => DashboardLayoutRoute,
 } as any)
 
 const DashboardChatRagRoute = DashboardChatRagImport.update({
@@ -186,6 +193,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardChatRagImport
       parentRoute: typeof DashboardLayoutImport
     }
+    '/dashboard/chat/vercel': {
+      id: '/dashboard/chat/vercel'
+      path: '/chat/vercel'
+      fullPath: '/dashboard/chat/vercel'
+      preLoaderRoute: typeof DashboardChatVercelImport
+      parentRoute: typeof DashboardLayoutImport
+    }
     '/(auth)/two-factor/': {
       id: '/(auth)/two-factor/'
       path: '/two-factor'
@@ -247,6 +261,7 @@ const authLayoutRouteWithChildren = authLayoutRoute._addFileChildren(
 interface DashboardLayoutRouteChildren {
   DashboardIndexRoute: typeof DashboardIndexRoute
   DashboardChatRagRoute: typeof DashboardChatRagRoute
+  DashboardChatVercelRoute: typeof DashboardChatVercelRoute
   DashboardChatIndexRoute: typeof DashboardChatIndexRoute
   DashboardSettingsIndexRoute: typeof DashboardSettingsIndexRoute
 }
@@ -254,6 +269,7 @@ interface DashboardLayoutRouteChildren {
 const DashboardLayoutRouteChildren: DashboardLayoutRouteChildren = {
   DashboardIndexRoute: DashboardIndexRoute,
   DashboardChatRagRoute: DashboardChatRagRoute,
+  DashboardChatVercelRoute: DashboardChatVercelRoute,
   DashboardChatIndexRoute: DashboardChatIndexRoute,
   DashboardSettingsIndexRoute: DashboardSettingsIndexRoute,
 }
@@ -272,6 +288,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/': typeof DashboardIndexRoute
   '/two-factor/otp': typeof authTwoFactorOtpRoute
   '/dashboard/chat/rag': typeof DashboardChatRagRoute
+  '/dashboard/chat/vercel': typeof DashboardChatVercelRoute
   '/two-factor': typeof authTwoFactorIndexRoute
   '/dashboard/chat': typeof DashboardChatIndexRoute
   '/dashboard/settings': typeof DashboardSettingsIndexRoute
@@ -287,6 +304,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardIndexRoute
   '/two-factor/otp': typeof authTwoFactorOtpRoute
   '/dashboard/chat/rag': typeof DashboardChatRagRoute
+  '/dashboard/chat/vercel': typeof DashboardChatVercelRoute
   '/two-factor': typeof authTwoFactorIndexRoute
   '/dashboard/chat': typeof DashboardChatIndexRoute
   '/dashboard/settings': typeof DashboardSettingsIndexRoute
@@ -305,6 +323,7 @@ export interface FileRoutesById {
   '/dashboard/': typeof DashboardIndexRoute
   '/(auth)/two-factor/otp': typeof authTwoFactorOtpRoute
   '/dashboard/chat/rag': typeof DashboardChatRagRoute
+  '/dashboard/chat/vercel': typeof DashboardChatVercelRoute
   '/(auth)/two-factor/': typeof authTwoFactorIndexRoute
   '/dashboard/chat/': typeof DashboardChatIndexRoute
   '/dashboard/settings/': typeof DashboardSettingsIndexRoute
@@ -323,6 +342,7 @@ export interface FileRouteTypes {
     | '/dashboard/'
     | '/two-factor/otp'
     | '/dashboard/chat/rag'
+    | '/dashboard/chat/vercel'
     | '/two-factor'
     | '/dashboard/chat'
     | '/dashboard/settings'
@@ -337,6 +357,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/two-factor/otp'
     | '/dashboard/chat/rag'
+    | '/dashboard/chat/vercel'
     | '/two-factor'
     | '/dashboard/chat'
     | '/dashboard/settings'
@@ -353,6 +374,7 @@ export interface FileRouteTypes {
     | '/dashboard/'
     | '/(auth)/two-factor/otp'
     | '/dashboard/chat/rag'
+    | '/dashboard/chat/vercel'
     | '/(auth)/two-factor/'
     | '/dashboard/chat/'
     | '/dashboard/settings/'
@@ -404,6 +426,7 @@ export const routeTree = rootRoute
       "children": [
         "/dashboard/",
         "/dashboard/chat/rag",
+        "/dashboard/chat/vercel",
         "/dashboard/chat/",
         "/dashboard/settings/"
       ]
@@ -437,6 +460,10 @@ export const routeTree = rootRoute
     },
     "/dashboard/chat/rag": {
       "filePath": "dashboard/chat/rag.tsx",
+      "parent": "/dashboard"
+    },
+    "/dashboard/chat/vercel": {
+      "filePath": "dashboard/chat/vercel.tsx",
       "parent": "/dashboard"
     },
     "/(auth)/two-factor/": {

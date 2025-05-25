@@ -33,6 +33,7 @@
     "@ai-sdk/anthropic": "^1.2.12",
     "@ai-sdk/openai": "^1.3.22",
     "@ai-sdk/react": "^1.2.12",
+    "@ai-sdk/vercel": "^0.0.1",
     "@hookform/resolvers": "^5.0.1",
     "@langchain/community": "^0.3.44",
     "@langchain/textsplitters": "^0.1.0",

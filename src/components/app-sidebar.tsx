@@ -67,6 +67,11 @@ const data = {
       url: "/dashboard/chat/rag",
       icon: File,
     },
+    {
+      name: "Vercel",
+      url: "/dashboard/chat/vercel",
+      icon: MessageCircle,
+    },
   ],
 };
 

@@ -39,6 +39,7 @@ This project provides a solid foundation for building modern web applications us
 The boilerplate includes several AI-powered chat features and file handling capabilities:
 
 *   **Basic Chat:** Simple streaming chat interface powered by OpenAI's GPT-4o.
+*   **Vercel v0 Chat:** Advanced chat interface using Vercel's v0-1.0-md model for web development assistance.
 *   **Image Generation:** AI-based image generation within chat using the AI SDK.
 *   **RAG (Retrieval Augmented Generation):** Chat with context from your knowledge base:
     *   Upload documents to be processed into embeddings
@@ -50,6 +51,46 @@ The boilerplate includes several AI-powered chat features and file handling capa
     *   Uses tRPC v11's FormData and non-JSON content type support
 
 The implementation leverages tRPC v11's support for FormData and various content types, making it easy to handle file uploads directly through your type-safe API without additional libraries.
+
+### Vercel v0 API Integration
+
+The boilerplate includes integration with [Vercel's v0 API](https://vercel.com/docs/v0/api), which provides an AI model specifically designed for building modern web applications. The `v0-1.0-md` model is framework-aware, evaluated on modern stacks like Next.js and Vercel, and includes features like auto-fix and quick edit capabilities.
+
+**Features:**
+- Framework-aware completions optimized for Next.js and modern web stacks
+- Streaming responses with low latency
+- OpenAI-compatible API format
+- Multimodal support (text and image inputs)
+- Auto-fix for common coding issues
+- Optimized for frontend and full-stack web development
+
+**Implementation:**
+- **API Route:** `src/routes/api/ai/vercel/chat.ts` - Handles streaming chat with the v0 model
+- **Chat Interface:** `src/routes/dashboard/chat/vercel.tsx` - Frontend chat component for v0 interactions
+- **Model:** Uses `vercel("v0-1.0-md")` via the `@ai-sdk/vercel` package
+
+**Setup:**
+1. **Requirements:** Vercel Premium or Team plan with usage-based billing enabled
+2. **API Key:** Create an API key at [v0.dev](https://v0.dev)
+3. **Environment:** Add your v0 API key to your environment variables:
+   ```bash
+   V0_API_KEY=your_v0_api_key_here
+   ```
+
+**Usage:**
+Navigate to `/dashboard/chat/vercel` to access the v0-powered chat interface. This chat is specifically optimized for web development questions and can help with:
+- Next.js application development
+- React component creation
+- TailwindCSS styling
+- TypeScript implementation
+- Modern web development patterns
+
+**API Limits:**
+- Max messages per day: 200
+- Max context window: 128,000 tokens
+- Max output context: 32,000 tokens
+
+For higher limits, contact Vercel support at support@v0.dev.
 
 <img width="1591" alt="image" src="https://github.com/user-attachments/assets/9e87d828-60cb-4430-b690-44b8d635e14f" />
 

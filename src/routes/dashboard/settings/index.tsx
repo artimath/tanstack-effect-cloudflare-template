@@ -1,11 +1,11 @@
 import { authClient } from "@/lib/auth/auth-client";
 import { useQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { } from "@tanstack/react-router";
 import AdminDashboard from "./-components/admin";
 import { OrganizationCard } from "./-components/organization-card";
 import UserCard from "./-components/user-card";
 
-export const Route = createFileRoute("/dashboard/settings/")({
+export const Route = createFileRoute({
   component: RouteComponent,
 });
 

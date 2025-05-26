@@ -1,4 +1,3 @@
-"use client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -27,8 +26,6 @@ export default function SignInForm() {
   const [rememberMe, setRememberMe] = useState(false);
   const { loginWithCredentials, loginWithPasskey, loginWithSocial } =
     useLogin();
-
-
 
   return (
     <Card className="max-w-md w-full">

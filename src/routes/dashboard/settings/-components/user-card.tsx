@@ -1,5 +1,3 @@
-"use client";
-
 import CopyButton from "@/components/copy-button";
 import { PasswordInput } from "@/components/password-input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";

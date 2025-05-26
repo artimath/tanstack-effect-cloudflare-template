@@ -1,5 +1,3 @@
-"use client";
-
 import {
   BadgeCheck,
   Bell,
@@ -25,6 +23,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { useLogout } from "@/hooks/auth-hooks";
 import { authClient } from "@/lib/auth/auth-client";
 import { useRouter } from "@tanstack/react-router";
 
@@ -40,6 +39,7 @@ export function NavUser({
   const { isMobile } = useSidebar();
   const { data } = authClient.useSession();
   const router = useRouter();
+  const logout = useLogout();
 
   if (!data) {
     return null;
@@ -112,7 +112,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => authClient.signOut()}>
+            <DropdownMenuItem onClick={() => logout.mutate()}>
               <LogOut />
               Log out
             </DropdownMenuItem>

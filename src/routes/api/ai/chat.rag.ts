@@ -2,11 +2,12 @@ import { findRelevantContent } from "@/features/ai-embedding";
 import { createResource } from "@/features/resource-create";
 
 import { openai } from "@ai-sdk/openai";
-import { createAPIFileRoute } from "@tanstack/react-start/api";
+
+import { createServerFileRoute } from "@tanstack/react-start/server";
 import { streamText, tool } from "ai";
 import { z } from "zod";
 
-export const APIRoute = createAPIFileRoute("/api/ai/chat/rag")({
+export const ServerRoute = createServerFileRoute().methods({
   POST: async ({ request }) => {
     const { messages } = await request.json();
 

@@ -1,4 +1,4 @@
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 
 import {
   Activity,
@@ -35,7 +35,7 @@ import {
 } from "@/components/ui/card";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
-export const Route = createFileRoute("/(public)/")({
+export const Route = createFileRoute({
   component: LandingPage,
 });
 

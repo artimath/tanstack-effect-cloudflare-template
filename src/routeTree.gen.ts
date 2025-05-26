@@ -8,112 +8,114 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import type { CreateFileRoute, FileRoutesByPath } from '@tanstack/react-router'
+
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as DashboardLayoutImport } from './routes/dashboard/layout'
-import { Route as authLayoutImport } from './routes/(auth)/layout'
-import { Route as DashboardIndexImport } from './routes/dashboard/index'
-import { Route as publicIndexImport } from './routes/(public)/index'
-import { Route as authResetPasswordImport } from './routes/(auth)/reset-password'
-import { Route as authRegisterImport } from './routes/(auth)/register'
-import { Route as authLoginImport } from './routes/(auth)/login'
-import { Route as authForgotPasswordImport } from './routes/(auth)/forgot-password'
-import { Route as DashboardSettingsIndexImport } from './routes/dashboard/settings/index'
-import { Route as DashboardChatIndexImport } from './routes/dashboard/chat/index'
-import { Route as authTwoFactorIndexImport } from './routes/(auth)/two-factor/index'
-import { Route as DashboardChatVercelImport } from './routes/dashboard/chat/vercel'
-import { Route as DashboardChatRagImport } from './routes/dashboard/chat/rag'
-import { Route as authTwoFactorOtpImport } from './routes/(auth)/two-factor/otp'
-import { Route as authAcceptInvitationInvitationIdIndexImport } from './routes/(auth)/accept-invitation/$invitationId/index'
+import { Route as DashboardLayoutRouteImport } from './routes/dashboard/layout'
+import { Route as authLayoutRouteImport } from './routes/(auth)/layout'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as publicIndexRouteImport } from './routes/(public)/index'
+import { Route as authResetPasswordRouteImport } from './routes/(auth)/reset-password'
+import { Route as authRegisterRouteImport } from './routes/(auth)/register'
+import { Route as authLoginRouteImport } from './routes/(auth)/login'
+import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-password'
+import { Route as DashboardSettingsIndexRouteImport } from './routes/dashboard/settings/index'
+import { Route as DashboardChatIndexRouteImport } from './routes/dashboard/chat/index'
+import { Route as authTwoFactorIndexRouteImport } from './routes/(auth)/two-factor/index'
+import { Route as DashboardChatVercelRouteImport } from './routes/dashboard/chat/vercel'
+import { Route as DashboardChatRagRouteImport } from './routes/dashboard/chat/rag'
+import { Route as authTwoFactorOtpRouteImport } from './routes/(auth)/two-factor/otp'
+import { Route as authAcceptInvitationInvitationIdIndexRouteImport } from './routes/(auth)/accept-invitation/$invitationId/index'
 
 // Create/Update Routes
 
-const DashboardLayoutRoute = DashboardLayoutImport.update({
+const DashboardLayoutRoute = DashboardLayoutRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => rootRoute,
 } as any)
 
-const authLayoutRoute = authLayoutImport.update({
+const authLayoutRoute = authLayoutRouteImport.update({
   id: '/(auth)',
   getParentRoute: () => rootRoute,
 } as any)
 
-const DashboardIndexRoute = DashboardIndexImport.update({
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => DashboardLayoutRoute,
 } as any)
 
-const publicIndexRoute = publicIndexImport.update({
+const publicIndexRoute = publicIndexRouteImport.update({
   id: '/(public)/',
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
 
-const authResetPasswordRoute = authResetPasswordImport.update({
+const authResetPasswordRoute = authResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
   getParentRoute: () => authLayoutRoute,
 } as any)
 
-const authRegisterRoute = authRegisterImport.update({
+const authRegisterRoute = authRegisterRouteImport.update({
   id: '/register',
   path: '/register',
   getParentRoute: () => authLayoutRoute,
 } as any)
 
-const authLoginRoute = authLoginImport.update({
+const authLoginRoute = authLoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => authLayoutRoute,
 } as any)
 
-const authForgotPasswordRoute = authForgotPasswordImport.update({
+const authForgotPasswordRoute = authForgotPasswordRouteImport.update({
   id: '/forgot-password',
   path: '/forgot-password',
   getParentRoute: () => authLayoutRoute,
 } as any)
 
-const DashboardSettingsIndexRoute = DashboardSettingsIndexImport.update({
+const DashboardSettingsIndexRoute = DashboardSettingsIndexRouteImport.update({
   id: '/settings/',
   path: '/settings/',
   getParentRoute: () => DashboardLayoutRoute,
 } as any)
 
-const DashboardChatIndexRoute = DashboardChatIndexImport.update({
+const DashboardChatIndexRoute = DashboardChatIndexRouteImport.update({
   id: '/chat/',
   path: '/chat/',
   getParentRoute: () => DashboardLayoutRoute,
 } as any)
 
-const authTwoFactorIndexRoute = authTwoFactorIndexImport.update({
+const authTwoFactorIndexRoute = authTwoFactorIndexRouteImport.update({
   id: '/two-factor/',
   path: '/two-factor/',
   getParentRoute: () => authLayoutRoute,
 } as any)
 
-const DashboardChatVercelRoute = DashboardChatVercelImport.update({
+const DashboardChatVercelRoute = DashboardChatVercelRouteImport.update({
   id: '/chat/vercel',
   path: '/chat/vercel',
   getParentRoute: () => DashboardLayoutRoute,
 } as any)
 
-const DashboardChatRagRoute = DashboardChatRagImport.update({
+const DashboardChatRagRoute = DashboardChatRagRouteImport.update({
   id: '/chat/rag',
   path: '/chat/rag',
   getParentRoute: () => DashboardLayoutRoute,
 } as any)
 
-const authTwoFactorOtpRoute = authTwoFactorOtpImport.update({
+const authTwoFactorOtpRoute = authTwoFactorOtpRouteImport.update({
   id: '/two-factor/otp',
   path: '/two-factor/otp',
   getParentRoute: () => authLayoutRoute,
 } as any)
 
 const authAcceptInvitationInvitationIdIndexRoute =
-  authAcceptInvitationInvitationIdIndexImport.update({
+  authAcceptInvitationInvitationIdIndexRouteImport.update({
     id: '/accept-invitation/$invitationId/',
     path: '/accept-invitation/$invitationId/',
     getParentRoute: () => authLayoutRoute,
@@ -127,108 +129,246 @@ declare module '@tanstack/react-router' {
       id: '/(auth)'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof authLayoutImport
+      preLoaderRoute: typeof authLayoutRouteImport
       parentRoute: typeof rootRoute
     }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardLayoutImport
+      preLoaderRoute: typeof DashboardLayoutRouteImport
       parentRoute: typeof rootRoute
     }
     '/(auth)/forgot-password': {
       id: '/(auth)/forgot-password'
       path: '/forgot-password'
       fullPath: '/forgot-password'
-      preLoaderRoute: typeof authForgotPasswordImport
-      parentRoute: typeof authLayoutImport
+      preLoaderRoute: typeof authForgotPasswordRouteImport
+      parentRoute: typeof authLayoutRouteImport
     }
     '/(auth)/login': {
       id: '/(auth)/login'
       path: '/login'
       fullPath: '/login'
-      preLoaderRoute: typeof authLoginImport
-      parentRoute: typeof authLayoutImport
+      preLoaderRoute: typeof authLoginRouteImport
+      parentRoute: typeof authLayoutRouteImport
     }
     '/(auth)/register': {
       id: '/(auth)/register'
       path: '/register'
       fullPath: '/register'
-      preLoaderRoute: typeof authRegisterImport
-      parentRoute: typeof authLayoutImport
+      preLoaderRoute: typeof authRegisterRouteImport
+      parentRoute: typeof authLayoutRouteImport
     }
     '/(auth)/reset-password': {
       id: '/(auth)/reset-password'
       path: '/reset-password'
       fullPath: '/reset-password'
-      preLoaderRoute: typeof authResetPasswordImport
-      parentRoute: typeof authLayoutImport
+      preLoaderRoute: typeof authResetPasswordRouteImport
+      parentRoute: typeof authLayoutRouteImport
     }
     '/(public)/': {
       id: '/(public)/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof publicIndexImport
+      preLoaderRoute: typeof publicIndexRouteImport
       parentRoute: typeof rootRoute
     }
     '/dashboard/': {
       id: '/dashboard/'
       path: '/'
       fullPath: '/dashboard/'
-      preLoaderRoute: typeof DashboardIndexImport
-      parentRoute: typeof DashboardLayoutImport
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardLayoutRouteImport
     }
     '/(auth)/two-factor/otp': {
       id: '/(auth)/two-factor/otp'
       path: '/two-factor/otp'
       fullPath: '/two-factor/otp'
-      preLoaderRoute: typeof authTwoFactorOtpImport
-      parentRoute: typeof authLayoutImport
+      preLoaderRoute: typeof authTwoFactorOtpRouteImport
+      parentRoute: typeof authLayoutRouteImport
     }
     '/dashboard/chat/rag': {
       id: '/dashboard/chat/rag'
       path: '/chat/rag'
       fullPath: '/dashboard/chat/rag'
-      preLoaderRoute: typeof DashboardChatRagImport
-      parentRoute: typeof DashboardLayoutImport
+      preLoaderRoute: typeof DashboardChatRagRouteImport
+      parentRoute: typeof DashboardLayoutRouteImport
     }
     '/dashboard/chat/vercel': {
       id: '/dashboard/chat/vercel'
       path: '/chat/vercel'
       fullPath: '/dashboard/chat/vercel'
-      preLoaderRoute: typeof DashboardChatVercelImport
-      parentRoute: typeof DashboardLayoutImport
+      preLoaderRoute: typeof DashboardChatVercelRouteImport
+      parentRoute: typeof DashboardLayoutRouteImport
     }
     '/(auth)/two-factor/': {
       id: '/(auth)/two-factor/'
       path: '/two-factor'
       fullPath: '/two-factor'
-      preLoaderRoute: typeof authTwoFactorIndexImport
-      parentRoute: typeof authLayoutImport
+      preLoaderRoute: typeof authTwoFactorIndexRouteImport
+      parentRoute: typeof authLayoutRouteImport
     }
     '/dashboard/chat/': {
       id: '/dashboard/chat/'
       path: '/chat'
       fullPath: '/dashboard/chat'
-      preLoaderRoute: typeof DashboardChatIndexImport
-      parentRoute: typeof DashboardLayoutImport
+      preLoaderRoute: typeof DashboardChatIndexRouteImport
+      parentRoute: typeof DashboardLayoutRouteImport
     }
     '/dashboard/settings/': {
       id: '/dashboard/settings/'
       path: '/settings'
       fullPath: '/dashboard/settings'
-      preLoaderRoute: typeof DashboardSettingsIndexImport
-      parentRoute: typeof DashboardLayoutImport
+      preLoaderRoute: typeof DashboardSettingsIndexRouteImport
+      parentRoute: typeof DashboardLayoutRouteImport
     }
     '/(auth)/accept-invitation/$invitationId/': {
       id: '/(auth)/accept-invitation/$invitationId/'
       path: '/accept-invitation/$invitationId'
       fullPath: '/accept-invitation/$invitationId'
-      preLoaderRoute: typeof authAcceptInvitationInvitationIdIndexImport
-      parentRoute: typeof authLayoutImport
+      preLoaderRoute: typeof authAcceptInvitationInvitationIdIndexRouteImport
+      parentRoute: typeof authLayoutRouteImport
     }
   }
+}
+
+// Add type-safety to the createFileRoute function across the route tree
+
+declare module './routes/(auth)/layout' {
+  const createFileRoute: CreateFileRoute<
+    '/(auth)',
+    FileRoutesByPath['/(auth)']['parentRoute'],
+    FileRoutesByPath['/(auth)']['id'],
+    FileRoutesByPath['/(auth)']['path'],
+    FileRoutesByPath['/(auth)']['fullPath']
+  >
+}
+declare module './routes/dashboard/layout' {
+  const createFileRoute: CreateFileRoute<
+    '/dashboard',
+    FileRoutesByPath['/dashboard']['parentRoute'],
+    FileRoutesByPath['/dashboard']['id'],
+    FileRoutesByPath['/dashboard']['path'],
+    FileRoutesByPath['/dashboard']['fullPath']
+  >
+}
+declare module './routes/(auth)/forgot-password' {
+  const createFileRoute: CreateFileRoute<
+    '/(auth)/forgot-password',
+    FileRoutesByPath['/(auth)/forgot-password']['parentRoute'],
+    FileRoutesByPath['/(auth)/forgot-password']['id'],
+    FileRoutesByPath['/(auth)/forgot-password']['path'],
+    FileRoutesByPath['/(auth)/forgot-password']['fullPath']
+  >
+}
+declare module './routes/(auth)/login' {
+  const createFileRoute: CreateFileRoute<
+    '/(auth)/login',
+    FileRoutesByPath['/(auth)/login']['parentRoute'],
+    FileRoutesByPath['/(auth)/login']['id'],
+    FileRoutesByPath['/(auth)/login']['path'],
+    FileRoutesByPath['/(auth)/login']['fullPath']
+  >
+}
+declare module './routes/(auth)/register' {
+  const createFileRoute: CreateFileRoute<
+    '/(auth)/register',
+    FileRoutesByPath['/(auth)/register']['parentRoute'],
+    FileRoutesByPath['/(auth)/register']['id'],
+    FileRoutesByPath['/(auth)/register']['path'],
+    FileRoutesByPath['/(auth)/register']['fullPath']
+  >
+}
+declare module './routes/(auth)/reset-password' {
+  const createFileRoute: CreateFileRoute<
+    '/(auth)/reset-password',
+    FileRoutesByPath['/(auth)/reset-password']['parentRoute'],
+    FileRoutesByPath['/(auth)/reset-password']['id'],
+    FileRoutesByPath['/(auth)/reset-password']['path'],
+    FileRoutesByPath['/(auth)/reset-password']['fullPath']
+  >
+}
+declare module './routes/(public)/index' {
+  const createFileRoute: CreateFileRoute<
+    '/(public)/',
+    FileRoutesByPath['/(public)/']['parentRoute'],
+    FileRoutesByPath['/(public)/']['id'],
+    FileRoutesByPath['/(public)/']['path'],
+    FileRoutesByPath['/(public)/']['fullPath']
+  >
+}
+declare module './routes/dashboard/index' {
+  const createFileRoute: CreateFileRoute<
+    '/dashboard/',
+    FileRoutesByPath['/dashboard/']['parentRoute'],
+    FileRoutesByPath['/dashboard/']['id'],
+    FileRoutesByPath['/dashboard/']['path'],
+    FileRoutesByPath['/dashboard/']['fullPath']
+  >
+}
+declare module './routes/(auth)/two-factor/otp' {
+  const createFileRoute: CreateFileRoute<
+    '/(auth)/two-factor/otp',
+    FileRoutesByPath['/(auth)/two-factor/otp']['parentRoute'],
+    FileRoutesByPath['/(auth)/two-factor/otp']['id'],
+    FileRoutesByPath['/(auth)/two-factor/otp']['path'],
+    FileRoutesByPath['/(auth)/two-factor/otp']['fullPath']
+  >
+}
+declare module './routes/dashboard/chat/rag' {
+  const createFileRoute: CreateFileRoute<
+    '/dashboard/chat/rag',
+    FileRoutesByPath['/dashboard/chat/rag']['parentRoute'],
+    FileRoutesByPath['/dashboard/chat/rag']['id'],
+    FileRoutesByPath['/dashboard/chat/rag']['path'],
+    FileRoutesByPath['/dashboard/chat/rag']['fullPath']
+  >
+}
+declare module './routes/dashboard/chat/vercel' {
+  const createFileRoute: CreateFileRoute<
+    '/dashboard/chat/vercel',
+    FileRoutesByPath['/dashboard/chat/vercel']['parentRoute'],
+    FileRoutesByPath['/dashboard/chat/vercel']['id'],
+    FileRoutesByPath['/dashboard/chat/vercel']['path'],
+    FileRoutesByPath['/dashboard/chat/vercel']['fullPath']
+  >
+}
+declare module './routes/(auth)/two-factor/index' {
+  const createFileRoute: CreateFileRoute<
+    '/(auth)/two-factor/',
+    FileRoutesByPath['/(auth)/two-factor/']['parentRoute'],
+    FileRoutesByPath['/(auth)/two-factor/']['id'],
+    FileRoutesByPath['/(auth)/two-factor/']['path'],
+    FileRoutesByPath['/(auth)/two-factor/']['fullPath']
+  >
+}
+declare module './routes/dashboard/chat/index' {
+  const createFileRoute: CreateFileRoute<
+    '/dashboard/chat/',
+    FileRoutesByPath['/dashboard/chat/']['parentRoute'],
+    FileRoutesByPath['/dashboard/chat/']['id'],
+    FileRoutesByPath['/dashboard/chat/']['path'],
+    FileRoutesByPath['/dashboard/chat/']['fullPath']
+  >
+}
+declare module './routes/dashboard/settings/index' {
+  const createFileRoute: CreateFileRoute<
+    '/dashboard/settings/',
+    FileRoutesByPath['/dashboard/settings/']['parentRoute'],
+    FileRoutesByPath['/dashboard/settings/']['id'],
+    FileRoutesByPath['/dashboard/settings/']['path'],
+    FileRoutesByPath['/dashboard/settings/']['fullPath']
+  >
+}
+declare module './routes/(auth)/accept-invitation/$invitationId/index' {
+  const createFileRoute: CreateFileRoute<
+    '/(auth)/accept-invitation/$invitationId/',
+    FileRoutesByPath['/(auth)/accept-invitation/$invitationId/']['parentRoute'],
+    FileRoutesByPath['/(auth)/accept-invitation/$invitationId/']['id'],
+    FileRoutesByPath['/(auth)/accept-invitation/$invitationId/']['path'],
+    FileRoutesByPath['/(auth)/accept-invitation/$invitationId/']['fullPath']
+  >
 }
 
 // Create and export the route tree

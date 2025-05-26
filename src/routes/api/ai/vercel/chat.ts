@@ -1,9 +1,10 @@
 import { vercel } from "@ai-sdk/vercel";
 import { json } from "@tanstack/react-start";
-import { createAPIFileRoute } from "@tanstack/react-start/api";
+import { createServerFileRoute } from "@tanstack/react-start/server";
+
 import { streamText } from "ai";
 
-export const APIRoute = createAPIFileRoute("/api/ai/vercel/chat")({
+export const ServerRoute = createServerFileRoute().methods({
   POST: async ({ request }) => {
     try {
       const { messages } = await request.json();

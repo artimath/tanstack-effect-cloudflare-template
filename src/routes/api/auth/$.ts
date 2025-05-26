@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth/auth"; // import your auth instance
-import { createAPIFileRoute } from "@tanstack/react-start/api";
+import { createServerFileRoute } from "@tanstack/react-start/server";
 
-export const APIRoute = createAPIFileRoute("/api/auth/$")({
+export const ServerRoute = createServerFileRoute().methods({
   GET: ({ request }) => {
     return auth.handler(request);
   },

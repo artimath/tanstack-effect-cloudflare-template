@@ -1,4 +1,3 @@
-"use client";
 
 import { PasswordInput } from "@/components/password-input";
 import { Button } from "@/components/ui/button";

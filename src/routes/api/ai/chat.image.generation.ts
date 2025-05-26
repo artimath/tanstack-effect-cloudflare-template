@@ -1,5 +1,6 @@
 import { openai } from "@ai-sdk/openai";
-import { createAPIFileRoute } from "@tanstack/react-start/api";
+
+import { createServerFileRoute } from "@tanstack/react-start/server";
 import {
   type Message,
   experimental_generateImage as generateImage,
@@ -8,7 +9,7 @@ import {
 } from "ai";
 import { z } from "zod";
 
-export const APIRoute = createAPIFileRoute("/api/ai/chat/image/generation")({
+export const ServerRoute = createServerFileRoute().methods({
   POST: async ({ request }) => {
     const { messages }: { messages: Message[] } = await request.json();
 

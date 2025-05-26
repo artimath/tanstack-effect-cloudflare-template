@@ -1,4 +1,3 @@
-"use client";
 
 import { PasswordInput } from "@/components/password-input";
 import { Alert, AlertDescription } from "@/components/ui/alert";

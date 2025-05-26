@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,14 +10,12 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { authClient } from "@/lib/auth/auth-client";
 import { useTranslation } from "@/lib/intl/react";
-import { createFileRoute, useParams, useRouter } from "@tanstack/react-router";
+import { useParams, useRouter } from "@tanstack/react-router";
 import { CheckIcon, XIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { InvitationError } from "../../-components/invitation-error";
 
-export const Route = createFileRoute(
-  "/(auth)/accept-invitation/$invitationId/",
-)({
+export const Route = createFileRoute({
   component: RouteComponent,
 });
 

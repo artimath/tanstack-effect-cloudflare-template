@@ -176,7 +176,6 @@ const MessageToolInvocations = ({ parts }: { parts?: MessagePart[] }) => {
 };
 
 const Message = ({ message }: { message: MessageType }) => {
-  console.log("message", message);
   return (
     <div className="whitespace-pre-wrap">
       <div>

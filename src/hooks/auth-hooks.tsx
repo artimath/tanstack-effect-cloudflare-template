@@ -21,17 +21,32 @@ export const useLogin = () => {
       password,
       rememberMe,
     }: { email: string; password: string; rememberMe: boolean }) => {
-      await authClient.signIn.email({
+      return await authClient.signIn.email({
         email,
         password,
         rememberMe,
-        fetchOptions: {
-          onSuccess: () => {
-            console.log("loginWithCredentials onSuccess");
-            router.navigate({ to: "/dashboard" });
-          },
-        },
+        // fetchOptions: {
+        //   onSuccess: (data) => {
+        //     console.log("loginWithCredentials onSuccess", data);
+        //     // if (data.) {
+        //     //   router.navigate({ to: "/dashboard" });
+        //     // } else {
+        //     //   router.navigate({ to: "/verify-email" });
+        //     // }
+        //   },
+        // },
       });
+    },
+    onSuccess(response, variables, context) {
+      console.log(
+        "loginWithCredentials mutate onSuccess",
+        response,
+        variables,
+        context,
+      );
+      if (response.data?.user.id) {
+        router.navigate({ to: "/dashboard" });
+      }
     },
   });
 
@@ -65,9 +80,9 @@ export const useLogout = () => {
   const router = useRouter();
   return useMutation({
     mutationFn: async () => await authClient.signOut(),
-    onSuccess: () => {
+    onSettled: async () => {
       queryClient.removeQueries({ queryKey: authQueryKeys.session });
-      router.navigate({ to: "/login" });
+      await router.navigate({ to: "/login" });
     },
   });
 };

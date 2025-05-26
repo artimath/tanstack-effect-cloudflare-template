@@ -1,7 +1,6 @@
 import { tools } from "@/lib/ai/mcp-tools";
 import { auth } from "@/lib/auth/auth";
-
-import { createAPIFileRoute } from "@tanstack/react-start/api";
+import { createServerFileRoute } from "@tanstack/react-start/server";
 
 import { createMcpHandler } from "@vercel/mcp-adapter";
 
@@ -9,6 +8,8 @@ const handler = async (req: Request) => {
   const session = await auth.api.getMcpSession({
     headers: req.headers,
   });
+
+  console.log("🔑 Session", session);
 
   // If commented this will register my MCP server to Cursor
   if (!session) {
@@ -57,7 +58,7 @@ const handler = async (req: Request) => {
   )(req);
 };
 
-export const APIRoute = createAPIFileRoute("/api/ai/mcp/$transport")({
+export const ServerRoute = createServerFileRoute().methods({
   POST: async ({ request }) => {
     return handler(request);
   },

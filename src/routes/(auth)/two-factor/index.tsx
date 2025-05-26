@@ -1,8 +1,8 @@
 import { useTranslation } from "@/lib/intl/react";
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import TwoFactorForm from "../-components/two-factor";
 
-export const Route = createFileRoute("/(auth)/two-factor/")({
+export const Route = createFileRoute({
   component: RouteComponent,
 });
 

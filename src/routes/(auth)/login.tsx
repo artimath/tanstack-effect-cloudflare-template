@@ -1,8 +1,8 @@
 import { useTranslation } from "@/lib/intl/react";
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import SignInForm from "./-components/sign-in-form";
 
-export const Route = createFileRoute("/(auth)/login")({
+export const Route = createFileRoute({
   component: RouteComponent,
   // loader: async ({ context }) => {
   //   const todos = await context.queryClient.ensureQueryData(
@@ -15,8 +15,6 @@ function RouteComponent() {
   // const { todos } = Route.useLoaderData();
   // console.log({ todos , window});
   const { t } = useTranslation();
-
-  console.log({ document});
 
   return (
     <div className="flex min-h-[calc(100vh-10rem)] w-full flex-col items-center justify-center p-2 md:p-6">

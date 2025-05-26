@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 
 import { FileUp, Loader2, Plus } from "lucide-react";

@@ -23,6 +23,14 @@ export const auth = betterAuth({
   }),
   secret: env.BETTER_AUTH_SECRET,
   basePath: "/api/auth",
+  baseURL: "http://localhost:3000",
+  onAPIError: {
+    throw: true,
+    onError: (error) => {
+      console.error("auth onAPIError", error);
+    },
+    errorURL: "/login",
+  },
   rateLimit: {
     enabled: true,
     max: 100,

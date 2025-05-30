@@ -16,6 +16,7 @@ import { twoFactor } from "better-auth/plugins/two-factor";
 import { reactStartCookies } from "better-auth/react-start";
 import { env } from "../env.server";
 
+
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
@@ -124,3 +125,5 @@ export const auth = betterAuth({
     reactStartCookies(), // make sure this is the last plugin in the array
   ],
 });
+
+

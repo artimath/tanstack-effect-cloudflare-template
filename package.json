@@ -80,7 +80,7 @@
     "@tanstack/react-start": "^1.121.0-alpha.21",
     "@tanstack/react-store": "^0.7.1",
     "@tanstack/react-table": "^8.21.3",
-    "@tanstack/router-plugin": "^1.120.12",
+    "@tanstack/router-plugin": "^1.120.13",
     "@tanstack/store": "^0.7.1",
     "@trpc/client": "^11.1.4",
     "@trpc/server": "^11.1.4",
@@ -93,7 +93,7 @@
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
     "dotenv": "^16.5.0",
-    "drizzle-orm": "^0.44.0",
+    "drizzle-orm": "^0.44.1",
     "drizzle-zod": "^0.8.2",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.15.0",
@@ -126,7 +126,7 @@
     "remark-gfm": "^4.0.1",
     "resend": "^4.5.1",
     "shiki": "^3.4.2",
-    "sonner": "^2.0.3",
+    "sonner": "^2.0.4",
     "superjson": "^2.2.2",
     "tailwind-merge": "^3.3.0",
     "tailwindcss": "^4.1.8",
@@ -136,7 +136,7 @@
     "vaul": "^1.1.2",
     "vite-tsconfig-paths": "^5.1.4",
     "zod": "^3.25.42",
-    "zod-form-data": "^2.0.7"
+    "zod-form-data": "^3.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
@@ -153,12 +153,12 @@
     "jsdom": "^26.1.0",
     "prettier": "^3.5.3",
     "typescript": "^5.8.3",
-    "vite": "^6.3.5",
+    "vite": "npm:rolldown-vite@latest",
     "vitest": "^3.1.4",
     "web-vitals": "^5.0.2"
   },
   "packageManager": "bun@1.2.11",
   "overrides": {
-    "vite": "^6.3.5"
+    "vite": "npm:rolldown-vite@latest"
   }
 }

@@ -4,7 +4,7 @@ import { createServerFileRoute } from "@tanstack/react-start/server";
 
 import { streamText } from "ai";
 
-export const ServerRoute = createServerFileRoute().methods({
+export const ServerRoute = createServerFileRoute("/api/ai/vercel/chat").methods({
   POST: async ({ request }) => {
     try {
       const { messages } = await request.json();

@@ -58,7 +58,7 @@ const handler = async (req: Request) => {
   )(req);
 };
 
-export const ServerRoute = createServerFileRoute().methods({
+export const ServerRoute = createServerFileRoute("/api/ai/mcp/$transport").methods({
   POST: async ({ request }) => {
     return handler(request);
   },

@@ -9,7 +9,7 @@ import {
 } from "ai";
 import { z } from "zod";
 
-export const ServerRoute = createServerFileRoute().methods({
+export const ServerRoute = createServerFileRoute("/api/ai/chat/image/generation").methods({
   POST: async ({ request }) => {
     const { messages }: { messages: Message[] } = await request.json();
 

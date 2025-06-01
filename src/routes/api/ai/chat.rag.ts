@@ -7,7 +7,7 @@ import { createServerFileRoute } from "@tanstack/react-start/server";
 import { streamText, tool } from "ai";
 import { z } from "zod";
 
-export const ServerRoute = createServerFileRoute().methods({
+export const ServerRoute = createServerFileRoute("/api/ai/chat/rag").methods({
   POST: async ({ request }) => {
     const { messages } = await request.json();
 

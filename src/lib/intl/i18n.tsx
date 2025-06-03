@@ -4,7 +4,9 @@ import resourcesToBackend from "i18next-resources-to-backend";
 import { initReactI18next } from "react-i18next";
 import { resources } from "./resources";
 
-const languages = Object.keys(resources);
+export type Language = keyof typeof resources;
+
+export const languages = Object.keys(resources);
 
 const runsOnServerSide = typeof window === "undefined";
 

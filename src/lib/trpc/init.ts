@@ -1,19 +1,23 @@
 import { auth } from "@/lib/auth/auth";
+import { getCookie } from "@tanstack/react-start/server";
 import { TRPCError, initTRPC } from "@trpc/server";
 
 import superjson from "superjson";
 import { ZodError } from "zod";
+import type { Language } from "../intl/i18n";
 
 export const createTRPCContext = async (opts: {
   headers: Headers;
   req: Request;
 }) => {
+  const locale = (getCookie("i18next") as Language) || "en";
   const session = await auth.api.getSession({
     headers: opts.headers,
   });
 
   return {
     session,
+    locale,
   };
 };
 

@@ -4,6 +4,7 @@ import {
   adminClient,
   emailOTPClient,
   magicLinkClient,
+  multiSessionClient,
   organizationClient,
   passkeyClient,
   twoFactorClient,
@@ -19,6 +20,7 @@ export const authClient = createAuthClient({
     organizationClient(),
     emailOTPClient(),
     magicLinkClient(),
+    multiSessionClient(),
   ],
 });
 

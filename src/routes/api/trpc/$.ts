@@ -16,7 +16,7 @@ function handler({ request }: { request: Request }) {
         req: opts.req,
       });
     },
-  }); 
+  });
 }
 
 export const ServerRoute = createServerFileRoute("/api/trpc/$").methods({

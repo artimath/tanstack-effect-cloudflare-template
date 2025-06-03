@@ -1,6 +1,6 @@
-import i18next from "./i18n";
+import i18next, { type Language } from "./i18n";
 
-export async function getI18n(lng: string) {
+export async function getI18n(lng: Language) {
   // TODO: check if lng is supported
   if (lng && i18next.resolvedLanguage !== lng) {
     await i18next.changeLanguage(lng);

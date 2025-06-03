@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { todo } from "@/lib/db/schema/todo";
+import { getI18n } from "@/lib/intl/server";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -10,6 +11,8 @@ import { z } from "zod";
 
 export const todoRouter = createTRPCRouter({
   getAll: protectedProcedure.query(async ({ ctx }) => {
+    const { t } = await getI18n(ctx.locale);
+    console.log(t("ADMIN_DASHBOARD"));
     return await db.select().from(todo);
   }),
   create: protectedProcedure

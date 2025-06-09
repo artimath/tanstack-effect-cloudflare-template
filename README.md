@@ -22,7 +22,7 @@ This project provides a solid foundation for building modern web applications us
 *   **Framework:** [TanStack Start](https://tanstack.com/start/v1) on [Vite](https://vitejs.dev/) + [Vinxi](https://vinxi.dev/) (Modern React foundation with SSR)
 *   **Routing:** [TanStack Router](https://tanstack.com/router/v1) (Type-safe client and server routing)
 *   **API:** [tRPC](https://trpc.io/) (End-to-end typesafe APIs)
-*   **Database:** [Drizzle ORM](https://orm.drizzle.team/) with [Neon](https://neon.tech/) (Type-safe SQL with serverless PostgreSQL)
+*   **Database:** [Drizzle ORM](https://orm.drizzle.team/) with [Neon](https://neon.com/) + [Vite Plugin](https://www.npmjs.com/package/@neondatabase/vite-plugin-postgres) (Auto-provisioned serverless PostgreSQL)
 *   **UI:** [React 19](https://react.dev/), [Tailwind CSS](https://tailwindcss.com/), [shadcn/ui](https://ui.shadcn.com/), [Lucide Icons](https://lucide.dev/)
 *   **State Management:** [TanStack Query](https://tanstack.com/query/v5) (Server State), [TanStack Store](https://tanstack.com/store/v0) (Client State)
 *   **Forms:** [React Hook Form](https://react-hook-form.com/), [TanStack Form](https://tanstack.com/form/v1), [Zod](https://zod.dev/) (Validation)
@@ -36,7 +36,7 @@ This project provides a solid foundation for building modern web applications us
 
 ## Database with Neon
 
-This boilerplate uses [Neon](https://neon.tech/) as the primary database solution, providing a modern serverless PostgreSQL experience that's perfect for full-stack applications.
+This boilerplate uses [Neon](https://neon.com/) as the primary database solution, providing a modern serverless PostgreSQL experience that's perfect for full-stack applications.
 
 ### Why Neon?
 
@@ -55,23 +55,39 @@ This boilerplate uses [Neon](https://neon.tech/) as the primary database solutio
 Get started with Neon in minutes using one of these approaches:
 
 #### Option 1: Instant Database Creation (No Login Required)
-1. **Create instantly via browser**: Visit [neon.new](https://neon.new/) to instantly create a new PostgreSQL database
-2. **Create instantly via CLI**: Use our built-in script for instant setup:
+
+Choose any of these three methods for instant database setup:
+
+**Method A: Browser Setup**
+1. Visit [neon.new](https://neon.new/) to instantly create a new PostgreSQL database
+
+**Method B: CLI Script**
+2. Use our built-in script for instant setup:
    ```bash
    bun run db:neon-setup
    # This runs: npx neondb --yes
    ```
+
+**Method C: Automatic Vite Plugin (Recommended)**
+3. **Already configured!** The [`@neondatabase/vite-plugin-postgres`](https://www.npmjs.com/package/@neondatabase/vite-plugin-postgres) plugin automatically:
+   - Checks for `DATABASE_URL` in your `.env` file on first `bun run dev`
+   - Creates a claimable Neon database if not found
+   - Writes the connection string directly to your `.env` file
+   - Provides both direct and pooled connection strings
+   - Gives you a 7-day claim URL to take ownership
    
-   This command creates a temporary Neon database **instantly without requiring any login or signup**. Perfect for:
-   - Quick prototyping and testing
-   - Open-source templates and demos
-   - Getting started immediately without account setup
-   - Temporary development environments
-   
-   **Note**: The database expires after 72 hours unless you claim it with a free Neon account.
+   **Just run `bun run dev` and you're ready to go!** ✨
+
+All methods create a temporary Neon database **instantly without requiring any login or signup**. Perfect for:
+- Quick prototyping and testing
+- Open-source templates and demos
+- Getting started immediately without account setup
+- Temporary development environments
+
+**Note**: The database expires after 72 hours unless you claim it with a free Neon account.
 
 #### Option 2: Permanent Database Setup
-1. **Sign up**: Create a free account at [neon.tech](https://neon.tech/)
+1. **Sign up**: Create a free account at [neon.com](https://neon.com/)
 2. **Create project**: Set up a permanent database in your dashboard
 3. **Get connection string**: Copy from your Neon project dashboard
 
@@ -83,11 +99,13 @@ DATABASE_URL=postgresql://[user]:[password]@[endpoint]/[database]?sslmode=requir
 
 ### Neon Features in This Boilerplate
 
+- **Automatic Database Provisioning**: Pre-configured with [`@neondatabase/vite-plugin-postgres`](https://www.npmjs.com/package/@neondatabase/vite-plugin-postgres) for zero-config database setup
 - **Drizzle Integration**: Pre-configured with `@neondatabase/serverless` for optimal performance
 - **Connection Pooling**: Built-in pooling for better connection management
 - **Type Safety**: Full TypeScript support with Drizzle ORM
 - **Migrations**: Seamless database schema management with Drizzle Kit
 - **Development Workflow**: Database branching for feature development
+- **Auto Environment Setup**: Plugin automatically writes connection strings to your `.env` file
 
 ### Database Branching Workflow
 
@@ -98,7 +116,7 @@ One of Neon's most powerful features is database branching, allowing you to:
 3. **Collaborate effectively**: Team members can work with isolated data
 4. **Deploy confidently**: Merge database changes alongside code changes
 
-For more information about Neon's features and capabilities, visit [neon.tech](https://neon.tech/).
+For more information about Neon's features and capabilities, visit [neon.com](https://neon.com/).
 
 ## AI Features
 
@@ -326,14 +344,12 @@ Powered by [Better Auth](https://github.com/BetterTyped/better-auth), providing 
     
     Key environment variables to configure:
     
-    - **Database:** Set up a Neon Postgres database (no login required for quick start)
-      - **Instant setup**: Visit [neon.new](https://neon.new/) or run `bun run db:neon-setup` to create a database instantly
-      - **No signup needed**: The `neondb` command creates a temporary database without any registration
+    - **Database:** Neon Postgres database (automatically configured!)
+      - **Zero-config setup**: Just run `bun run dev` - the Vite plugin will automatically create a database and configure your `.env` file
+      - **Alternative methods**: Visit [neon.new](https://neon.new/) or run `bun run db:neon-setup` for manual setup
+      - **No signup needed**: All methods create temporary databases without any registration
       - **72-hour trial**: Database expires after 72 hours unless claimed with a free Neon account
-      - Copy the provided connection string to your `.env` file:
-        ```
-        DATABASE_URL=postgresql://[user]:[password]@[endpoint]/[database]?sslmode=require
-        ```
+      - **Auto-configured**: The plugin writes the connection string to your `.env` file automatically
     
     - **Auth:** Generate a secure secret for Better Auth
       ```bash

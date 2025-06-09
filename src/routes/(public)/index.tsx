@@ -69,7 +69,7 @@ const techStack = [
     description: "Type-safe SQL database interactions.",
     libs: [
       { name: "Drizzle ORM", href: "https://orm.drizzle.team/" },
-      { name: "PostgreSQL (Neon Ready)", href: "https://neon.tech/" },
+      { name: "PostgreSQL (Neon Ready)", href: "https://neon.com/" },
     ],
   },
   {
@@ -157,7 +157,6 @@ const techStack = [
 
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
 
   return (
     <div className="flex min-h-screen flex-col bg-background items-center justify-center">

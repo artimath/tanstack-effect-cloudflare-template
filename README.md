@@ -22,7 +22,7 @@ This project provides a solid foundation for building modern web applications us
 *   **Framework:** [TanStack Start](https://tanstack.com/start/v1) on [Vite](https://vitejs.dev/) + [Vinxi](https://vinxi.dev/) (Modern React foundation with SSR)
 *   **Routing:** [TanStack Router](https://tanstack.com/router/v1) (Type-safe client and server routing)
 *   **API:** [tRPC](https://trpc.io/) (End-to-end typesafe APIs)
-*   **Database:** [Drizzle ORM](https://orm.drizzle.team/) (Type-safe SQL with PostgreSQL, Neon ready)
+*   **Database:** [Drizzle ORM](https://orm.drizzle.team/) with [Neon](https://neon.tech/) (Type-safe SQL with serverless PostgreSQL)
 *   **UI:** [React 19](https://react.dev/), [Tailwind CSS](https://tailwindcss.com/), [shadcn/ui](https://ui.shadcn.com/), [Lucide Icons](https://lucide.dev/)
 *   **State Management:** [TanStack Query](https://tanstack.com/query/v5) (Server State), [TanStack Store](https://tanstack.com/store/v0) (Client State)
 *   **Forms:** [React Hook Form](https://react-hook-form.com/), [TanStack Form](https://tanstack.com/form/v1), [Zod](https://zod.dev/) (Validation)
@@ -33,6 +33,72 @@ This project provides a solid foundation for building modern web applications us
 *   **Tooling & DX:** [Biome](https://biomejs.dev/) (Linting/Formatting), [T3 Env](https://github.com/t3-oss/t3-env), [TypeScript](https://www.typescriptlang.org/)
 *   **AI:** [@ai-sdk/react](https://sdk.vercel.ai/), [ai](https://sdk.vercel.ai/) (Ready for AI features)
 *   **i18n:** [i18next](https://www.i18next.com/) (Internationalization)
+
+## Database with Neon
+
+This boilerplate uses [Neon](https://neon.tech/) as the primary database solution, providing a modern serverless PostgreSQL experience that's perfect for full-stack applications.
+
+### Why Neon?
+
+**Neon** is a serverless PostgreSQL platform that separates storage and compute, offering several key advantages:
+
+- **Zero-Friction Setup**: Create databases instantly without signup via [neon.new](https://neon.new/) - perfect for prototyping
+- **Serverless Architecture**: Automatically scales to zero when not in use, reducing costs
+- **Instant Provisioning**: Create database branches in seconds, not minutes
+- **Developer-Friendly**: Built-in connection pooling, automatic backups, and point-in-time recovery
+- **Database Branching**: Create database branches for each feature, just like Git branches
+- **Modern Tooling**: Native integration with popular ORMs like Drizzle, Prisma, and more
+- **Global Edge**: Low-latency read replicas across multiple regions
+
+### Quick Setup
+
+Get started with Neon in minutes using one of these approaches:
+
+#### Option 1: Instant Database Creation (No Login Required)
+1. **Create instantly via browser**: Visit [neon.new](https://neon.new/) to instantly create a new PostgreSQL database
+2. **Create instantly via CLI**: Use our built-in script for instant setup:
+   ```bash
+   bun run db:neon-setup
+   # This runs: npx neondb --yes
+   ```
+   
+   This command creates a temporary Neon database **instantly without requiring any login or signup**. Perfect for:
+   - Quick prototyping and testing
+   - Open-source templates and demos
+   - Getting started immediately without account setup
+   - Temporary development environments
+   
+   **Note**: The database expires after 72 hours unless you claim it with a free Neon account.
+
+#### Option 2: Permanent Database Setup
+1. **Sign up**: Create a free account at [neon.tech](https://neon.tech/)
+2. **Create project**: Set up a permanent database in your dashboard
+3. **Get connection string**: Copy from your Neon project dashboard
+
+#### Final Step: Configure Connection
+Copy your Neon connection string to your `.env` file:
+```bash
+DATABASE_URL=postgresql://[user]:[password]@[endpoint]/[database]?sslmode=require
+```
+
+### Neon Features in This Boilerplate
+
+- **Drizzle Integration**: Pre-configured with `@neondatabase/serverless` for optimal performance
+- **Connection Pooling**: Built-in pooling for better connection management
+- **Type Safety**: Full TypeScript support with Drizzle ORM
+- **Migrations**: Seamless database schema management with Drizzle Kit
+- **Development Workflow**: Database branching for feature development
+
+### Database Branching Workflow
+
+One of Neon's most powerful features is database branching, allowing you to:
+
+1. **Create feature branches**: Each feature gets its own database copy
+2. **Test safely**: Make schema changes without affecting production
+3. **Collaborate effectively**: Team members can work with isolated data
+4. **Deploy confidently**: Merge database changes alongside code changes
+
+For more information about Neon's features and capabilities, visit [neon.tech](https://neon.tech/).
 
 ## AI Features
 
@@ -260,13 +326,13 @@ Powered by [Better Auth](https://github.com/BetterTyped/better-auth), providing 
     
     Key environment variables to configure:
     
-    - **Database:** Set up a free Neon Postgres database
-      - Sign up at [Neon.tech](https://neon.tech/)
-      - Create a new project
-      - Get your connection string from the dashboard
-      - Set `DATABASE_URL` in your `.env` file:
+    - **Database:** Set up a Neon Postgres database (no login required for quick start)
+      - **Instant setup**: Visit [neon.new](https://neon.new/) or run `bun run db:neon-setup` to create a database instantly
+      - **No signup needed**: The `neondb` command creates a temporary database without any registration
+      - **72-hour trial**: Database expires after 72 hours unless claimed with a free Neon account
+      - Copy the provided connection string to your `.env` file:
         ```
-        DATABASE_URL=postgresql://[user]:[password]@[endpoint]/[database]
+        DATABASE_URL=postgresql://[user]:[password]@[endpoint]/[database]?sslmode=require
         ```
     
     - **Auth:** Generate a secure secret for Better Auth
@@ -359,6 +425,7 @@ The structure organizes code by feature and responsibility, keeping related code
 *   `bun run db:generate`: Generates Drizzle ORM migration files.
 *   `bun run db:push`: Pushes the current Drizzle schema to the database.
 *   `bun run db:studio`: Opens Drizzle Kit Studio.
+*   `bun run db:neon-setup`: Sets up Neon database integration locally.
 *   `bun run add-ui-components <component-name>`: Adds shadcn/ui components.
 *   `bun run format`: Formats code using Biome.
 *   `bun run lint`: Lints code using Biome.

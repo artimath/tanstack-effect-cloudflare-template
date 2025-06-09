@@ -72,6 +72,11 @@ const data = {
       url: "/dashboard/chat/vercel",
       icon: MessageCircle,
     },
+    {
+      name: "Agent",
+      url: "/dashboard/chat/agent",
+      icon: MessageCircle,
+    },
   ],
 };
 

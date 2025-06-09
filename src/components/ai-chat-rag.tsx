@@ -217,9 +217,12 @@ export function Chat({ api }: { api?: string }) {
     status,
     setMessages,
     stop,
+    data,
   } = useChat({
     api: api || "/api/ai/chat/rag",
   });
+
+  console.log({ messages, data });
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);

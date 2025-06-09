@@ -10,12 +10,12 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { authClient } from "@/lib/auth/auth-client";
 import { useTranslation } from "@/lib/intl/react";
-import { useParams, useRouter } from "@tanstack/react-router";
+import { useParams, useRouter, createFileRoute } from "@tanstack/react-router";
 import { CheckIcon, XIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { InvitationError } from "../../-components/invitation-error";
 
-export const Route = createFileRoute({
+export const Route = createFileRoute("/(auth)/accept-invitation/$invitationId/")({
   component: RouteComponent,
 });
 

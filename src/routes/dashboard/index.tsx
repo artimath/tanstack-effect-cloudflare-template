@@ -1,7 +1,7 @@
 import { authClient } from "@/lib/auth/auth-client";
 import { useTRPC } from "@/lib/trpc/react";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,7 +17,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Loader2, Trash2 } from "lucide-react";
 import { useState } from "react";
 
-export const Route = createFileRoute({
+export const Route = createFileRoute("/dashboard/")({
   component: RouteComponent,
 });
 

@@ -8,11 +8,9 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import type { CreateFileRoute, FileRoutesByPath } from '@tanstack/react-router'
+import { createServerRootRoute } from '@tanstack/react-start/server'
 
-// Import Routes
-
-import { Route as rootRoute } from './routes/__root'
+import { Route as rootRouteImport } from './routes/__root'
 import { Route as DashboardLayoutRouteImport } from './routes/dashboard/layout'
 import { Route as authLayoutRouteImport } from './routes/(auth)/layout'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
@@ -26,102 +24,339 @@ import { Route as DashboardChatIndexRouteImport } from './routes/dashboard/chat/
 import { Route as authTwoFactorIndexRouteImport } from './routes/(auth)/two-factor/index'
 import { Route as DashboardChatVercelRouteImport } from './routes/dashboard/chat/vercel'
 import { Route as DashboardChatRagRouteImport } from './routes/dashboard/chat/rag'
+import { Route as DashboardChatAgentRouteImport } from './routes/dashboard/chat/agent'
 import { Route as authTwoFactorOtpRouteImport } from './routes/(auth)/two-factor/otp'
 import { Route as authAcceptInvitationInvitationIdIndexRouteImport } from './routes/(auth)/accept-invitation/$invitationId/index'
+import { ServerRoute as DotwellKnownOauthAuthorizationServerServerRouteImport } from './routes/[.]well-known.oauth-authorization-server'
+import { ServerRoute as ApiTrpcSplatServerRouteImport } from './routes/api/trpc/$'
+import { ServerRoute as ApiAuthSplatServerRouteImport } from './routes/api/auth/$'
+import { ServerRoute as ApiAiChatServerRouteImport } from './routes/api/ai/chat'
+import { ServerRoute as ApiAiVercelChatServerRouteImport } from './routes/api/ai/vercel/chat'
+import { ServerRoute as ApiAiMcpTransportServerRouteImport } from './routes/api/ai/mcp/$transport'
+import { ServerRoute as ApiAiChatRagServerRouteImport } from './routes/api/ai/chat.rag'
+import { ServerRoute as ApiAiAgentSdkServerRouteImport } from './routes/api/ai/agent/sdk'
+import { ServerRoute as ApiAiChatImageGenerationServerRouteImport } from './routes/api/ai/chat.image.generation'
 
-// Create/Update Routes
+const rootServerRouteImport = createServerRootRoute()
 
 const DashboardLayoutRoute = DashboardLayoutRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
 const authLayoutRoute = authLayoutRouteImport.update({
   id: '/(auth)',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => DashboardLayoutRoute,
 } as any)
-
 const publicIndexRoute = publicIndexRouteImport.update({
   id: '/(public)/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
 const authResetPasswordRoute = authResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
   getParentRoute: () => authLayoutRoute,
 } as any)
-
 const authRegisterRoute = authRegisterRouteImport.update({
   id: '/register',
   path: '/register',
   getParentRoute: () => authLayoutRoute,
 } as any)
-
 const authLoginRoute = authLoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => authLayoutRoute,
 } as any)
-
 const authForgotPasswordRoute = authForgotPasswordRouteImport.update({
   id: '/forgot-password',
   path: '/forgot-password',
   getParentRoute: () => authLayoutRoute,
 } as any)
-
 const DashboardSettingsIndexRoute = DashboardSettingsIndexRouteImport.update({
   id: '/settings/',
   path: '/settings/',
   getParentRoute: () => DashboardLayoutRoute,
 } as any)
-
 const DashboardChatIndexRoute = DashboardChatIndexRouteImport.update({
   id: '/chat/',
   path: '/chat/',
   getParentRoute: () => DashboardLayoutRoute,
 } as any)
-
 const authTwoFactorIndexRoute = authTwoFactorIndexRouteImport.update({
   id: '/two-factor/',
   path: '/two-factor/',
   getParentRoute: () => authLayoutRoute,
 } as any)
-
 const DashboardChatVercelRoute = DashboardChatVercelRouteImport.update({
   id: '/chat/vercel',
   path: '/chat/vercel',
   getParentRoute: () => DashboardLayoutRoute,
 } as any)
-
 const DashboardChatRagRoute = DashboardChatRagRouteImport.update({
   id: '/chat/rag',
   path: '/chat/rag',
   getParentRoute: () => DashboardLayoutRoute,
 } as any)
-
+const DashboardChatAgentRoute = DashboardChatAgentRouteImport.update({
+  id: '/chat/agent',
+  path: '/chat/agent',
+  getParentRoute: () => DashboardLayoutRoute,
+} as any)
 const authTwoFactorOtpRoute = authTwoFactorOtpRouteImport.update({
   id: '/two-factor/otp',
   path: '/two-factor/otp',
   getParentRoute: () => authLayoutRoute,
 } as any)
-
 const authAcceptInvitationInvitationIdIndexRoute =
   authAcceptInvitationInvitationIdIndexRouteImport.update({
     id: '/accept-invitation/$invitationId/',
     path: '/accept-invitation/$invitationId/',
     getParentRoute: () => authLayoutRoute,
   } as any)
+const DotwellKnownOauthAuthorizationServerServerRoute =
+  DotwellKnownOauthAuthorizationServerServerRouteImport.update({
+    id: '/.well-known/oauth-authorization-server',
+    path: '/.well-known/oauth-authorization-server',
+    getParentRoute: () => rootServerRouteImport,
+  } as any)
+const ApiTrpcSplatServerRoute = ApiTrpcSplatServerRouteImport.update({
+  id: '/api/trpc/$',
+  path: '/api/trpc/$',
+  getParentRoute: () => rootServerRouteImport,
+} as any)
+const ApiAuthSplatServerRoute = ApiAuthSplatServerRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootServerRouteImport,
+} as any)
+const ApiAiChatServerRoute = ApiAiChatServerRouteImport.update({
+  id: '/api/ai/chat',
+  path: '/api/ai/chat',
+  getParentRoute: () => rootServerRouteImport,
+} as any)
+const ApiAiVercelChatServerRoute = ApiAiVercelChatServerRouteImport.update({
+  id: '/api/ai/vercel/chat',
+  path: '/api/ai/vercel/chat',
+  getParentRoute: () => rootServerRouteImport,
+} as any)
+const ApiAiMcpTransportServerRoute = ApiAiMcpTransportServerRouteImport.update({
+  id: '/api/ai/mcp/$transport',
+  path: '/api/ai/mcp/$transport',
+  getParentRoute: () => rootServerRouteImport,
+} as any)
+const ApiAiChatRagServerRoute = ApiAiChatRagServerRouteImport.update({
+  id: '/rag',
+  path: '/rag',
+  getParentRoute: () => ApiAiChatServerRoute,
+} as any)
+const ApiAiAgentSdkServerRoute = ApiAiAgentSdkServerRouteImport.update({
+  id: '/api/ai/agent/sdk',
+  path: '/api/ai/agent/sdk',
+  getParentRoute: () => rootServerRouteImport,
+} as any)
+const ApiAiChatImageGenerationServerRoute =
+  ApiAiChatImageGenerationServerRouteImport.update({
+    id: '/image/generation',
+    path: '/image/generation',
+    getParentRoute: () => ApiAiChatServerRoute,
+  } as any)
 
-// Populate the FileRoutesByPath interface
+export interface FileRoutesByFullPath {
+  '/': typeof publicIndexRoute
+  '/dashboard': typeof DashboardLayoutRouteWithChildren
+  '/forgot-password': typeof authForgotPasswordRoute
+  '/login': typeof authLoginRoute
+  '/register': typeof authRegisterRoute
+  '/reset-password': typeof authResetPasswordRoute
+  '/dashboard/': typeof DashboardIndexRoute
+  '/two-factor/otp': typeof authTwoFactorOtpRoute
+  '/dashboard/chat/agent': typeof DashboardChatAgentRoute
+  '/dashboard/chat/rag': typeof DashboardChatRagRoute
+  '/dashboard/chat/vercel': typeof DashboardChatVercelRoute
+  '/two-factor': typeof authTwoFactorIndexRoute
+  '/dashboard/chat': typeof DashboardChatIndexRoute
+  '/dashboard/settings': typeof DashboardSettingsIndexRoute
+  '/accept-invitation/$invitationId': typeof authAcceptInvitationInvitationIdIndexRoute
+}
+export interface FileRoutesByTo {
+  '/': typeof publicIndexRoute
+  '/forgot-password': typeof authForgotPasswordRoute
+  '/login': typeof authLoginRoute
+  '/register': typeof authRegisterRoute
+  '/reset-password': typeof authResetPasswordRoute
+  '/dashboard': typeof DashboardIndexRoute
+  '/two-factor/otp': typeof authTwoFactorOtpRoute
+  '/dashboard/chat/agent': typeof DashboardChatAgentRoute
+  '/dashboard/chat/rag': typeof DashboardChatRagRoute
+  '/dashboard/chat/vercel': typeof DashboardChatVercelRoute
+  '/two-factor': typeof authTwoFactorIndexRoute
+  '/dashboard/chat': typeof DashboardChatIndexRoute
+  '/dashboard/settings': typeof DashboardSettingsIndexRoute
+  '/accept-invitation/$invitationId': typeof authAcceptInvitationInvitationIdIndexRoute
+}
+export interface FileRoutesById {
+  __root__: typeof rootRouteImport
+  '/(auth)': typeof authLayoutRouteWithChildren
+  '/dashboard': typeof DashboardLayoutRouteWithChildren
+  '/(auth)/forgot-password': typeof authForgotPasswordRoute
+  '/(auth)/login': typeof authLoginRoute
+  '/(auth)/register': typeof authRegisterRoute
+  '/(auth)/reset-password': typeof authResetPasswordRoute
+  '/(public)/': typeof publicIndexRoute
+  '/dashboard/': typeof DashboardIndexRoute
+  '/(auth)/two-factor/otp': typeof authTwoFactorOtpRoute
+  '/dashboard/chat/agent': typeof DashboardChatAgentRoute
+  '/dashboard/chat/rag': typeof DashboardChatRagRoute
+  '/dashboard/chat/vercel': typeof DashboardChatVercelRoute
+  '/(auth)/two-factor/': typeof authTwoFactorIndexRoute
+  '/dashboard/chat/': typeof DashboardChatIndexRoute
+  '/dashboard/settings/': typeof DashboardSettingsIndexRoute
+  '/(auth)/accept-invitation/$invitationId/': typeof authAcceptInvitationInvitationIdIndexRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/forgot-password'
+    | '/login'
+    | '/register'
+    | '/reset-password'
+    | '/dashboard/'
+    | '/two-factor/otp'
+    | '/dashboard/chat/agent'
+    | '/dashboard/chat/rag'
+    | '/dashboard/chat/vercel'
+    | '/two-factor'
+    | '/dashboard/chat'
+    | '/dashboard/settings'
+    | '/accept-invitation/$invitationId'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/forgot-password'
+    | '/login'
+    | '/register'
+    | '/reset-password'
+    | '/dashboard'
+    | '/two-factor/otp'
+    | '/dashboard/chat/agent'
+    | '/dashboard/chat/rag'
+    | '/dashboard/chat/vercel'
+    | '/two-factor'
+    | '/dashboard/chat'
+    | '/dashboard/settings'
+    | '/accept-invitation/$invitationId'
+  id:
+    | '__root__'
+    | '/(auth)'
+    | '/dashboard'
+    | '/(auth)/forgot-password'
+    | '/(auth)/login'
+    | '/(auth)/register'
+    | '/(auth)/reset-password'
+    | '/(public)/'
+    | '/dashboard/'
+    | '/(auth)/two-factor/otp'
+    | '/dashboard/chat/agent'
+    | '/dashboard/chat/rag'
+    | '/dashboard/chat/vercel'
+    | '/(auth)/two-factor/'
+    | '/dashboard/chat/'
+    | '/dashboard/settings/'
+    | '/(auth)/accept-invitation/$invitationId/'
+  fileRoutesById: FileRoutesById
+}
+export interface RootRouteChildren {
+  authLayoutRoute: typeof authLayoutRouteWithChildren
+  DashboardLayoutRoute: typeof DashboardLayoutRouteWithChildren
+  publicIndexRoute: typeof publicIndexRoute
+}
+export interface FileServerRoutesByFullPath {
+  '/.well-known/oauth-authorization-server': typeof DotwellKnownOauthAuthorizationServerServerRoute
+  '/api/ai/chat': typeof ApiAiChatServerRouteWithChildren
+  '/api/auth/$': typeof ApiAuthSplatServerRoute
+  '/api/trpc/$': typeof ApiTrpcSplatServerRoute
+  '/api/ai/agent/sdk': typeof ApiAiAgentSdkServerRoute
+  '/api/ai/chat/rag': typeof ApiAiChatRagServerRoute
+  '/api/ai/mcp/$transport': typeof ApiAiMcpTransportServerRoute
+  '/api/ai/vercel/chat': typeof ApiAiVercelChatServerRoute
+  '/api/ai/chat/image/generation': typeof ApiAiChatImageGenerationServerRoute
+}
+export interface FileServerRoutesByTo {
+  '/.well-known/oauth-authorization-server': typeof DotwellKnownOauthAuthorizationServerServerRoute
+  '/api/ai/chat': typeof ApiAiChatServerRouteWithChildren
+  '/api/auth/$': typeof ApiAuthSplatServerRoute
+  '/api/trpc/$': typeof ApiTrpcSplatServerRoute
+  '/api/ai/agent/sdk': typeof ApiAiAgentSdkServerRoute
+  '/api/ai/chat/rag': typeof ApiAiChatRagServerRoute
+  '/api/ai/mcp/$transport': typeof ApiAiMcpTransportServerRoute
+  '/api/ai/vercel/chat': typeof ApiAiVercelChatServerRoute
+  '/api/ai/chat/image/generation': typeof ApiAiChatImageGenerationServerRoute
+}
+export interface FileServerRoutesById {
+  __root__: typeof rootServerRouteImport
+  '/.well-known/oauth-authorization-server': typeof DotwellKnownOauthAuthorizationServerServerRoute
+  '/api/ai/chat': typeof ApiAiChatServerRouteWithChildren
+  '/api/auth/$': typeof ApiAuthSplatServerRoute
+  '/api/trpc/$': typeof ApiTrpcSplatServerRoute
+  '/api/ai/agent/sdk': typeof ApiAiAgentSdkServerRoute
+  '/api/ai/chat/rag': typeof ApiAiChatRagServerRoute
+  '/api/ai/mcp/$transport': typeof ApiAiMcpTransportServerRoute
+  '/api/ai/vercel/chat': typeof ApiAiVercelChatServerRoute
+  '/api/ai/chat/image/generation': typeof ApiAiChatImageGenerationServerRoute
+}
+export interface FileServerRouteTypes {
+  fileServerRoutesByFullPath: FileServerRoutesByFullPath
+  fullPaths:
+    | '/.well-known/oauth-authorization-server'
+    | '/api/ai/chat'
+    | '/api/auth/$'
+    | '/api/trpc/$'
+    | '/api/ai/agent/sdk'
+    | '/api/ai/chat/rag'
+    | '/api/ai/mcp/$transport'
+    | '/api/ai/vercel/chat'
+    | '/api/ai/chat/image/generation'
+  fileServerRoutesByTo: FileServerRoutesByTo
+  to:
+    | '/.well-known/oauth-authorization-server'
+    | '/api/ai/chat'
+    | '/api/auth/$'
+    | '/api/trpc/$'
+    | '/api/ai/agent/sdk'
+    | '/api/ai/chat/rag'
+    | '/api/ai/mcp/$transport'
+    | '/api/ai/vercel/chat'
+    | '/api/ai/chat/image/generation'
+  id:
+    | '__root__'
+    | '/.well-known/oauth-authorization-server'
+    | '/api/ai/chat'
+    | '/api/auth/$'
+    | '/api/trpc/$'
+    | '/api/ai/agent/sdk'
+    | '/api/ai/chat/rag'
+    | '/api/ai/mcp/$transport'
+    | '/api/ai/vercel/chat'
+    | '/api/ai/chat/image/generation'
+  fileServerRoutesById: FileServerRoutesById
+}
+export interface RootServerRouteChildren {
+  DotwellKnownOauthAuthorizationServerServerRoute: typeof DotwellKnownOauthAuthorizationServerServerRoute
+  ApiAiChatServerRoute: typeof ApiAiChatServerRouteWithChildren
+  ApiAuthSplatServerRoute: typeof ApiAuthSplatServerRoute
+  ApiTrpcSplatServerRoute: typeof ApiTrpcSplatServerRoute
+  ApiAiAgentSdkServerRoute: typeof ApiAiAgentSdkServerRoute
+  ApiAiMcpTransportServerRoute: typeof ApiAiMcpTransportServerRoute
+  ApiAiVercelChatServerRoute: typeof ApiAiVercelChatServerRoute
+}
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
@@ -130,248 +365,357 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof authLayoutRouteImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardLayoutRouteImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof rootRouteImport
     }
     '/(auth)/forgot-password': {
       id: '/(auth)/forgot-password'
       path: '/forgot-password'
       fullPath: '/forgot-password'
       preLoaderRoute: typeof authForgotPasswordRouteImport
-      parentRoute: typeof authLayoutRouteImport
+      parentRoute: typeof authLayoutRoute
     }
     '/(auth)/login': {
       id: '/(auth)/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof authLoginRouteImport
-      parentRoute: typeof authLayoutRouteImport
+      parentRoute: typeof authLayoutRoute
     }
     '/(auth)/register': {
       id: '/(auth)/register'
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof authRegisterRouteImport
-      parentRoute: typeof authLayoutRouteImport
+      parentRoute: typeof authLayoutRoute
     }
     '/(auth)/reset-password': {
       id: '/(auth)/reset-password'
       path: '/reset-password'
       fullPath: '/reset-password'
       preLoaderRoute: typeof authResetPasswordRouteImport
-      parentRoute: typeof authLayoutRouteImport
+      parentRoute: typeof authLayoutRoute
+    }
+    '/.well-known/oauth-authorization-server': {
+      id: '/.well-known/oauth-authorization-server'
+      path: ''
+      fullPath: '/.well-known/oauth-authorization-server'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootRouteImport
     }
     '/(public)/': {
       id: '/(public)/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof publicIndexRouteImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof rootRouteImport
     }
     '/dashboard/': {
       id: '/dashboard/'
       path: '/'
       fullPath: '/dashboard/'
       preLoaderRoute: typeof DashboardIndexRouteImport
-      parentRoute: typeof DashboardLayoutRouteImport
+      parentRoute: typeof DashboardLayoutRoute
     }
     '/(auth)/two-factor/otp': {
       id: '/(auth)/two-factor/otp'
       path: '/two-factor/otp'
       fullPath: '/two-factor/otp'
       preLoaderRoute: typeof authTwoFactorOtpRouteImport
-      parentRoute: typeof authLayoutRouteImport
+      parentRoute: typeof authLayoutRoute
+    }
+    '/api/ai/chat': {
+      id: '/api/ai/chat'
+      path: ''
+      fullPath: '/api/ai/chat'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: ''
+      fullPath: '/api/auth/$'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/trpc/$': {
+      id: '/api/trpc/$'
+      path: ''
+      fullPath: '/api/trpc/$'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/chat/agent': {
+      id: '/dashboard/chat/agent'
+      path: '/chat/agent'
+      fullPath: '/dashboard/chat/agent'
+      preLoaderRoute: typeof DashboardChatAgentRouteImport
+      parentRoute: typeof DashboardLayoutRoute
     }
     '/dashboard/chat/rag': {
       id: '/dashboard/chat/rag'
       path: '/chat/rag'
       fullPath: '/dashboard/chat/rag'
       preLoaderRoute: typeof DashboardChatRagRouteImport
-      parentRoute: typeof DashboardLayoutRouteImport
+      parentRoute: typeof DashboardLayoutRoute
     }
     '/dashboard/chat/vercel': {
       id: '/dashboard/chat/vercel'
       path: '/chat/vercel'
       fullPath: '/dashboard/chat/vercel'
       preLoaderRoute: typeof DashboardChatVercelRouteImport
-      parentRoute: typeof DashboardLayoutRouteImport
+      parentRoute: typeof DashboardLayoutRoute
     }
     '/(auth)/two-factor/': {
       id: '/(auth)/two-factor/'
       path: '/two-factor'
       fullPath: '/two-factor'
       preLoaderRoute: typeof authTwoFactorIndexRouteImport
-      parentRoute: typeof authLayoutRouteImport
+      parentRoute: typeof authLayoutRoute
     }
     '/dashboard/chat/': {
       id: '/dashboard/chat/'
       path: '/chat'
       fullPath: '/dashboard/chat'
       preLoaderRoute: typeof DashboardChatIndexRouteImport
-      parentRoute: typeof DashboardLayoutRouteImport
+      parentRoute: typeof DashboardLayoutRoute
     }
     '/dashboard/settings/': {
       id: '/dashboard/settings/'
       path: '/settings'
       fullPath: '/dashboard/settings'
       preLoaderRoute: typeof DashboardSettingsIndexRouteImport
-      parentRoute: typeof DashboardLayoutRouteImport
+      parentRoute: typeof DashboardLayoutRoute
+    }
+    '/api/ai/agent/sdk': {
+      id: '/api/ai/agent/sdk'
+      path: ''
+      fullPath: '/api/ai/agent/sdk'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/ai/chat/rag': {
+      id: '/api/ai/chat/rag'
+      path: ''
+      fullPath: '/api/ai/chat/rag'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/ai/mcp/$transport': {
+      id: '/api/ai/mcp/$transport'
+      path: ''
+      fullPath: '/api/ai/mcp/$transport'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/ai/vercel/chat': {
+      id: '/api/ai/vercel/chat'
+      path: ''
+      fullPath: '/api/ai/vercel/chat'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootRouteImport
     }
     '/(auth)/accept-invitation/$invitationId/': {
       id: '/(auth)/accept-invitation/$invitationId/'
       path: '/accept-invitation/$invitationId'
       fullPath: '/accept-invitation/$invitationId'
       preLoaderRoute: typeof authAcceptInvitationInvitationIdIndexRouteImport
-      parentRoute: typeof authLayoutRouteImport
+      parentRoute: typeof authLayoutRoute
+    }
+    '/api/ai/chat/image/generation': {
+      id: '/api/ai/chat/image/generation'
+      path: ''
+      fullPath: '/api/ai/chat/image/generation'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootRouteImport
     }
   }
 }
-
-// Add type-safety to the createFileRoute function across the route tree
-
-declare module './routes/(auth)/layout' {
-  const createFileRoute: CreateFileRoute<
-    '/(auth)',
-    FileRoutesByPath['/(auth)']['parentRoute'],
-    FileRoutesByPath['/(auth)']['id'],
-    FileRoutesByPath['/(auth)']['path'],
-    FileRoutesByPath['/(auth)']['fullPath']
-  >
+declare module '@tanstack/react-start/server' {
+  interface ServerFileRoutesByPath {
+    '/(auth)': {
+      id: '/(auth)'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/(auth)/forgot-password': {
+      id: '/(auth)/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/(auth)/login': {
+      id: '/(auth)/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/(auth)/register': {
+      id: '/(auth)/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/(auth)/reset-password': {
+      id: '/(auth)/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/.well-known/oauth-authorization-server': {
+      id: '/.well-known/oauth-authorization-server'
+      path: '/.well-known/oauth-authorization-server'
+      fullPath: '/.well-known/oauth-authorization-server'
+      preLoaderRoute: typeof DotwellKnownOauthAuthorizationServerServerRouteImport
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/(public)/': {
+      id: '/(public)/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/(auth)/two-factor/otp': {
+      id: '/(auth)/two-factor/otp'
+      path: '/two-factor/otp'
+      fullPath: '/two-factor/otp'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/api/ai/chat': {
+      id: '/api/ai/chat'
+      path: '/api/ai/chat'
+      fullPath: '/api/ai/chat'
+      preLoaderRoute: typeof ApiAiChatServerRouteImport
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatServerRouteImport
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/api/trpc/$': {
+      id: '/api/trpc/$'
+      path: '/api/trpc/$'
+      fullPath: '/api/trpc/$'
+      preLoaderRoute: typeof ApiTrpcSplatServerRouteImport
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/dashboard/chat/agent': {
+      id: '/dashboard/chat/agent'
+      path: '/chat/agent'
+      fullPath: '/dashboard/chat/agent'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/dashboard/chat/rag': {
+      id: '/dashboard/chat/rag'
+      path: '/chat/rag'
+      fullPath: '/dashboard/chat/rag'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/dashboard/chat/vercel': {
+      id: '/dashboard/chat/vercel'
+      path: '/chat/vercel'
+      fullPath: '/dashboard/chat/vercel'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/(auth)/two-factor/': {
+      id: '/(auth)/two-factor/'
+      path: '/two-factor'
+      fullPath: '/two-factor'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/dashboard/chat/': {
+      id: '/dashboard/chat/'
+      path: '/chat'
+      fullPath: '/dashboard/chat'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/dashboard/settings/': {
+      id: '/dashboard/settings/'
+      path: '/settings'
+      fullPath: '/dashboard/settings'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/api/ai/agent/sdk': {
+      id: '/api/ai/agent/sdk'
+      path: '/api/ai/agent/sdk'
+      fullPath: '/api/ai/agent/sdk'
+      preLoaderRoute: typeof ApiAiAgentSdkServerRouteImport
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/api/ai/chat/rag': {
+      id: '/api/ai/chat/rag'
+      path: '/rag'
+      fullPath: '/api/ai/chat/rag'
+      preLoaderRoute: typeof ApiAiChatRagServerRouteImport
+      parentRoute: typeof ApiAiChatServerRoute
+    }
+    '/api/ai/mcp/$transport': {
+      id: '/api/ai/mcp/$transport'
+      path: '/api/ai/mcp/$transport'
+      fullPath: '/api/ai/mcp/$transport'
+      preLoaderRoute: typeof ApiAiMcpTransportServerRouteImport
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/api/ai/vercel/chat': {
+      id: '/api/ai/vercel/chat'
+      path: '/api/ai/vercel/chat'
+      fullPath: '/api/ai/vercel/chat'
+      preLoaderRoute: typeof ApiAiVercelChatServerRouteImport
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/(auth)/accept-invitation/$invitationId/': {
+      id: '/(auth)/accept-invitation/$invitationId/'
+      path: '/accept-invitation/$invitationId'
+      fullPath: '/accept-invitation/$invitationId'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/api/ai/chat/image/generation': {
+      id: '/api/ai/chat/image/generation'
+      path: '/image/generation'
+      fullPath: '/api/ai/chat/image/generation'
+      preLoaderRoute: typeof ApiAiChatImageGenerationServerRouteImport
+      parentRoute: typeof ApiAiChatServerRoute
+    }
+  }
 }
-declare module './routes/dashboard/layout' {
-  const createFileRoute: CreateFileRoute<
-    '/dashboard',
-    FileRoutesByPath['/dashboard']['parentRoute'],
-    FileRoutesByPath['/dashboard']['id'],
-    FileRoutesByPath['/dashboard']['path'],
-    FileRoutesByPath['/dashboard']['fullPath']
-  >
-}
-declare module './routes/(auth)/forgot-password' {
-  const createFileRoute: CreateFileRoute<
-    '/(auth)/forgot-password',
-    FileRoutesByPath['/(auth)/forgot-password']['parentRoute'],
-    FileRoutesByPath['/(auth)/forgot-password']['id'],
-    FileRoutesByPath['/(auth)/forgot-password']['path'],
-    FileRoutesByPath['/(auth)/forgot-password']['fullPath']
-  >
-}
-declare module './routes/(auth)/login' {
-  const createFileRoute: CreateFileRoute<
-    '/(auth)/login',
-    FileRoutesByPath['/(auth)/login']['parentRoute'],
-    FileRoutesByPath['/(auth)/login']['id'],
-    FileRoutesByPath['/(auth)/login']['path'],
-    FileRoutesByPath['/(auth)/login']['fullPath']
-  >
-}
-declare module './routes/(auth)/register' {
-  const createFileRoute: CreateFileRoute<
-    '/(auth)/register',
-    FileRoutesByPath['/(auth)/register']['parentRoute'],
-    FileRoutesByPath['/(auth)/register']['id'],
-    FileRoutesByPath['/(auth)/register']['path'],
-    FileRoutesByPath['/(auth)/register']['fullPath']
-  >
-}
-declare module './routes/(auth)/reset-password' {
-  const createFileRoute: CreateFileRoute<
-    '/(auth)/reset-password',
-    FileRoutesByPath['/(auth)/reset-password']['parentRoute'],
-    FileRoutesByPath['/(auth)/reset-password']['id'],
-    FileRoutesByPath['/(auth)/reset-password']['path'],
-    FileRoutesByPath['/(auth)/reset-password']['fullPath']
-  >
-}
-declare module './routes/(public)/index' {
-  const createFileRoute: CreateFileRoute<
-    '/(public)/',
-    FileRoutesByPath['/(public)/']['parentRoute'],
-    FileRoutesByPath['/(public)/']['id'],
-    FileRoutesByPath['/(public)/']['path'],
-    FileRoutesByPath['/(public)/']['fullPath']
-  >
-}
-declare module './routes/dashboard/index' {
-  const createFileRoute: CreateFileRoute<
-    '/dashboard/',
-    FileRoutesByPath['/dashboard/']['parentRoute'],
-    FileRoutesByPath['/dashboard/']['id'],
-    FileRoutesByPath['/dashboard/']['path'],
-    FileRoutesByPath['/dashboard/']['fullPath']
-  >
-}
-declare module './routes/(auth)/two-factor/otp' {
-  const createFileRoute: CreateFileRoute<
-    '/(auth)/two-factor/otp',
-    FileRoutesByPath['/(auth)/two-factor/otp']['parentRoute'],
-    FileRoutesByPath['/(auth)/two-factor/otp']['id'],
-    FileRoutesByPath['/(auth)/two-factor/otp']['path'],
-    FileRoutesByPath['/(auth)/two-factor/otp']['fullPath']
-  >
-}
-declare module './routes/dashboard/chat/rag' {
-  const createFileRoute: CreateFileRoute<
-    '/dashboard/chat/rag',
-    FileRoutesByPath['/dashboard/chat/rag']['parentRoute'],
-    FileRoutesByPath['/dashboard/chat/rag']['id'],
-    FileRoutesByPath['/dashboard/chat/rag']['path'],
-    FileRoutesByPath['/dashboard/chat/rag']['fullPath']
-  >
-}
-declare module './routes/dashboard/chat/vercel' {
-  const createFileRoute: CreateFileRoute<
-    '/dashboard/chat/vercel',
-    FileRoutesByPath['/dashboard/chat/vercel']['parentRoute'],
-    FileRoutesByPath['/dashboard/chat/vercel']['id'],
-    FileRoutesByPath['/dashboard/chat/vercel']['path'],
-    FileRoutesByPath['/dashboard/chat/vercel']['fullPath']
-  >
-}
-declare module './routes/(auth)/two-factor/index' {
-  const createFileRoute: CreateFileRoute<
-    '/(auth)/two-factor/',
-    FileRoutesByPath['/(auth)/two-factor/']['parentRoute'],
-    FileRoutesByPath['/(auth)/two-factor/']['id'],
-    FileRoutesByPath['/(auth)/two-factor/']['path'],
-    FileRoutesByPath['/(auth)/two-factor/']['fullPath']
-  >
-}
-declare module './routes/dashboard/chat/index' {
-  const createFileRoute: CreateFileRoute<
-    '/dashboard/chat/',
-    FileRoutesByPath['/dashboard/chat/']['parentRoute'],
-    FileRoutesByPath['/dashboard/chat/']['id'],
-    FileRoutesByPath['/dashboard/chat/']['path'],
-    FileRoutesByPath['/dashboard/chat/']['fullPath']
-  >
-}
-declare module './routes/dashboard/settings/index' {
-  const createFileRoute: CreateFileRoute<
-    '/dashboard/settings/',
-    FileRoutesByPath['/dashboard/settings/']['parentRoute'],
-    FileRoutesByPath['/dashboard/settings/']['id'],
-    FileRoutesByPath['/dashboard/settings/']['path'],
-    FileRoutesByPath['/dashboard/settings/']['fullPath']
-  >
-}
-declare module './routes/(auth)/accept-invitation/$invitationId/index' {
-  const createFileRoute: CreateFileRoute<
-    '/(auth)/accept-invitation/$invitationId/',
-    FileRoutesByPath['/(auth)/accept-invitation/$invitationId/']['parentRoute'],
-    FileRoutesByPath['/(auth)/accept-invitation/$invitationId/']['id'],
-    FileRoutesByPath['/(auth)/accept-invitation/$invitationId/']['path'],
-    FileRoutesByPath['/(auth)/accept-invitation/$invitationId/']['fullPath']
-  >
-}
-
-// Create and export the route tree
 
 interface authLayoutRouteChildren {
   authForgotPasswordRoute: typeof authForgotPasswordRoute
@@ -400,6 +744,7 @@ const authLayoutRouteWithChildren = authLayoutRoute._addFileChildren(
 
 interface DashboardLayoutRouteChildren {
   DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardChatAgentRoute: typeof DashboardChatAgentRoute
   DashboardChatRagRoute: typeof DashboardChatRagRoute
   DashboardChatVercelRoute: typeof DashboardChatVercelRoute
   DashboardChatIndexRoute: typeof DashboardChatIndexRoute
@@ -408,6 +753,7 @@ interface DashboardLayoutRouteChildren {
 
 const DashboardLayoutRouteChildren: DashboardLayoutRouteChildren = {
   DashboardIndexRoute: DashboardIndexRoute,
+  DashboardChatAgentRoute: DashboardChatAgentRoute,
   DashboardChatRagRoute: DashboardChatRagRoute,
   DashboardChatVercelRoute: DashboardChatVercelRoute,
   DashboardChatIndexRoute: DashboardChatIndexRoute,
@@ -418,210 +764,38 @@ const DashboardLayoutRouteWithChildren = DashboardLayoutRoute._addFileChildren(
   DashboardLayoutRouteChildren,
 )
 
-export interface FileRoutesByFullPath {
-  '/': typeof publicIndexRoute
-  '/dashboard': typeof DashboardLayoutRouteWithChildren
-  '/forgot-password': typeof authForgotPasswordRoute
-  '/login': typeof authLoginRoute
-  '/register': typeof authRegisterRoute
-  '/reset-password': typeof authResetPasswordRoute
-  '/dashboard/': typeof DashboardIndexRoute
-  '/two-factor/otp': typeof authTwoFactorOtpRoute
-  '/dashboard/chat/rag': typeof DashboardChatRagRoute
-  '/dashboard/chat/vercel': typeof DashboardChatVercelRoute
-  '/two-factor': typeof authTwoFactorIndexRoute
-  '/dashboard/chat': typeof DashboardChatIndexRoute
-  '/dashboard/settings': typeof DashboardSettingsIndexRoute
-  '/accept-invitation/$invitationId': typeof authAcceptInvitationInvitationIdIndexRoute
+interface ApiAiChatServerRouteChildren {
+  ApiAiChatRagServerRoute: typeof ApiAiChatRagServerRoute
+  ApiAiChatImageGenerationServerRoute: typeof ApiAiChatImageGenerationServerRoute
 }
 
-export interface FileRoutesByTo {
-  '/': typeof publicIndexRoute
-  '/forgot-password': typeof authForgotPasswordRoute
-  '/login': typeof authLoginRoute
-  '/register': typeof authRegisterRoute
-  '/reset-password': typeof authResetPasswordRoute
-  '/dashboard': typeof DashboardIndexRoute
-  '/two-factor/otp': typeof authTwoFactorOtpRoute
-  '/dashboard/chat/rag': typeof DashboardChatRagRoute
-  '/dashboard/chat/vercel': typeof DashboardChatVercelRoute
-  '/two-factor': typeof authTwoFactorIndexRoute
-  '/dashboard/chat': typeof DashboardChatIndexRoute
-  '/dashboard/settings': typeof DashboardSettingsIndexRoute
-  '/accept-invitation/$invitationId': typeof authAcceptInvitationInvitationIdIndexRoute
+const ApiAiChatServerRouteChildren: ApiAiChatServerRouteChildren = {
+  ApiAiChatRagServerRoute: ApiAiChatRagServerRoute,
+  ApiAiChatImageGenerationServerRoute: ApiAiChatImageGenerationServerRoute,
 }
 
-export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/(auth)': typeof authLayoutRouteWithChildren
-  '/dashboard': typeof DashboardLayoutRouteWithChildren
-  '/(auth)/forgot-password': typeof authForgotPasswordRoute
-  '/(auth)/login': typeof authLoginRoute
-  '/(auth)/register': typeof authRegisterRoute
-  '/(auth)/reset-password': typeof authResetPasswordRoute
-  '/(public)/': typeof publicIndexRoute
-  '/dashboard/': typeof DashboardIndexRoute
-  '/(auth)/two-factor/otp': typeof authTwoFactorOtpRoute
-  '/dashboard/chat/rag': typeof DashboardChatRagRoute
-  '/dashboard/chat/vercel': typeof DashboardChatVercelRoute
-  '/(auth)/two-factor/': typeof authTwoFactorIndexRoute
-  '/dashboard/chat/': typeof DashboardChatIndexRoute
-  '/dashboard/settings/': typeof DashboardSettingsIndexRoute
-  '/(auth)/accept-invitation/$invitationId/': typeof authAcceptInvitationInvitationIdIndexRoute
-}
-
-export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/dashboard'
-    | '/forgot-password'
-    | '/login'
-    | '/register'
-    | '/reset-password'
-    | '/dashboard/'
-    | '/two-factor/otp'
-    | '/dashboard/chat/rag'
-    | '/dashboard/chat/vercel'
-    | '/two-factor'
-    | '/dashboard/chat'
-    | '/dashboard/settings'
-    | '/accept-invitation/$invitationId'
-  fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/forgot-password'
-    | '/login'
-    | '/register'
-    | '/reset-password'
-    | '/dashboard'
-    | '/two-factor/otp'
-    | '/dashboard/chat/rag'
-    | '/dashboard/chat/vercel'
-    | '/two-factor'
-    | '/dashboard/chat'
-    | '/dashboard/settings'
-    | '/accept-invitation/$invitationId'
-  id:
-    | '__root__'
-    | '/(auth)'
-    | '/dashboard'
-    | '/(auth)/forgot-password'
-    | '/(auth)/login'
-    | '/(auth)/register'
-    | '/(auth)/reset-password'
-    | '/(public)/'
-    | '/dashboard/'
-    | '/(auth)/two-factor/otp'
-    | '/dashboard/chat/rag'
-    | '/dashboard/chat/vercel'
-    | '/(auth)/two-factor/'
-    | '/dashboard/chat/'
-    | '/dashboard/settings/'
-    | '/(auth)/accept-invitation/$invitationId/'
-  fileRoutesById: FileRoutesById
-}
-
-export interface RootRouteChildren {
-  authLayoutRoute: typeof authLayoutRouteWithChildren
-  DashboardLayoutRoute: typeof DashboardLayoutRouteWithChildren
-  publicIndexRoute: typeof publicIndexRoute
-}
+const ApiAiChatServerRouteWithChildren = ApiAiChatServerRoute._addFileChildren(
+  ApiAiChatServerRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   authLayoutRoute: authLayoutRouteWithChildren,
   DashboardLayoutRoute: DashboardLayoutRouteWithChildren,
   publicIndexRoute: publicIndexRoute,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/(auth)",
-        "/dashboard",
-        "/(public)/"
-      ]
-    },
-    "/(auth)": {
-      "filePath": "(auth)/layout.tsx",
-      "children": [
-        "/(auth)/forgot-password",
-        "/(auth)/login",
-        "/(auth)/register",
-        "/(auth)/reset-password",
-        "/(auth)/two-factor/otp",
-        "/(auth)/two-factor/",
-        "/(auth)/accept-invitation/$invitationId/"
-      ]
-    },
-    "/dashboard": {
-      "filePath": "dashboard/layout.tsx",
-      "children": [
-        "/dashboard/",
-        "/dashboard/chat/rag",
-        "/dashboard/chat/vercel",
-        "/dashboard/chat/",
-        "/dashboard/settings/"
-      ]
-    },
-    "/(auth)/forgot-password": {
-      "filePath": "(auth)/forgot-password.tsx",
-      "parent": "/(auth)"
-    },
-    "/(auth)/login": {
-      "filePath": "(auth)/login.tsx",
-      "parent": "/(auth)"
-    },
-    "/(auth)/register": {
-      "filePath": "(auth)/register.tsx",
-      "parent": "/(auth)"
-    },
-    "/(auth)/reset-password": {
-      "filePath": "(auth)/reset-password.tsx",
-      "parent": "/(auth)"
-    },
-    "/(public)/": {
-      "filePath": "(public)/index.tsx"
-    },
-    "/dashboard/": {
-      "filePath": "dashboard/index.tsx",
-      "parent": "/dashboard"
-    },
-    "/(auth)/two-factor/otp": {
-      "filePath": "(auth)/two-factor/otp.tsx",
-      "parent": "/(auth)"
-    },
-    "/dashboard/chat/rag": {
-      "filePath": "dashboard/chat/rag.tsx",
-      "parent": "/dashboard"
-    },
-    "/dashboard/chat/vercel": {
-      "filePath": "dashboard/chat/vercel.tsx",
-      "parent": "/dashboard"
-    },
-    "/(auth)/two-factor/": {
-      "filePath": "(auth)/two-factor/index.tsx",
-      "parent": "/(auth)"
-    },
-    "/dashboard/chat/": {
-      "filePath": "dashboard/chat/index.tsx",
-      "parent": "/dashboard"
-    },
-    "/dashboard/settings/": {
-      "filePath": "dashboard/settings/index.tsx",
-      "parent": "/dashboard"
-    },
-    "/(auth)/accept-invitation/$invitationId/": {
-      "filePath": "(auth)/accept-invitation/$invitationId/index.tsx",
-      "parent": "/(auth)"
-    }
-  }
+const rootServerRouteChildren: RootServerRouteChildren = {
+  DotwellKnownOauthAuthorizationServerServerRoute:
+    DotwellKnownOauthAuthorizationServerServerRoute,
+  ApiAiChatServerRoute: ApiAiChatServerRouteWithChildren,
+  ApiAuthSplatServerRoute: ApiAuthSplatServerRoute,
+  ApiTrpcSplatServerRoute: ApiTrpcSplatServerRoute,
+  ApiAiAgentSdkServerRoute: ApiAiAgentSdkServerRoute,
+  ApiAiMcpTransportServerRoute: ApiAiMcpTransportServerRoute,
+  ApiAiVercelChatServerRoute: ApiAiVercelChatServerRoute,
 }
-ROUTE_MANIFEST_END */
+export const serverRouteTree = rootServerRouteImport
+  ._addFileChildren(rootServerRouteChildren)
+  ._addFileTypes<FileServerRouteTypes>()

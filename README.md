@@ -367,6 +367,26 @@ Powered by [Better Auth](https://github.com/BetterTyped/better-auth), providing 
 
 5.  **Database Setup:**
     Ensure your PostgreSQL database is running and accessible.
+    
+    **Vector Extension Setup (Required for AI Features):**
+    This project includes vector embeddings for AI features. The `pg_vector` extension needs to be enabled:
+    
+    ```bash
+    # Automated setup (recommended)
+    bun run db:setup-vector
+    ```
+    
+    If the automated script fails, enable it manually:
+    1. Open your [Neon dashboard](https://console.neon.tech)
+    2. Navigate to SQL Editor
+    3. Run the following query:
+       ```sql
+       CREATE EXTENSION vector;
+       ```
+    
+    📖 **Reference:** [Neon pg_vector documentation](https://neon.tech/docs/extensions/pg_vector)
+    
+    **Schema Setup:**
     Push the schema (for development/initial setup):
     ```bash
     bun run db:push
@@ -442,6 +462,7 @@ The structure organizes code by feature and responsibility, keeping related code
 *   `bun run db:push`: Pushes the current Drizzle schema to the database.
 *   `bun run db:studio`: Opens Drizzle Kit Studio.
 *   `bun run db:neon-setup`: Sets up Neon database integration locally.
+*   `bun run db:setup-vector`: Enables the pg_vector extension for AI embedding features.
 *   `bun run add-ui-components <component-name>`: Adds shadcn/ui components.
 *   `bun run format`: Formats code using Biome.
 *   `bun run lint`: Lints code using Biome.

@@ -25,25 +25,9 @@ export const useLogin = () => {
         email,
         password,
         rememberMe,
-        // fetchOptions: {
-        //   onSuccess: (data) => {
-        //     console.log("loginWithCredentials onSuccess", data);
-        //     // if (data.) {
-        //     //   router.navigate({ to: "/dashboard" });
-        //     // } else {
-        //     //   router.navigate({ to: "/verify-email" });
-        //     // }
-        //   },
-        // },
       });
     },
-    onSuccess(response, variables, context) {
-      console.log(
-        "loginWithCredentials mutate onSuccess",
-        response,
-        variables,
-        context,
-      );
+    onSuccess(response) {
       if (response.data?.user.id) {
         router.navigate({ to: "/dashboard" });
       }

@@ -14,6 +14,7 @@ import { seo } from "@/lib/seo";
 import type { TRPCRouter } from "@/server/router";
 
 import i18n from "@/lib/intl/i18n";
+import { getServerTime } from "@/lib/server-time";
 import type { TRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import { ThemeProvider } from "next-themes";
 import React from "react";
@@ -60,11 +61,14 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   }),
   component: () => <RootDocument />,
   wrapInSuspense: true,
-  ssr: false,
+  beforeLoad: async ({ context }) => {
+    // This is a test to see if the server time is being fetched
+    const serverTime = await getServerTime();
+    console.log("serverTime", serverTime);
+  },
 });
 
 function RootDocument() {
- 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>

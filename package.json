@@ -103,7 +103,7 @@
     "framer-motion": "^12.16.0",
     "highlight.js": "^11.11.1",
     "i18next": "^25.2.1",
-    "i18next-browser-languagedetector": "^8.1.0",
+    "i18next-browser-languagedetector": "^8.2.0",
     "i18next-resources-to-backend": "^1.2.1",
     "input-otp": "^1.4.2",
     "install": "^0.13.0",
@@ -139,7 +139,7 @@
     "uuid": "^11.1.0",
     "vaul": "^1.1.2",
     "vite-tsconfig-paths": "^5.1.4",
-    "zod": "^3.25.57",
+    "zod": "^3.25.58",
     "zod-form-data": "^3.0.0"
   },
   "devDependencies": {

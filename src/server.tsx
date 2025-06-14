@@ -29,6 +29,7 @@ streamHandler = Sentry.wrapStreamHandlerWithSentry(defaultStreamHandler);
 
 const isProduction = process.env.NODE_ENV === "production";
 
+
 const middleware: AnyFunctionMiddleware[] = [
   createMiddleware({ type: "function" }).server(
     async ({ next, functionId, method, context, response }) => {

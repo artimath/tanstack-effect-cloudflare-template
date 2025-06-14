@@ -19,6 +19,7 @@ import type { TRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import { ThemeProvider } from "next-themes";
 import React from "react";
 import { I18nextProvider } from "react-i18next";
+import { wrapCreateRootRouteWithSentry } from "@sentry/tanstackstart-react";
 
 interface MyRouterContext {
   queryClient: QueryClient;
@@ -34,7 +35,7 @@ const TanStackRouterDevtools =
         })),
       );
 
-export const Route = createRootRouteWithContext<MyRouterContext>()({
+export const Route = wrapCreateRootRouteWithSentry(createRootRouteWithContext<MyRouterContext>()({
   head: () => ({
     meta: [
       {
@@ -66,7 +67,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     const serverTime = await getServerTime();
     console.log("serverTime", serverTime);
   },
-});
+}));
 
 function RootDocument() {
   return (

@@ -1,9 +1,12 @@
 import postgresPlugin from "@neondatabase/vite-plugin-postgres";
 import tailwindcss from "@tailwindcss/vite";
 import viteTsConfigPaths from "vite-tsconfig-paths";
-
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import { defineConfig } from "vite";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export default defineConfig({
   optimizeDeps: {
@@ -27,6 +30,19 @@ export default defineConfig({
       tsr: {
         routeToken: "layout",
       },
+      spa: {
+        enabled: true,
+      },
+
+    }),
+    sentryVitePlugin({
+      org: process.env.VITE_SENTRY_ORG,
+      project: process.env.VITE_SENTRY_PROJECT,
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+      // Only print logs for uploading source maps in CI
+      // Set to `true` to suppress logs
+      // silent: !process.env.CI,
+      // disable: process.env.NODE_ENV === "development",
     }),
   ],
 });

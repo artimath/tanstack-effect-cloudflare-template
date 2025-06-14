@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth/auth";
 import { getCookie } from "@tanstack/react-start/server";
 import { TRPCError, initTRPC } from "@trpc/server";
+import * as Sentry from "@sentry/node";
 
 import superjson from "superjson";
 import { ZodError } from "zod";
@@ -49,9 +50,16 @@ const t = initTRPC.context<Context>().create({
 });
 
 export const createTRPCRouter = t.router;
-export const publicProcedure = t.procedure;
 
-export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
+const sentryMiddleware = t.middleware(
+  Sentry.trpcMiddleware({
+    attachRpcInput: true,
+  }),
+);
+
+
+export const publicProcedure = t.procedure.use(sentryMiddleware);
+export const protectedProcedure = t.procedure.use(sentryMiddleware).use(({ ctx, next }) => {
   if (!ctx.session) {
     throw new TRPCError({
       code: "UNAUTHORIZED",

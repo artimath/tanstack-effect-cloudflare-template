@@ -32,6 +32,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { authClient } from "@/lib/auth/auth-client";
 import { useTranslation } from "@/lib/intl/react";
 import { cn } from "@/lib/utils";
@@ -45,6 +46,8 @@ import {
   RefreshCw,
   Trash,
   UserCircle,
+  AlertCircle,
+  ShieldX,
 } from "lucide-react";
 import { useState } from "react";
 import { Toaster, toast } from "sonner";
@@ -69,7 +72,7 @@ export default function AdminDashboard() {
     expirationDate: undefined as Date | undefined,
   });
 
-  const { data: users, isLoading: isUsersLoading } = useQuery({
+  const { data: users, isLoading: isUsersLoading, error: usersError } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
       const data = await authClient.admin.listUsers(
@@ -87,6 +90,13 @@ export default function AdminDashboard() {
 
       return data?.users || [];
     },
+    retry: (failureCount, error: any) => {
+      // Don't retry if it's a permission error
+      if (error?.status === 403 || error?.message?.includes("forbidden")) {
+        return false;
+      }
+      return failureCount < 2;
+    },
   });
 
   const handleCreateUser = async (e: React.FormEvent) => {
@@ -99,6 +109,11 @@ export default function AdminDashboard() {
         name: newUser.name,
         role: newUser.role,
       });
+      
+      if (result.error) {
+        throw new Error(result.error.message);
+      }
+      
       console.log(result);
       toast.success(t("USER_CREATED_SUCCESS"));
       setNewUser({ email: "", password: "", name: "", role: "user" });
@@ -106,8 +121,13 @@ export default function AdminDashboard() {
       queryClient.invalidateQueries({
         queryKey: ["users"],
       });
-    } catch (error) {
-      toast.error(t("FAILED_TO_CREATE_USER"));
+    } catch (error: any) {
+      const errorMessage = error?.message || t("FAILED_TO_CREATE_USER");
+      if (errorMessage.includes("403") || errorMessage.includes("forbidden")) {
+        toast.error("Access denied. You don't have permission to create users.");
+      } else {
+        toast.error(errorMessage);
+      }
     } finally {
       setIsLoading(undefined);
     }
@@ -116,13 +136,23 @@ export default function AdminDashboard() {
   const handleDeleteUser = async (id: string) => {
     setIsLoading(`delete-${id}`);
     try {
-      await authClient.admin.removeUser({ userId: id });
+      const result = await authClient.admin.removeUser({ userId: id });
+      
+      if (result.error) {
+        throw new Error(result.error.message);
+      }
+      
       toast.success(t("USER_DELETED_SUCCESS"));
       queryClient.invalidateQueries({
         queryKey: ["users"],
       });
-    } catch (error) {
-      toast.error(t("FAILED_TO_DELETE_USER"));
+    } catch (error: any) {
+      const errorMessage = error?.message || t("FAILED_TO_DELETE_USER");
+      if (errorMessage.includes("403") || errorMessage.includes("forbidden")) {
+        toast.error("Access denied. You don't have permission to delete users.");
+      } else {
+        toast.error(errorMessage);
+      }
     } finally {
       setIsLoading(undefined);
     }
@@ -131,10 +161,20 @@ export default function AdminDashboard() {
   const handleRevokeSessions = async (id: string) => {
     setIsLoading(`revoke-${id}`);
     try {
-      await authClient.admin.revokeUserSessions({ userId: id });
+      const result = await authClient.admin.revokeUserSessions({ userId: id });
+      
+      if (result.error) {
+        throw new Error(result.error.message);
+      }
+      
       toast.success(t("SESSIONS_REVOKED_SUCCESS"));
-    } catch (error) {
-      toast.error(t("FAILED_TO_REVOKE_SESSIONS"));
+    } catch (error: any) {
+      const errorMessage = error?.message || t("FAILED_TO_REVOKE_SESSIONS");
+      if (errorMessage.includes("403") || errorMessage.includes("forbidden")) {
+        toast.error("Access denied. You don't have permission to revoke user sessions.");
+      } else {
+        toast.error(errorMessage);
+      }
     } finally {
       setIsLoading(undefined);
     }
@@ -143,11 +183,21 @@ export default function AdminDashboard() {
   const handleImpersonateUser = async (id: string) => {
     setIsLoading(`impersonate-${id}`);
     try {
-      await authClient.admin.impersonateUser({ userId: id });
+      const result = await authClient.admin.impersonateUser({ userId: id });
+      
+      if (result.error) {
+        throw new Error(result.error.message);
+      }
+      
       toast.success(t("IMPERSONATED_USER"));
       navigate({ to: "/" });
-    } catch (error) {
-      toast.error(t("FAILED_TO_IMPERSONATE_USER"));
+    } catch (error: any) {
+      const errorMessage = error?.message || t("FAILED_TO_IMPERSONATE_USER");
+      if (errorMessage.includes("403") || errorMessage.includes("forbidden")) {
+        toast.error("Access denied. You don't have permission to impersonate users.");
+      } else {
+        toast.error(errorMessage);
+      }
     } finally {
       setIsLoading(undefined);
     }
@@ -160,25 +210,36 @@ export default function AdminDashboard() {
       if (!banForm.expirationDate) {
         throw new Error(t("EXPIRATION_DATE_REQUIRED"));
       }
-      await authClient.admin.banUser({
+      
+      const result = await authClient.admin.banUser({
         userId: banForm.userId,
         banReason: banForm.reason,
         banExpiresIn: banForm.expirationDate.getTime() - new Date().getTime(),
       });
+      
+      if (result.error) {
+        throw new Error(result.error.message);
+      }
+      
       toast.success(t("USER_BANNED_SUCCESS"));
       setIsBanDialogOpen(false);
       queryClient.invalidateQueries({
         queryKey: ["users"],
       });
-    } catch (error) {
-      toast.error(t("FAILED_TO_BAN_USER"));
+    } catch (error: any) {
+      const errorMessage = error?.message || t("FAILED_TO_BAN_USER");
+      if (errorMessage.includes("403") || errorMessage.includes("forbidden")) {
+        toast.error("Access denied. You don't have permission to ban users.");
+      } else {
+        toast.error(errorMessage);
+      }
     } finally {
       setIsLoading(undefined);
     }
   };
 
   return (
-    <div className="container mx-auto p-4 space-y-8">
+    <div className="space-y-6">
       <Toaster richColors />
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
@@ -331,9 +392,32 @@ export default function AdminDashboard() {
           </Dialog>
         </CardHeader>
         <CardContent>
+          {usersError && (
+            <Alert variant="destructive" className="mb-6">
+              <ShieldX className="h-4 w-4" />
+              <AlertDescription>
+                {usersError?.message?.includes("403") || usersError?.message?.includes("forbidden") 
+                  ? "Access denied. You don't have admin privileges to view this section."
+                  : usersError?.message || "Failed to load admin dashboard. Please try again later."}
+              </AlertDescription>
+            </Alert>
+          )}
+          
           {isUsersLoading ? (
             <div className="flex justify-center items-center h-64">
               <Loader2 className="h-8 w-8 animate-spin" />
+            </div>
+          ) : usersError ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="text-center space-y-4">
+                <ShieldX className="h-12 w-12 text-muted-foreground mx-auto" />
+                <div>
+                  <p className="text-lg font-medium">Admin Access Required</p>
+                  <p className="text-sm text-muted-foreground">
+                    Contact your administrator to gain access to this section
+                  </p>
+                </div>
+              </div>
             </div>
           ) : (
             <Table>

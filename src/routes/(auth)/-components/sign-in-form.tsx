@@ -11,12 +11,13 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useLogin } from "@/hooks/auth-hooks";
 
 import { useTranslation } from "@/lib/intl/react";
 import { cn } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
-import { Key, Loader2 } from "lucide-react";
+import { Key, Loader2, AlertCircle } from "lucide-react";
 import { useState } from "react";
 
 export default function SignInForm() {
@@ -37,6 +38,33 @@ export default function SignInForm() {
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
+          {/* Display login errors */}
+          {loginWithCredentials.error && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                {loginWithCredentials.error.message || "Login failed. Please check your credentials and try again."}
+              </AlertDescription>
+            </Alert>
+          )}
+          
+          {loginWithPasskey.error && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                {loginWithPasskey.error.message || "Passkey authentication failed. Please try again."}
+              </AlertDescription>
+            </Alert>
+          )}
+          
+          {loginWithSocial.error && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                {loginWithSocial.error.message || "Social login failed. Please try again."}
+              </AlertDescription>
+            </Alert>
+          )}
           <div className="grid gap-2">
             <Label htmlFor="email">{t("EMAIL")}</Label>
             <Input

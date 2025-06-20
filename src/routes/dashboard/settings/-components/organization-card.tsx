@@ -66,8 +66,7 @@ export function OrganizationCard(props: {
   );
 
   return (
-    <div className="flex w-full flex-1 p-4">
-      <Card className="w-full">
+    <Card className="w-full">
         <CardHeader>
           <CardTitle>{t("ORGANIZATION")}</CardTitle>
           <div className="flex justify-between">
@@ -327,7 +326,6 @@ export function OrganizationCard(props: {
           </div>
         </CardContent>
       </Card>
-    </div>
   );
 }
 

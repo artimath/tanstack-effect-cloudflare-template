@@ -21,23 +21,41 @@ export const useLogin = () => {
       password,
       rememberMe,
     }: { email: string; password: string; rememberMe: boolean }) => {
-      return await authClient.signIn.email({
+      const result = await authClient.signIn.email({
         email,
         password,
         rememberMe,
       });
+      
+      if (result.error) {
+        throw new Error(result.error.message || "Authentication failed");
+      }
+      
+      return result;
     },
     onSuccess(response) {
       if (response.data?.user.id) {
         router.navigate({ to: "/dashboard" });
       }
     },
+    onError(error: any) {
+      console.error("Login error:", error);
+    },
   });
 
   const loginWithPasskey = useMutation({
-    mutationFn: async () => await authClient.signIn.passkey(),
+    mutationFn: async () => {
+      const result = await authClient.signIn.passkey();
+      if (result?.error) {
+        throw new Error(result.error.message || "Passkey authentication failed");
+      }
+      return result;
+    },
     onSuccess: () => {
       router.navigate({ to: "/dashboard" });
+    },
+    onError(error: any) {
+      console.error("Passkey login error:", error);
     },
   });
 
@@ -45,11 +63,21 @@ export const useLogin = () => {
     mutationFn: async ({
       provider,
       callbackURL,
-    }: { provider: SocialProvider; callbackURL: string }) =>
-      await authClient.signIn.social({
+    }: { provider: SocialProvider; callbackURL: string }) => {
+      const result = await authClient.signIn.social({
         provider,
         callbackURL: callbackURL || "/dashboard",
-      }),
+      });
+      
+      if (result.error) {
+        throw new Error(result.error.message || "Social authentication failed");
+      }
+      
+      return result;
+    },
+    onError(error: any) {
+      console.error("Social login error:", error);
+    },
   });
 
   return {

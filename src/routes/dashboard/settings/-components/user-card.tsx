@@ -64,8 +64,7 @@ export default function UserCard(props: {
     useState<boolean>(false);
 
   return (
-    <div className="flex w-full flex-1 p-4">
-      <Card className="w-full">
+    <Card className="w-full">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>{t("USER")}</CardTitle>
           <LanguageSwitch />
@@ -443,6 +442,5 @@ export default function UserCard(props: {
           </Button>
         </CardFooter>
       </Card>
-    </div>
   );
 }

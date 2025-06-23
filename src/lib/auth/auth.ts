@@ -24,7 +24,10 @@ export const auth = betterAuth({
   }),
   secret: env.BETTER_AUTH_SECRET,
   basePath: "/api/auth",
-  baseURL: "http://localhost:3000",
+  baseURL: env.SERVER_URL   ,
+  trustedOrigins: [
+    env.SERVER_URL,
+  ],
   onAPIError: {
     throw: true,
     onError: (error) => {

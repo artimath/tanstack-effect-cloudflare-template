@@ -5,7 +5,7 @@ config();
 
 export const env = createEnv({
   server: {
-    SERVER_URL: z.string().url().optional(),
+    SERVER_URL: z.string().url().optional().default("http://localhost:3000"),
     DATABASE_URL: z.string().url(),
     RESEND_API_KEY: z.string(),
     BETTER_AUTH_SECRET: z.string(),

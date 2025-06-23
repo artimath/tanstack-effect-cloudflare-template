@@ -476,10 +476,6 @@ The structure organizes code by feature and responsibility, keeping related code
     *   [x] Organization Support (Multi-tenancy/Teams)
 *   [x] **Refactor Auth Hooks:** Ensure auth logic (e.g., `useSession`) is cleanly extracted into custom hooks.
 *   [x] **MCP Integration:** Model Context Protocol server implementation with example tools.
-*   [ ] **Standardize Form Usage:** Document preferred approach (React Hook Form vs. TanStack Form) or consolidate.
-*   [ ] **Database Seeding:** Create scripts for populating development/testing data.
-*   [ ] **Advanced RBAC:** Implement fine-grained Role-Based Access Control if needed.
-*   [ ] **Performance Optimization:** Bundle analysis, code splitting, image optimization.
 *   [x] **i18n Management:** Add Internationalization (translation platform integration).
 *   [x] **AI SDK Examples:** Add examples using `@ai-sdk/react`.
 *   [x] **Email Templates:** Add more examples/implementations using `react-email`.

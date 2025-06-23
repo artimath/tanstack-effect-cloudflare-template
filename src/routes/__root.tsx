@@ -62,11 +62,7 @@ export const Route = wrapCreateRootRouteWithSentry(createRootRouteWithContext<My
   }),
   component: () => <RootDocument />,
   wrapInSuspense: true,
-  beforeLoad: async ({ context }) => {
-    // This is a test to see if the server time is being fetched
-    const serverTime = await getServerTime();
-    console.log("serverTime", serverTime);
-  },
+
 }));
 
 function RootDocument() {

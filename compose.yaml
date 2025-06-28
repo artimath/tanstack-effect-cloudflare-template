@@ -1,0 +1,27 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
+      args:
+        # Build-time environment variables
+        VITE_API_URL: 'http://localhost:3000'
+        ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+        OPENAI_API_KEY: ${OPENAI_API_KEY}
+    ports:
+      - "3000:3000"
+    environment:
+      # Runtime environment variables
+      - NODE_ENV=production
+      - PORT=3000
+      - DATABASE_URL=${DATABASE_URL}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    healthcheck:
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      test: ['CMD-SHELL', 'wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1']
+    volumes:
+      # Mount .env file for local development (contains cloud DATABASE_URL)
+      - ./.env:/app/.env:ro

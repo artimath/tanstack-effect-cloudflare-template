@@ -30,7 +30,17 @@
     "add-ui-components": "bunx --bun shadcn@latest add ",
     "format": "biome format --write ./src",
     "lint": "biome lint",
-    "check": "biome check"
+    "check": "biome check",
+    "docker:build": "docker build -t fullstack-app .",
+    "docker:build:dev": "docker build -f Dockerfile.dev -t fullstack-app:dev .",
+    "docker:run": "docker run -p 3000:3000 --env-file .env fullstack-app",
+    "docker:run:dev": "docker run -p 3000:3000 --env-file .env fullstack-app:dev",
+    "docker:clean": "docker system prune -f && docker image prune -f",
+    "compose:up": "docker compose up --build",
+    "compose:up:detached": "docker compose up --build -d",
+    "compose:down": "docker compose down",
+    "compose:logs": "docker compose logs -f",
+    "compose:clean": "docker compose down -v --remove-orphans && docker system prune -f"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.2.12",

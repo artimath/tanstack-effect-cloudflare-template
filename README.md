@@ -468,6 +468,71 @@ The structure organizes code by feature and responsibility, keeping related code
 *   `bun run lint`: Lints code using Biome.
 *   `bun run check`: Runs Biome check (format, lint, safety).
 
+## Docker Deployment
+
+This project includes a complete Docker setup with automated CI/CD pipeline for containerized deployment.
+
+### GitHub Actions Workflow
+
+The project uses GitHub Actions for automated Docker image building and deployment:
+
+**Workflow:** `.github/workflows/build-docker.yml`
+
+**Features:**
+- **Multi-stage build**: Builds application with Bun, then creates optimized Docker image
+- **Container Registry**: Pushes images to GitHub Container Registry (ghcr.io)
+- **Caching**: Uses GitHub Actions cache for faster builds
+- **Automated tagging**: Creates tags based on branch names and commit SHAs
+- **Environment handling**: Injects build-time and runtime environment variables
+- **Deployment stage**: Includes deployment job for production environments
+
+**Triggers:**
+- Push to `dev-test` and `main-test` branches (configure for your preferred branches)
+- Manual workflow dispatch
+
+**Build Process:**
+1. **Setup**: Installs Bun and dependencies
+2. **Build**: Compiles application with environment variables
+3. **Docker**: Creates multi-stage Docker image with optimized production build
+4. **Push**: Uploads image to GitHub Container Registry
+5. **Deploy**: Deploys to production (when pushed to main branch)
+
+### Local Docker Testing
+
+Test your Docker setup locally using the included Docker Compose configuration:
+
+**File:** `compose.yaml`
+
+```bash
+# Build and run the application in Docker
+docker-compose up --build
+
+# Run in detached mode
+docker-compose up -d --build
+
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
+```
+
+**Configuration:**
+- **Build context**: Uses `Dockerfile.dev` for development-oriented builds
+- **Port mapping**: Exposes application on `localhost:3000`
+- **Environment variables**: Automatically loads from your `.env` file
+- **Health checks**: Monitors application health with built-in checks
+- **Volume mounting**: Mounts `.env` file for configuration
+
+**Environment Setup:**
+The Docker Compose setup automatically uses your local `.env` file, so ensure you have:
+- `DATABASE_URL`: Your Neon database connection string
+- `ANTHROPIC_API_KEY`: For AI features
+- `OPENAI_API_KEY`: For AI features
+- Other required environment variables
+
+This allows you to test the exact same containerized environment that will be used in production, ensuring consistency across development and deployment environments.
+
 ## TODO List & Potential Improvements
 
 *   [x] **Implement Planned Auth Features:**
@@ -481,6 +546,6 @@ The structure organizes code by feature and responsibility, keeping related code
 *   [x] **Email Templates:** Add more examples/implementations using `react-email`.
 *   [x] **Sentry Configuration:** Add details on advanced Sentry setup (sourcemaps, user identification).
 *   [x] **Theme Toggle:** Implement UI for switching between light/dark themes (uses `next-themes`).
-*   [ ] **CI/CD:** Set up a basic CI/CD pipeline (e.g., GitHub Actions for linting, testing, building).
+*   [x] **CI/CD:** Set up a basic CI/CD pipeline (e.g., GitHub Actions for linting, testing, building).
 *   [ ] **Deployment Guides:** Add specific guides (Vercel, Docker, etc.).
 

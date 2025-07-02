@@ -1,5 +1,5 @@
-import { AppSidebar } from "@/components/app-sidebar";
-import { AuthProvider } from "@/components/auth-provider";
+import { AppSidebar } from "@/features/app/app-sidebar";
+import { AuthProvider } from "@/features/auth/auth-provider";
 import {
   Breadcrumb,
   BreadcrumbItem,

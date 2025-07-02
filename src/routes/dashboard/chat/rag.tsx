@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { Chat } from "@/components/ai-chat-rag";
-import UploadComponent from "@/components/file-upload";
+import { Chat } from "@/features/ai/chat-rag";
+import UploadComponent from "@/features/files/file-upload";
 import { } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/dashboard/chat/rag")({

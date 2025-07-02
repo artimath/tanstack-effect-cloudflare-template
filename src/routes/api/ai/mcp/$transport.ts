@@ -1,4 +1,4 @@
-import { tools } from "@/lib/ai/mcp-tools";
+import { tools } from "@/features/ai/mcp-tools";
 import { auth } from "@/lib/auth/auth";
 import { createServerFileRoute } from "@tanstack/react-start/server";
 

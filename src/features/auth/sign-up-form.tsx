@@ -16,7 +16,7 @@ import { Loader2, X } from "lucide-react";
 
 import { authClient } from "@/lib/auth/auth-client";
 import { useTranslation } from "@/lib/intl/react";
-import { useNavigate, useRouter } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 
 export function SignUpForm() {

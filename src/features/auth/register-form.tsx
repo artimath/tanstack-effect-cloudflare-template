@@ -2,8 +2,8 @@ import FormFieldInfo from "@/components/form-field-info";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useRegister } from "@/hooks/auth-hooks";
-import { authClient } from "@/lib/auth/auth-client";
+import { useRegister } from "@/features/auth/auth-hooks";
+
 import { useTranslation } from "@/lib/intl/react";
 import { useForm } from "@tanstack/react-form";
 import { useNavigate } from "@tanstack/react-router";

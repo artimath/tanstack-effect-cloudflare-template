@@ -14,7 +14,6 @@ import { seo } from "@/lib/seo";
 import type { TRPCRouter } from "@/server/router";
 
 import i18n from "@/lib/intl/i18n";
-import { getServerTime } from "@/lib/server-time";
 import type { TRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import { ThemeProvider } from "next-themes";
 import React from "react";

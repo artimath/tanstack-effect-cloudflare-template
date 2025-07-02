@@ -1,5 +1,5 @@
-import { findRelevantContent } from "@/features/ai-embedding";
-import { createResource } from "@/features/resource-create";
+import { findRelevantContent } from "@/features/ai/embedding";
+import { createResource } from "@/features/resource/create";
 
 import { openai } from "@ai-sdk/openai";
 

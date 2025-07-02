@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router"
 import { authClient } from "@/lib/auth/auth-client";
 import { useQuery } from "@tanstack/react-query";
-import AdminDashboard from "./-components/admin";
-import { OrganizationCard } from "./-components/organization-card";
-import UserCard from "./-components/user-card";
+import AdminDashboard from "@/features/user/admin";
+import { OrganizationCard } from "@/features/organization/organization-card";
+import UserCard from "@/features/user/user-card";
 import { Separator } from "@/components/ui/separator";
 import { Loader2 } from "lucide-react";
 import { useTranslation } from "@/lib/intl/react";

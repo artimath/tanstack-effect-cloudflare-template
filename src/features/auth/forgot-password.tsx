@@ -11,8 +11,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuthHelpers } from "@/hooks/auth-hooks";
-import { authClient } from "@/lib/auth/auth-client";
+import { useAuthHelpers } from "@/features/auth/auth-hooks";
+
 import { useTranslation } from "@/lib/intl/react";
 import { Link } from "@tanstack/react-router";
 import { AlertCircle, ArrowLeft, CheckCircle2 } from "lucide-react";

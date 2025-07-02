@@ -23,7 +23,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useLogout } from "@/hooks/auth-hooks";
+import { useLogout } from "@/features/auth/auth-hooks";
 import { authClient } from "@/lib/auth/auth-client";
 import { useRouter } from "@tanstack/react-router";
 

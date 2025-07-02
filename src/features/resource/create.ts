@@ -1,6 +1,6 @@
 "use server";
 
-import { generateEmbeddings } from "@/features/ai-embedding";
+import { generateEmbeddings } from "@/features/ai/embedding";
 import { db } from "@/lib/db";
 import { embeddings as embeddingsTable } from "@/lib/db/schema/embeddings";
 import {

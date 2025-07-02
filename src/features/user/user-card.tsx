@@ -34,7 +34,7 @@ import {
   ShieldOff,
 } from "lucide-react";
 
-import { useLogout } from "@/hooks/auth-hooks";
+import { useLogout } from "@/features/auth/auth-hooks";
 import { authClient } from "@/lib/auth/auth-client";
 import type { AuthClient } from "@/lib/auth/auth-client";
 import { useState } from "react";
@@ -42,11 +42,11 @@ import { useTranslation } from "react-i18next";
 import QRCode from "react-qr-code";
 import { toast } from "sonner";
 import { UAParser } from "ua-parser-js";
-import { AddPasskey } from "./add-passkey";
-import { ChangePassword } from "./change-password";
-import { ChangeUser } from "./change-user";
-import { LanguageSwitch } from "./language-switch";
-import { ListPasskeys } from "./list-passkeys";
+import { AddPasskey } from "@/features/auth/add-passkey";
+import { ChangePassword } from "@/features/auth/change-password";
+import { ChangeUser } from "@/features/auth/change-user";
+import { LanguageSwitch } from "@/components/language-switch";
+import { ListPasskeys } from "@/features/auth/list-passkeys";
 
 export default function UserCard(props: {
   activeSessions: AuthClient["$Infer"]["Session"]["session"][];

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { db } from "../db";
+import { db } from "@/lib/db";
 
 const getCatFact = async () => {
   try {

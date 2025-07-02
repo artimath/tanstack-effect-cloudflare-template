@@ -9,10 +9,9 @@ import {
 } from "lucide-react";
 import * as React from "react";
 
-import { NavItems } from "@/components/nav-items";
-
-import { NavUser } from "@/components/nav-user";
-import { OrganizationSwitcher } from "@/components/organization-switcher";
+import { NavItems } from "@/features/app/nav-items";
+import { NavUser } from "@/features/app/nav-user";
+import { OrganizationSwitcher } from "@/features/organization/organization-switcher";
 import {
   Sidebar,
   SidebarContent,

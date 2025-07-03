@@ -1,7 +1,4 @@
-import {
-  ErrorComponent,
-  createRouter as createTanstackRouter,
-} from "@tanstack/react-router";
+import { createRouter as createTanstackRouter, ErrorComponent } from "@tanstack/react-router";
 import { routerWithQueryClient } from "@tanstack/react-router-with-query";
 import * as TanstackQuery from "./lib/trpc/root-provider";
 
@@ -34,11 +31,7 @@ export const createRouter = () => {
       defaultNotFoundComponent: NotFound,
       defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
       Wrap: (props: { children: React.ReactNode }) => {
-        return (
-          <TanstackQuery.Provider queryClient={queryClient}>
-            {props.children}
-          </TanstackQuery.Provider>
-        );
+        return <TanstackQuery.Provider queryClient={queryClient}>{props.children}</TanstackQuery.Provider>;
       },
     }),
     queryClient,

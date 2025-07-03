@@ -1,17 +1,13 @@
-
-import { Button } from "@/components/ui/button";
-
-import { Check } from "lucide-react";
-
+import { Check, Globe } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Globe } from "lucide-react";
-import { useTranslation } from "react-i18next";
 
 export function LanguageSwitch() {
   const { t, i18n } = useTranslation();
@@ -28,31 +24,19 @@ export function LanguageSwitch() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem
-          onClick={() => i18n.changeLanguage("en")}
-          className="flex justify-between"
-        >
+        <DropdownMenuItem onClick={() => i18n.changeLanguage("en")} className="flex justify-between">
           {t("ENGLISH")}
           {i18n.language === "en" && <Check size={16} />}
         </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => i18n.changeLanguage("de")}
-          className="flex justify-between"
-        >
+        <DropdownMenuItem onClick={() => i18n.changeLanguage("de")} className="flex justify-between">
           {t("GERMAN")}
           {i18n.language === "de" && <Check size={16} />}
         </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => i18n.changeLanguage("pt")}
-          className="flex justify-between"
-        >
+        <DropdownMenuItem onClick={() => i18n.changeLanguage("pt")} className="flex justify-between">
           {t("PORTUGUESE")}
           {i18n.language === "pt" && <Check size={16} />}
         </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => i18n.changeLanguage("es")}
-          className="flex justify-between"
-        >
+        <DropdownMenuItem onClick={() => i18n.changeLanguage("es")} className="flex justify-between">
           {t("SPANISH")}
           {i18n.language === "es" && <Check size={16} />}
         </DropdownMenuItem>

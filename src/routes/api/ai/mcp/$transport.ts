@@ -1,8 +1,7 @@
+import { createServerFileRoute } from "@tanstack/react-start/server";
+import { createMcpHandler } from "@vercel/mcp-adapter";
 import { tools } from "@/features/ai/mcp-tools";
 import { auth } from "@/lib/auth/auth";
-import { createServerFileRoute } from "@tanstack/react-start/server";
-
-import { createMcpHandler } from "@vercel/mcp-adapter";
 
 const handler = async (req: Request) => {
   const session = await auth.api.getMcpSession({
@@ -24,12 +23,7 @@ const handler = async (req: Request) => {
       // biome-ignore lint/complexity/noForEach: <explanation>
       tools.forEach((tool) => {
         console.log("🌐 Registering tool", tool.name);
-        server.tool(
-          tool.name,
-          tool.description,
-          tool.inputSchema ? tool.inputSchema.shape : {},
-          tool.callback,
-        );
+        server.tool(tool.name, tool.description, tool.inputSchema ? tool.inputSchema.shape : {}, tool.callback);
       });
     },
     {
@@ -58,9 +52,7 @@ const handler = async (req: Request) => {
   )(req);
 };
 
-export const ServerRoute = createServerFileRoute(
-  "/api/ai/mcp/$transport",
-).methods({
+export const ServerRoute = createServerFileRoute("/api/ai/mcp/$transport").methods({
   POST: async ({ request }) => {
     return handler(request);
   },

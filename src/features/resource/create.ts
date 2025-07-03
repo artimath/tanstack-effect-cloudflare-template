@@ -3,11 +3,7 @@
 import { generateEmbeddings } from "@/features/ai/embedding";
 import { db } from "@/lib/db";
 import { embeddings as embeddingsTable } from "@/lib/db/schema/embeddings";
-import {
-  type NewResourceParams,
-  insertResourceSchema,
-  resources,
-} from "@/lib/db/schema/resources";
+import { insertResourceSchema, type NewResourceParams, resources } from "@/lib/db/schema/resources";
 
 export const createResource = async (input: NewResourceParams) => {
   const { content } = insertResourceSchema.parse(input);

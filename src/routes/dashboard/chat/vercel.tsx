@@ -1,6 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute } from "@tanstack/react-router";
 import { Chat } from "@/features/ai/chat-rag";
-import { } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/dashboard/chat/vercel")({
   component: RouteComponent,

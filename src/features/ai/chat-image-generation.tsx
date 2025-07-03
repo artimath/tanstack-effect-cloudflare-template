@@ -1,16 +1,11 @@
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { type UseChatHelpers, useChat } from "@ai-sdk/react";
-
 import { ArrowUpIcon, StopCircleIcon } from "lucide-react";
 import { memo, useEffect, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 // Suggestion card component
-function ChatWelcome({
-  onSelectSuggestion,
-}: {
-  onSelectSuggestion: (suggestion: string) => void;
-}) {
+function ChatWelcome({ onSelectSuggestion }: { onSelectSuggestion: (suggestion: string) => void }) {
   const suggestions = [
     {
       title: "App Features",
@@ -35,18 +30,18 @@ function ChatWelcome({
   ];
 
   return (
-    <div className="flex flex-col items-center justify-center space-y-6 mt-12">
-      <h3 className="text-xl font-medium">How can I help you today?</h3>
-      <div className="grid grid-cols-2 gap-3 w-full max-w-lg">
+    <div className="mt-12 flex flex-col items-center justify-center space-y-6">
+      <h3 className="font-medium text-xl">How can I help you today?</h3>
+      <div className="grid w-full max-w-lg grid-cols-2 gap-3">
         {suggestions.map((suggestion) => (
           <button
             key={suggestion.title}
             type="button"
             onClick={() => onSelectSuggestion(suggestion.prompt)}
-            className="p-4 border rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 text-left"
+            className="cursor-pointer rounded-lg border p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-800"
           >
             <p className="font-medium">{suggestion.title}</p>
-            <p className="text-sm text-gray-500">{suggestion.description}</p>
+            <p className="text-gray-500 text-sm">{suggestion.description}</p>
           </button>
         ))}
       </div>
@@ -55,15 +50,7 @@ function ChatWelcome({
 }
 
 export function Chat() {
-  const {
-    messages,
-    input,
-    handleInputChange,
-    handleSubmit,
-    status,
-    setMessages,
-    stop,
-  } = useChat({
+  const { messages, input, handleInputChange, handleSubmit, status, setMessages, stop } = useChat({
     api: "/api/ai/chat/image/generation",
   });
 
@@ -97,8 +84,8 @@ export function Chat() {
   }, [status]);
 
   return (
-    <div className="relative w-full flex flex-col items-center justify-center gap-4">
-      <div className="space-y-4 mb-20 w-full max-w-2xl mx-auto overflow-y-auto">
+    <div className="relative flex w-full flex-col items-center justify-center gap-4">
+      <div className="mx-auto mb-20 w-full max-w-2xl space-y-4 overflow-y-auto">
         {messages.length > 0 ? (
           messages.map((m) => (
             <div key={m.id} className="whitespace-pre-wrap">
@@ -107,8 +94,7 @@ export function Chat() {
                 {m.parts
                   ? m.parts.map((ti) =>
                       ti.type === "tool-invocation" ? (
-                        ti.toolInvocation.toolName === "generateImage" &&
-                        ti.toolInvocation.state === "result" ? (
+                        ti.toolInvocation.toolName === "generateImage" && ti.toolInvocation.state === "result" ? (
                           <img
                             key={ti.toolInvocation.toolCallId}
                             src={`data:image/png;base64,${ti.toolInvocation.result.image}`}
@@ -118,10 +104,7 @@ export function Chat() {
                             onLoad={scrollToBottom}
                           />
                         ) : (
-                          <div
-                            key={ti.toolInvocation.toolCallId}
-                            className="animate-pulse"
-                          >
+                          <div key={ti.toolInvocation.toolCallId} className="animate-pulse">
                             Generating image...
                           </div>
                         )
@@ -138,19 +121,16 @@ export function Chat() {
         <div ref={messagesEndRef} />
       </div>
 
-      <form
-        onSubmit={handleSubmit}
-        className="relative w-full max-w-xl flex flex-col items-center justify-center"
-      >
-        <div className="fixed bottom-0 w-full max-w-lg mb-8 z-10 bg-background">
-          <div className="relative flex flex-row justify-between items-center">
+      <form onSubmit={handleSubmit} className="relative flex w-full max-w-xl flex-col items-center justify-center">
+        <div className="fixed bottom-0 z-10 mb-8 w-full max-w-lg bg-background">
+          <div className="relative flex flex-row items-center justify-between">
             <Textarea
               data-testid="multimodal-input"
               ref={textareaRef}
               placeholder="Send a message..."
               value={input}
               onChange={handleInputChange}
-              className="w-full p-2 border border-gray-300 rounded shadow-xl pr-10"
+              className="w-full rounded border border-gray-300 p-2 pr-10 shadow-xl"
               rows={1}
               autoFocus
               onKeyDown={(e) => {
@@ -166,11 +146,7 @@ export function Chat() {
               {status === "submitted" ? (
                 <StopButton stop={stop} setMessages={setMessages} />
               ) : (
-                <SendButton
-                  input={input}
-                  submitForm={handleSubmit}
-                  uploadQueue={[]}
-                />
+                <SendButton input={input} submitForm={handleSubmit} uploadQueue={[]} />
               )}
             </div>
           </div>
@@ -180,17 +156,11 @@ export function Chat() {
   );
 }
 
-function PureStopButton({
-  stop,
-  setMessages,
-}: {
-  stop: () => void;
-  setMessages: UseChatHelpers["setMessages"];
-}) {
+function PureStopButton({ stop, setMessages }: { stop: () => void; setMessages: UseChatHelpers["setMessages"] }) {
   return (
     <Button
       data-testid="stop-button"
-      className="rounded-full p-1.5 h-fit border dark:border-zinc-600 "
+      className="h-fit rounded-full border p-1.5 dark:border-zinc-600 "
       onClick={(event) => {
         event.preventDefault();
         stop();
@@ -216,7 +186,7 @@ function PureSendButton({
   return (
     <Button
       data-testid="send-button"
-      className="rounded-full p-1.5 h-fit border dark:border-zinc-600"
+      className="h-fit rounded-full border p-1.5 dark:border-zinc-600"
       onClick={(event) => {
         event.preventDefault();
         submitForm();
@@ -229,8 +199,7 @@ function PureSendButton({
 }
 
 const SendButton = memo(PureSendButton, (prevProps, nextProps) => {
-  if (prevProps.uploadQueue.length !== nextProps.uploadQueue.length)
-    return false;
+  if (prevProps.uploadQueue.length !== nextProps.uploadQueue.length) return false;
   if (prevProps.input !== nextProps.input) return false;
   return true;
 });

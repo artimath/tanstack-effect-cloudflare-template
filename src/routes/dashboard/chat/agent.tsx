@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute } from "@tanstack/react-router";
 import { Chat } from "@/features/ai/chat-rag";
 
 export const Route = createFileRoute("/dashboard/chat/agent")({

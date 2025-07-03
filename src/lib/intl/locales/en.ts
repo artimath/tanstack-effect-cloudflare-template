@@ -124,8 +124,7 @@ export default {
   INVITED_BY: "has invited you to join",
   INVITATION_SENT_TO: "This invitation was sent to",
   WELCOME_TO: "Welcome to",
-  JOIN_SUCCESS:
-    "You've successfully joined the organization. We're excited to have you on board!",
+  JOIN_SUCCESS: "You've successfully joined the organization. We're excited to have you on board!",
   INVITATION_DECLINED: "Invitation Declined",
   DECLINED_MESSAGE: "You've declined the invitation to join",
   DECLINE: "Decline",
@@ -150,8 +149,7 @@ export default {
   INVITES: "Invites",
   NO_ACTIVE_INVITATIONS: "No Active Invitations",
   CANT_INVITE_PERSONAL: "You can't invite members to your personal workspace.",
-  CREATE_ORGANIZATION:
-    "Create a new organization to collaborate with your team.",
+  CREATE_ORGANIZATION: "Create a new organization to collaborate with your team.",
   ORGANIZATION_NAME: "Organization Name",
   ORGANIZATION_SLUG: "Organization Slug",
   LOGO: "Logo",
@@ -179,8 +177,7 @@ export default {
   SHOW_QR_CODE: "Show QR Code",
   DISABLE_2FA: "Disable 2FA",
   ENABLE_2FA: "Enable 2FA",
-  DISABLE_2FA_DESC:
-    "Disable the second factor authentication from your account",
+  DISABLE_2FA_DESC: "Disable the second factor authentication from your account",
   ENABLE_2FA_DESC: "Enable 2FA to secure your account",
   ENTER_OTP: "Enter OTP",
   SIGN_OUT_DEVICES: "Sign out from other devices",
@@ -192,8 +189,7 @@ export default {
   FULL_NAME: "Full Name",
   UPDATE: "Update",
   ADD_NEW_PASSKEY: "Add New Passkey",
-  ADD_PASSKEY_DESC:
-    "Create a new passkey to securely access your account without a password.",
+  ADD_PASSKEY_DESC: "Create a new passkey to securely access your account without a password.",
   PASSKEY_NAME: "Passkey Name",
   CREATE_PASSKEY: "Create Passkey",
   LIST_PASSKEYS: "List of passkeys",

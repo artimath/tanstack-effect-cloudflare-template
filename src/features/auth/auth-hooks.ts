@@ -1,8 +1,8 @@
-import { authClient } from "@/lib/auth/auth-client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
 import type { ErrorContext } from "better-auth/react";
 import type { SocialProvider } from "better-auth/social-providers";
+import { authClient } from "@/lib/auth/auth-client";
 
 const authQueryKeys = {
   session: ["session"],
@@ -16,21 +16,17 @@ export const useSession = () => {
 export const useLogin = () => {
   const router = useRouter();
   const loginWithCredentials = useMutation({
-    mutationFn: async ({
-      email,
-      password,
-      rememberMe,
-    }: { email: string; password: string; rememberMe: boolean }) => {
+    mutationFn: async ({ email, password, rememberMe }: { email: string; password: string; rememberMe: boolean }) => {
       const result = await authClient.signIn.email({
         email,
         password,
         rememberMe,
       });
-      
+
       if (result.error) {
         throw new Error(result.error.message || "Authentication failed");
       }
-      
+
       return result;
     },
     onSuccess(response) {
@@ -60,19 +56,16 @@ export const useLogin = () => {
   });
 
   const loginWithSocial = useMutation({
-    mutationFn: async ({
-      provider,
-      callbackURL,
-    }: { provider: SocialProvider; callbackURL: string }) => {
+    mutationFn: async ({ provider, callbackURL }: { provider: SocialProvider; callbackURL: string }) => {
       const result = await authClient.signIn.social({
         provider,
         callbackURL: callbackURL || "/dashboard",
       });
-      
+
       if (result.error) {
         throw new Error(result.error.message || "Social authentication failed");
       }
-      
+
       return result;
     },
     onError(error: any) {
@@ -107,11 +100,7 @@ export const useRegister = ({
   onError: (error: ErrorContext) => void;
 }) => {
   return useMutation({
-    mutationFn: async ({
-      email,
-      password,
-      name,
-    }: { email: string; password: string; name: string }) =>
+    mutationFn: async ({ email, password, name }: { email: string; password: string; name: string }) =>
       await authClient.signUp.email(
         { email, password, name },
         {
@@ -137,21 +126,16 @@ export const useAuthHelpers = () => {
   });
 
   const verifyOtp = useMutation({
-    mutationFn: async ({ code }: { code: string }) =>
-      await authClient.twoFactor.verifyOtp({ code }),
+    mutationFn: async ({ code }: { code: string }) => await authClient.twoFactor.verifyOtp({ code }),
   });
 
   const resetPassword = useMutation({
-    mutationFn: async ({
-      newPassword,
-      token,
-    }: { newPassword: string; token: string }) =>
+    mutationFn: async ({ newPassword, token }: { newPassword: string; token: string }) =>
       await authClient.resetPassword({ newPassword, token }),
   });
 
   const verifyTwoFactor = useMutation({
-    mutationFn: async ({ code }: { code: string }) =>
-      await authClient.twoFactor.verifyTotp({ code }),
+    mutationFn: async ({ code }: { code: string }) => await authClient.twoFactor.verifyTotp({ code }),
   });
 
   return {

@@ -1,16 +1,12 @@
-import { auth } from "@/lib/auth/auth";
-import { getCookie } from "@tanstack/react-start/server";
-import { TRPCError, initTRPC } from "@trpc/server";
 import * as Sentry from "@sentry/node";
-
+import { getCookie } from "@tanstack/react-start/server";
+import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { auth } from "@/lib/auth/auth";
 import type { Language } from "../intl/i18n";
 
-export const createTRPCContext = async (opts: {
-  headers: Headers;
-  req: Request;
-}) => {
+export const createTRPCContext = async (opts: { headers: Headers; req: Request }) => {
   const locale = (getCookie("i18next") as Language) || "en";
   const session = await auth.api.getSession({
     headers: opts.headers,
@@ -32,8 +28,7 @@ const t = initTRPC.context<Context>().create({
       ...shape,
       data: {
         ...shape.data,
-        zodError:
-          error.cause instanceof ZodError ? error.cause.flatten() : null,
+        zodError: error.cause instanceof ZodError ? error.cause.flatten() : null,
       },
     };
   },
@@ -56,7 +51,6 @@ const sentryMiddleware = t.middleware(
     attachRpcInput: true,
   }),
 );
-
 
 export const publicProcedure = t.procedure.use(sentryMiddleware);
 export const protectedProcedure = t.procedure.use(sentryMiddleware).use(({ ctx, next }) => {

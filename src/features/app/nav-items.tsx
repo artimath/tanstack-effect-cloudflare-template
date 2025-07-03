@@ -1,5 +1,5 @@
+import { Link } from "@tanstack/react-router";
 import { Folder, Forward, type LucideIcon, Trash2 } from "lucide-react";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,7 +14,6 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Link } from "@tanstack/react-router";
 
 export function NavItems({
   items,

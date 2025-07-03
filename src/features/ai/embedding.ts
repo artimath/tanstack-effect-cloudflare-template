@@ -1,9 +1,9 @@
-import { db } from "@/lib/db";
-import { embeddings } from "@/lib/db/schema/embeddings";
 import { openai } from "@ai-sdk/openai";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { embed, embedMany } from "ai";
 import { cosineDistance, desc, gt, sql } from "drizzle-orm";
+import { db } from "@/lib/db";
+import { embeddings } from "@/lib/db/schema/embeddings";
 
 const splitter = new RecursiveCharacterTextSplitter({
   chunkSize: 8000,
@@ -11,18 +11,14 @@ const splitter = new RecursiveCharacterTextSplitter({
   separators: ["\n\n", "\n", "."],
 });
 
-export const generateChunksBySplitter = async (
-  input: string,
-): Promise<string[]> => {
+export const generateChunksBySplitter = async (input: string): Promise<string[]> => {
   const chunks = await splitter.splitText(input);
   return chunks;
 };
 
 const embeddingModel = openai.embedding("text-embedding-ada-002");
 
-export const generateEmbeddings = async (
-  value: string,
-): Promise<Array<{ embedding: number[]; content: string }>> => {
+export const generateEmbeddings = async (value: string): Promise<Array<{ embedding: number[]; content: string }>> => {
   const chunks = await generateChunksBySplitter(value);
   const { embeddings } = await embedMany({
     model: embeddingModel,
@@ -43,10 +39,7 @@ export const generateEmbedding = async (value: string): Promise<number[]> => {
 export const findRelevantContent = async (userQuery: string) => {
   const userQueryEmbedded = await generateEmbedding(userQuery);
 
-  const similarity = sql<number>`1 - (${cosineDistance(
-    embeddings.embedding,
-    userQueryEmbedded,
-  )})`;
+  const similarity = sql<number>`1 - (${cosineDistance(embeddings.embedding, userQueryEmbedded)})`;
 
   const similarGuides = await db
     .select({ name: embeddings.content, similarity })

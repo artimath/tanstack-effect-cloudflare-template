@@ -1,12 +1,7 @@
 import { openai } from "@ai-sdk/openai";
 
 import { createServerFileRoute } from "@tanstack/react-start/server";
-import {
-  type Message,
-  experimental_generateImage as generateImage,
-  streamText,
-  tool,
-} from "ai";
+import { experimental_generateImage as generateImage, type Message, streamText, tool } from "ai";
 import { z } from "zod";
 
 export const ServerRoute = createServerFileRoute("/api/ai/chat/image/generation").methods({
@@ -38,9 +33,7 @@ export const ServerRoute = createServerFileRoute("/api/ai/chat/image/generation"
         generateImage: tool({
           description: "Generate an image",
           parameters: z.object({
-            prompt: z
-              .string()
-              .describe("The prompt to generate the image from"),
+            prompt: z.string().describe("The prompt to generate the image from"),
           }),
           execute: async ({ prompt }) => {
             const { image } = await generateImage({

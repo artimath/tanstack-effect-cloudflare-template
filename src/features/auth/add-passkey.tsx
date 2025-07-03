@@ -1,4 +1,10 @@
-
+import { useForm } from "@tanstack/react-form";
+import { Fingerprint, Loader2, Plus } from "lucide-react";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
+import * as z from "zod";
+import { FormField } from "@/components/form/form-field";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,39 +15,46 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-
-import { Fingerprint, Loader2, Plus } from "lucide-react";
-
 import { authClient } from "@/lib/auth/auth-client";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
+
+const addPasskeySchema = z.object({
+  passkeyName: z.string().min(1, "Passkey name is required"),
+});
 
 export function AddPasskey() {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const [passkeyName, setPasskeyName] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
-  const handleAddPasskey = async () => {
-    if (!passkeyName) {
-      toast.error("Passkey name is required");
-      return;
-    }
-    setIsLoading(true);
-    const res = await authClient.passkey.addPasskey({
-      name: passkeyName,
-    });
-    if (res?.error) {
-      toast.error(res?.error.message);
-    } else {
-      setIsOpen(false);
-      toast.success("Passkey added successfully. You can now use it to login.");
-    }
-    setIsLoading(false);
-  };
+  const form = useForm({
+    defaultValues: {
+      passkeyName: "",
+    },
+    validators: {
+      onChange: ({ value }) => {
+        const result = addPasskeySchema.safeParse(value);
+        if (!result.success) {
+          return result.error.formErrors.fieldErrors;
+        }
+        return undefined;
+      },
+    },
+    onSubmit: async ({ value }) => {
+      try {
+        const res = await authClient.passkey.addPasskey({
+          name: value.passkeyName,
+        });
+        if (res?.error) {
+          toast.error(res?.error.message);
+        } else {
+          setIsOpen(false);
+          form.reset();
+          toast.success("Passkey added successfully. You can now use it to login.");
+        }
+      } catch (error) {
+        toast.error("An error occurred while adding passkey");
+      }
+    },
+  });
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -50,35 +63,41 @@ export function AddPasskey() {
           {t("ADD_NEW_PASSKEY")}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] w-11/12">
+      <DialogContent className="w-11/12 sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{t("ADD_NEW_PASSKEY")}</DialogTitle>
           <DialogDescription>{t("ADD_PASSKEY_DESC")}</DialogDescription>
         </DialogHeader>
         <div className="grid gap-2">
-          <Label htmlFor="passkey-name">{t("PASSKEY_NAME")}</Label>
-          <Input
-            id="passkey-name"
-            value={passkeyName}
-            onChange={(e) => setPasskeyName(e.target.value)}
+          <form.Field
+            name="passkeyName"
+            children={(field) => <FormField field={field} label={t("PASSKEY_NAME")} type="text" />}
           />
         </div>
         <DialogFooter>
-          <Button
-            disabled={isLoading}
-            type="submit"
-            onClick={handleAddPasskey}
-            className="w-full"
-          >
-            {isLoading ? (
-              <Loader2 size={15} className="animate-spin" />
-            ) : (
-              <>
-                <Fingerprint className="mr-2 h-4 w-4" />
-                {t("CREATE_PASSKEY")}
-              </>
+          <form.Subscribe
+            selector={(state) => [state.canSubmit, state.isSubmitting]}
+            children={([canSubmit, isSubmitting]) => (
+              <Button
+                disabled={!canSubmit || isSubmitting}
+                type="submit"
+                onClick={(e) => {
+                  e.preventDefault();
+                  form.handleSubmit();
+                }}
+                className="w-full"
+              >
+                {isSubmitting ? (
+                  <Loader2 size={15} className="animate-spin" />
+                ) : (
+                  <>
+                    <Fingerprint className="mr-2 h-4 w-4" />
+                    {t("CREATE_PASSKEY")}
+                  </>
+                )}
+              </Button>
             )}
-          </Button>
+          />
         </DialogFooter>
       </DialogContent>
     </Dialog>

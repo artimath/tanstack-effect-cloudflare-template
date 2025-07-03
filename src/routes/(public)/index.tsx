@@ -1,4 +1,4 @@
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 
 import {
   Activity,
@@ -26,13 +26,7 @@ import { useState } from "react";
 import { ModeToggle } from "@/components/theme-toggle";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 export const Route = createFileRoute("/(public)/")({
@@ -159,27 +153,27 @@ export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen flex-col bg-background items-center justify-center">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="w-full flex h-16 justify-between items-center px-4">
+        <div className="flex h-16 w-full items-center justify-between px-4">
           <div className="flex items-center gap-2">
             <TerminalSquare className="h-6 w-6 text-primary" />
             <span className="font-bold text-lg">Boilerplate</span>
           </div>
 
-          <nav className="hidden md:flex items-center justify-center">
+          <nav className="hidden items-center justify-center md:flex">
             <ModeToggle />
             <a
               href="https://github.com/carlosziegler/fullstack-start-template"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+              className="flex items-center gap-1 font-medium text-muted-foreground text-sm transition-colors hover:text-foreground"
             >
               <Github className="h-4 w-4" /> GitHub
             </a>
             <Link
               to="/login"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors ml-8"
+              className="ml-8 font-medium text-muted-foreground text-sm transition-colors hover:text-foreground"
             >
               Login
             </Link>
@@ -203,11 +197,7 @@ export default function LandingPage() {
                   </div>
                   <nav className="flex flex-col gap-4">
                     <ModeToggle />
-                    <Button
-                      variant="ghost"
-                      className="w-full justify-start"
-                      asChild
-                    >
+                    <Button variant="ghost" className="w-full justify-start" asChild>
                       <a
                         href="https://github.com/YOUR_REPO_LINK"
                         target="_blank"
@@ -218,16 +208,8 @@ export default function LandingPage() {
                         <Github className="h-4 w-4" /> GitHub
                       </a>
                     </Button>
-                    <Button
-                      variant="ghost"
-                      className="w-full justify-start"
-                      asChild
-                    >
-                      <Link
-                        to="/login"
-                        className="flex items-center gap-2"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
+                    <Button variant="ghost" className="w-full justify-start" asChild>
+                      <Link to="/login" className="flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
                         Login
                       </Link>
                     </Button>
@@ -239,34 +221,26 @@ export default function LandingPage() {
         </div>
       </header>
 
-      <main className="flex-1 py-12 md:py-16 lg:py-20 px-4">
-        <div className="text-center mb-12 md:mb-16">
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary via-violet-500 to-secondary">
+      <main className="flex-1 px-4 py-12 md:py-16 lg:py-20">
+        <div className="mb-12 text-center md:mb-16">
+          <h1 className="mb-4 bg-gradient-to-r from-primary via-violet-500 to-secondary bg-clip-text font-bold text-3xl text-transparent tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
             Modern Full-Stack Boilerplate
           </h1>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground md:text-xl">
-            Jumpstart your next project with this feature-rich boilerplate,
-            built with a modern, type-safe stack focused on developer
-            experience.
+            Jumpstart your next project with this feature-rich boilerplate, built with a modern, type-safe stack focused
+            on developer experience.
           </p>
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {techStack.map((tech) => (
-            <Card
-              key={tech.category}
-              className="flex flex-col transition-shadow duration-200 hover:shadow-lg"
-            >
+            <Card key={tech.category} className="flex flex-col transition-shadow duration-200 hover:shadow-lg">
               <CardHeader className="flex flex-row items-center gap-3 pb-4">
                 <tech.icon className="h-6 w-6 text-primary" />
-                <CardTitle className="text-lg font-semibold">
-                  {tech.category}
-                </CardTitle>
+                <CardTitle className="font-semibold text-lg">{tech.category}</CardTitle>
               </CardHeader>
               <CardContent className="flex-1">
-                <CardDescription className="mb-4">
-                  {tech.description}
-                </CardDescription>
+                <CardDescription className="mb-4">{tech.description}</CardDescription>
                 <div className="flex flex-wrap gap-2">
                   {tech.libs.map((lib) => (
                     <Badge key={lib.name} variant="secondary">
@@ -275,10 +249,9 @@ export default function LandingPage() {
                           href={lib.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="hover:underline flex items-center gap-1"
+                          className="flex items-center gap-1 hover:underline"
                         >
-                          {lib.name}{" "}
-                          <BookOpen className="h-3 w-3 text-muted-foreground" />
+                          {lib.name} <BookOpen className="h-3 w-3 text-muted-foreground" />
                         </a>
                       ) : (
                         lib.name
@@ -292,13 +265,12 @@ export default function LandingPage() {
         </div>
 
         <section className="mt-16 md:mt-24">
-          <div className="text-center mb-12 md:mb-16">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl mb-4">
+          <div className="mb-12 text-center md:mb-16">
+            <h2 className="mb-4 font-bold text-3xl tracking-tight sm:text-4xl md:text-5xl">
               Robust Authentication Included
             </h2>
             <p className="mx-auto max-w-2xl text-lg text-muted-foreground md:text-xl">
-              Secure user management features ready out-of-the-box, powered by
-              Better Auth.
+              Secure user management features ready out-of-the-box, powered by Better Auth.
             </p>
           </div>
 
@@ -310,11 +282,11 @@ export default function LandingPage() {
               </CardHeader>
               <CardContent className="space-y-2">
                 <div className="flex items-center gap-2 text-sm">
-                  <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                  <CheckCircle className="h-4 w-4 flex-shrink-0 text-green-500" />
                   <span>Sign Up / Sign In</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
-                  <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                  <CheckCircle className="h-4 w-4 flex-shrink-0 text-green-500" />
                   <span>Password Reset Flow (Forgot/Reset)</span>
                 </div>
               </CardContent>
@@ -327,11 +299,11 @@ export default function LandingPage() {
               </CardHeader>
               <CardContent className="space-y-2">
                 <div className="flex items-center gap-2 text-sm">
-                  <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                  <CheckCircle className="h-4 w-4 flex-shrink-0 text-green-500" />
                   <span>Two-Factor Authentication (OTP)</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
-                  <Shield className="h-4 w-4 text-yellow-500 flex-shrink-0" />
+                  <Shield className="h-4 w-4 flex-shrink-0 text-yellow-500" />
                   <span>Passkey Support (Planned/Possible)</span>
                 </div>
               </CardContent>
@@ -344,15 +316,15 @@ export default function LandingPage() {
               </CardHeader>
               <CardContent className="space-y-2">
                 <div className="flex items-center gap-2 text-sm">
-                  <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                  <CheckCircle className="h-4 w-4 flex-shrink-0 text-green-500" />
                   <span>Invitation Acceptance Flow</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
-                  <LayoutDashboard className="h-4 w-4 text-yellow-500 flex-shrink-0" />
+                  <LayoutDashboard className="h-4 w-4 flex-shrink-0 text-yellow-500" />
                   <span>Admin Dashboard (Planned/Possible)</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
-                  <Users className="h-4 w-4 text-yellow-500 flex-shrink-0" />
+                  <Users className="h-4 w-4 flex-shrink-0 text-yellow-500" />
                   <span>Organization Support (Planned/Possible)</span>
                 </div>
               </CardContent>
@@ -361,10 +333,9 @@ export default function LandingPage() {
         </section>
       </main>
 
-      <footer className="border-t mt-16">
-        <div className="container py-6 text-center text-sm text-muted-foreground">
-          Built with Modern Tech. &copy; {new Date().getFullYear()} Your
-          Company/Name.
+      <footer className="mt-16 border-t">
+        <div className="container py-6 text-center text-muted-foreground text-sm">
+          Built with Modern Tech. &copy; {new Date().getFullYear()} Your Company/Name.
         </div>
       </footer>
     </div>

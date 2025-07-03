@@ -1,11 +1,9 @@
-import { findRelevantContent } from "@/features/ai/embedding";
-import { createResource } from "@/features/resource/create";
-
 import { openai } from "@ai-sdk/openai";
-
 import { createServerFileRoute } from "@tanstack/react-start/server";
 import { streamText, tool } from "ai";
 import { z } from "zod";
+import { findRelevantContent } from "@/features/ai/embedding";
+import { createResource } from "@/features/resource/create";
 
 export const ServerRoute = createServerFileRoute("/api/ai/chat/rag").methods({
   POST: async ({ request }) => {
@@ -26,15 +24,12 @@ export const ServerRoute = createServerFileRoute("/api/ai/chat/rag").methods({
           description: `add a resource to your knowledge base.
               If the user provides a random piece of knowledge unprompted or a file, use this tool without asking for confirmation.`,
           parameters: z.object({
-            content: z
-              .string()
-              .describe("the content or resource to add to the knowledge base"),
+            content: z.string().describe("the content or resource to add to the knowledge base"),
           }),
           execute: async ({ content }) => createResource({ content }),
         }),
         getInformation: tool({
-          description:
-            "get information from your knowledge base to answer questions.",
+          description: "get information from your knowledge base to answer questions.",
           parameters: z.object({
             question: z.string().describe("the users question"),
           }),

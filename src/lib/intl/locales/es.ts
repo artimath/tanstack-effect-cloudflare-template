@@ -43,8 +43,7 @@ export default {
   CREATE_POST: "Crear Publicación",
   CREATE_POST_DESC: "¡Escribe sobre un tema interesante!",
   POST_CREATED_SUCCESS: "¡Tu publicación ha sido creada!",
-  POST_CREATION_ERROR:
-    "Ha ocurrido un error desconocido. ¡Por favor, inténtalo de nuevo!",
+  POST_CREATION_ERROR: "Ha ocurrido un error desconocido. ¡Por favor, inténtalo de nuevo!",
   TITLE: "Título",
   CONTENT: "Contenido",
   NO_POSTS_AVAILABLE: "No hay publicaciones disponibles.",
@@ -92,8 +91,7 @@ export default {
   RESET_PASSWORD_BUTTON: "Restablecer contraseña",
   // Forgot Password
   CHECK_EMAIL: "Revisa tu email",
-  PASSWORD_RESET_LINK_SENT:
-    "Hemos enviado un enlace para restablecer tu contraseña a tu email.",
+  PASSWORD_RESET_LINK_SENT: "Hemos enviado un enlace para restablecer tu contraseña a tu email.",
   CHECK_SPAM: "Si no ves el email, revisa tu carpeta de spam.",
   BACK_TO_RESET: "Volver a restablecer contraseña",
   ENTER_EMAIL: "Ingresa tu email",
@@ -126,8 +124,7 @@ export default {
   INVITED_BY: "te ha invitado a unirte",
   INVITATION_SENT_TO: "Esta invitación fue enviada a",
   WELCOME_TO: "Bienvenido a",
-  JOIN_SUCCESS:
-    "¡Te has unido con éxito a la organización. Estamos emocionados de tenerte a bordo!",
+  JOIN_SUCCESS: "¡Te has unido con éxito a la organización. Estamos emocionados de tenerte a bordo!",
   INVITATION_DECLINED: "Invitación Rechazada",
   DECLINED_MESSAGE: "Has rechazado la invitación para unirte",
   DECLINE: "Rechazar",
@@ -151,10 +148,8 @@ export default {
   OWNER: "Propietario",
   INVITES: "Invitaciones",
   NO_ACTIVE_INVITATIONS: "Sin Invitaciones Activas",
-  CANT_INVITE_PERSONAL:
-    "No puedes invitar miembros a tu espacio de trabajo personal.",
-  CREATE_ORGANIZATION:
-    "Crea una nueva organización para colaborar con tu equipo.",
+  CANT_INVITE_PERSONAL: "No puedes invitar miembros a tu espacio de trabajo personal.",
+  CREATE_ORGANIZATION: "Crea una nueva organización para colaborar con tu equipo.",
   ORGANIZATION_NAME: "Nombre de la Organización",
   ORGANIZATION_SLUG: "Slug de la Organización",
   LOGO: "Logo",
@@ -194,8 +189,7 @@ export default {
   FULL_NAME: "Nombre Completo",
   UPDATE: "Actualizar",
   ADD_NEW_PASSKEY: "Añadir Nueva Passkey",
-  ADD_PASSKEY_DESC:
-    "Crea una nueva passkey para acceder a tu cuenta de forma segura sin contraseña.",
+  ADD_PASSKEY_DESC: "Crea una nueva passkey para acceder a tu cuenta de forma segura sin contraseña.",
   PASSKEY_NAME: "Nombre de Passkey",
   CREATE_PASSKEY: "Crear Passkey",
   LIST_PASSKEYS: "Lista de passkeys",

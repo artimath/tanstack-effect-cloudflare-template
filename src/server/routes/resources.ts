@@ -1,11 +1,9 @@
-import { db } from "@/lib/db";
-import { protectedProcedure, } from "@/lib/trpc/init";
-import { router } from "@/lib/trpc/init";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { TRPCError } from "@trpc/server/unstable-core-do-not-import";
-
 import { uploadFileSchema } from "@/features/files/file-upload.schema";
 import { createResource } from "@/features/resource/create";
+import { db } from "@/lib/db";
+import { protectedProcedure, router } from "@/lib/trpc/init";
 
 export const resourcesRouter = router({
   list: protectedProcedure.query(async () => {

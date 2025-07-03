@@ -1,5 +1,4 @@
-import { AppSidebar } from "@/features/app/app-sidebar";
-import { AuthProvider } from "@/features/auth/auth-provider";
+import { createFileRoute, Outlet, useLocation } from "@tanstack/react-router";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,12 +7,9 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
-import { Outlet, useLocation, createFileRoute } from "@tanstack/react-router";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/features/app/app-sidebar";
+import { AuthProvider } from "@/features/auth/auth-provider";
 
 export const Route = createFileRoute("/dashboard")({
   component: RouteComponent,
@@ -43,10 +39,7 @@ function RouteComponent() {
                 <BreadcrumbList>
                   {breadcrumb.map((item, index) => (
                     <BreadcrumbItem className="hidden md:block" key={item.href}>
-                      <BreadcrumbLink
-                        href={item.href}
-                        className="text-sm capitalize flex items-center gap-2"
-                      >
+                      <BreadcrumbLink href={item.href} className="flex items-center gap-2 text-sm capitalize">
                         {item.label}
                         {index < breadcrumb.length - 1 && index !== 0 && (
                           <BreadcrumbSeparator className="hidden md:block" />

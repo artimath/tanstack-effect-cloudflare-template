@@ -1,5 +1,5 @@
-import { clsx } from "clsx";
 import type { ClassValue } from "clsx";
+import { clsx } from "clsx";
 import { customAlphabet } from "nanoid";
 import { twMerge } from "tailwind-merge";
 import { v7 } from "uuid";

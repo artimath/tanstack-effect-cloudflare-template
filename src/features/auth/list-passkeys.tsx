@@ -1,4 +1,7 @@
-
+import { Fingerprint, Loader2, Trash } from "lucide-react";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,21 +14,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Fingerprint, Loader2, Trash } from "lucide-react";
-
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { authClient } from "@/lib/auth/auth-client";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
 
 export function ListPasskeys() {
   const { t } = useTranslation();
@@ -61,7 +51,7 @@ export function ListPasskeys() {
           </span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] w-11/12">
+      <DialogContent className="w-11/12 sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{t("PASSKEYS")}</DialogTitle>
           <DialogDescription>{t("LIST_PASSKEYS")}</DialogDescription>
@@ -75,10 +65,7 @@ export function ListPasskeys() {
             </TableHeader>
             <TableBody>
               {data.map((passkey) => (
-                <TableRow
-                  key={passkey.id}
-                  className="flex  justify-between items-center"
-                >
+                <TableRow key={passkey.id} className="flex items-center justify-between">
                   <TableCell>{passkey.name || t("NEW_PASSKEY")}</TableCell>
                   <TableCell className="text-right">
                     <Button
@@ -104,10 +91,7 @@ export function ListPasskeys() {
                       {isDeletePasskey ? (
                         <Loader2 size={15} className="animate-spin" />
                       ) : (
-                        <Trash
-                          size={15}
-                          className="cursor-pointer text-red-600"
-                        />
+                        <Trash size={15} className="cursor-pointer text-red-600" />
                       )}
                     </Button>
                   </TableCell>
@@ -116,7 +100,7 @@ export function ListPasskeys() {
             </TableBody>
           </Table>
         ) : (
-          <p className="text-sm text-muted-foreground">{t("NO_PASSKEYS")}</p>
+          <p className="text-muted-foreground text-sm">{t("NO_PASSKEYS")}</p>
         )}
         {!data?.length && (
           <div className="flex flex-col gap-2">

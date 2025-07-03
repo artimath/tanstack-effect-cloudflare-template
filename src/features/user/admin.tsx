@@ -1,56 +1,32 @@
-
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { authClient } from "@/lib/auth/auth-client";
-import { useTranslation } from "@/lib/intl/react";
-import { cn } from "@/lib/utils";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { format } from "date-fns";
 import {
+  AlertCircle,
   Calendar as CalendarIcon,
   Loader2,
   Plus,
   RefreshCw,
+  ShieldX,
   Trash,
   UserCircle,
-  AlertCircle,
-  ShieldX,
 } from "lucide-react";
 import { useState } from "react";
 import { Toaster, toast } from "sonner";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { authClient } from "@/lib/auth/auth-client";
+import { useTranslation } from "@/lib/intl/react";
+import { cn } from "@/lib/utils";
 
 export default function AdminDashboard() {
   const queryClient = useQueryClient();
@@ -72,7 +48,11 @@ export default function AdminDashboard() {
     expirationDate: undefined as Date | undefined,
   });
 
-  const { data: users, isLoading: isUsersLoading, error: usersError } = useQuery({
+  const {
+    data: users,
+    isLoading: isUsersLoading,
+    error: usersError,
+  } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
       const data = await authClient.admin.listUsers(
@@ -109,11 +89,11 @@ export default function AdminDashboard() {
         name: newUser.name,
         role: newUser.role,
       });
-      
+
       if (result.error) {
         throw new Error(result.error.message);
       }
-      
+
       console.log(result);
       toast.success(t("USER_CREATED_SUCCESS"));
       setNewUser({ email: "", password: "", name: "", role: "user" });
@@ -137,11 +117,11 @@ export default function AdminDashboard() {
     setIsLoading(`delete-${id}`);
     try {
       const result = await authClient.admin.removeUser({ userId: id });
-      
+
       if (result.error) {
         throw new Error(result.error.message);
       }
-      
+
       toast.success(t("USER_DELETED_SUCCESS"));
       queryClient.invalidateQueries({
         queryKey: ["users"],
@@ -162,11 +142,11 @@ export default function AdminDashboard() {
     setIsLoading(`revoke-${id}`);
     try {
       const result = await authClient.admin.revokeUserSessions({ userId: id });
-      
+
       if (result.error) {
         throw new Error(result.error.message);
       }
-      
+
       toast.success(t("SESSIONS_REVOKED_SUCCESS"));
     } catch (error: any) {
       const errorMessage = error?.message || t("FAILED_TO_REVOKE_SESSIONS");
@@ -184,11 +164,11 @@ export default function AdminDashboard() {
     setIsLoading(`impersonate-${id}`);
     try {
       const result = await authClient.admin.impersonateUser({ userId: id });
-      
+
       if (result.error) {
         throw new Error(result.error.message);
       }
-      
+
       toast.success(t("IMPERSONATED_USER"));
       navigate({ to: "/" });
     } catch (error: any) {
@@ -210,17 +190,17 @@ export default function AdminDashboard() {
       if (!banForm.expirationDate) {
         throw new Error(t("EXPIRATION_DATE_REQUIRED"));
       }
-      
+
       const result = await authClient.admin.banUser({
         userId: banForm.userId,
         banReason: banForm.reason,
         banExpiresIn: banForm.expirationDate.getTime() - new Date().getTime(),
       });
-      
+
       if (result.error) {
         throw new Error(result.error.message);
       }
-      
+
       toast.success(t("USER_BANNED_SUCCESS"));
       setIsBanDialogOpen(false);
       queryClient.invalidateQueries({
@@ -261,9 +241,7 @@ export default function AdminDashboard() {
                     id="email"
                     type="email"
                     value={newUser.email}
-                    onChange={(e) =>
-                      setNewUser({ ...newUser, email: e.target.value })
-                    }
+                    onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
                     required
                   />
                 </div>
@@ -273,9 +251,7 @@ export default function AdminDashboard() {
                     id="password"
                     type="password"
                     value={newUser.password}
-                    onChange={(e) =>
-                      setNewUser({ ...newUser, password: e.target.value })
-                    }
+                    onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
                     required
                   />
                 </div>
@@ -284,9 +260,7 @@ export default function AdminDashboard() {
                   <Input
                     id="name"
                     value={newUser.name}
-                    onChange={(e) =>
-                      setNewUser({ ...newUser, name: e.target.value })
-                    }
+                    onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
                     required
                   />
                 </div>
@@ -294,9 +268,7 @@ export default function AdminDashboard() {
                   <Label htmlFor="role">{t("ROLE")}</Label>
                   <Select
                     value={newUser.role}
-                    onValueChange={(value: "admin" | "user") =>
-                      setNewUser({ ...newUser, role: value as "user" })
-                    }
+                    onValueChange={(value: "admin" | "user") => setNewUser({ ...newUser, role: value as "user" })}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select role" />
@@ -307,11 +279,7 @@ export default function AdminDashboard() {
                     </SelectContent>
                   </Select>
                 </div>
-                <Button
-                  type="submit"
-                  className="w-full"
-                  disabled={isLoading === "create"}
-                >
+                <Button type="submit" className="w-full" disabled={isLoading === "create"}>
                   {isLoading === "create" ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -335,9 +303,7 @@ export default function AdminDashboard() {
                   <Input
                     id="reason"
                     value={banForm.reason}
-                    onChange={(e) =>
-                      setBanForm({ ...banForm, reason: e.target.value })
-                    }
+                    onChange={(e) => setBanForm({ ...banForm, reason: e.target.value })}
                     required
                   />
                 </div>
@@ -365,19 +331,13 @@ export default function AdminDashboard() {
                       <Calendar
                         mode="single"
                         selected={banForm.expirationDate}
-                        onSelect={(date) =>
-                          setBanForm({ ...banForm, expirationDate: date })
-                        }
+                        onSelect={(date) => setBanForm({ ...banForm, expirationDate: date })}
                         initialFocus
                       />
                     </PopoverContent>
                   </Popover>
                 </div>
-                <Button
-                  type="submit"
-                  className="w-full"
-                  disabled={isLoading === `ban-${banForm.userId}`}
-                >
+                <Button type="submit" className="w-full" disabled={isLoading === `ban-${banForm.userId}`}>
                   {isLoading === `ban-${banForm.userId}` ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -396,24 +356,24 @@ export default function AdminDashboard() {
             <Alert variant="destructive" className="mb-6">
               <ShieldX className="h-4 w-4" />
               <AlertDescription>
-                {usersError?.message?.includes("403") || usersError?.message?.includes("forbidden") 
+                {usersError?.message?.includes("403") || usersError?.message?.includes("forbidden")
                   ? "Access denied. You don't have admin privileges to view this section."
                   : usersError?.message || "Failed to load admin dashboard. Please try again later."}
               </AlertDescription>
             </Alert>
           )}
-          
+
           {isUsersLoading ? (
-            <div className="flex justify-center items-center h-64">
+            <div className="flex h-64 items-center justify-center">
               <Loader2 className="h-8 w-8 animate-spin" />
             </div>
           ) : usersError ? (
-            <div className="flex justify-center items-center h-64">
-              <div className="text-center space-y-4">
-                <ShieldX className="h-12 w-12 text-muted-foreground mx-auto" />
+            <div className="flex h-64 items-center justify-center">
+              <div className="space-y-4 text-center">
+                <ShieldX className="mx-auto h-12 w-12 text-muted-foreground" />
                 <div>
-                  <p className="text-lg font-medium">Admin Access Required</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="font-medium text-lg">Admin Access Required</p>
+                  <p className="text-muted-foreground text-sm">
                     Contact your administrator to gain access to this section
                   </p>
                 </div>
@@ -479,7 +439,7 @@ export default function AdminDashboard() {
                             <Loader2 className="h-4 w-4 animate-spin" />
                           ) : (
                             <>
-                              <UserCircle className="h-4 w-4 mr-2" />
+                              <UserCircle className="mr-2 h-4 w-4" />
                               {t("IMPERSONATE")}
                             </>
                           )}
@@ -501,10 +461,7 @@ export default function AdminDashboard() {
                                 },
                                 {
                                   onError(context) {
-                                    toast.error(
-                                      context.error.message ||
-                                        t("FAILED_TO_UNBAN_USER"),
-                                    );
+                                    toast.error(context.error.message || t("FAILED_TO_UNBAN_USER"));
                                     setIsLoading(undefined);
                                   },
                                   onSuccess() {

@@ -1,6 +1,6 @@
-import { authClient } from "@/lib/auth/auth-client";
 import { createMiddleware } from "@tanstack/react-start";
 import { getHeaders } from "@tanstack/react-start/server";
+import { authClient } from "@/lib/auth/auth-client";
 
 export const authMiddleware = createMiddleware({
   type: "request",

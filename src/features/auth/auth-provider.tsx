@@ -1,9 +1,7 @@
-import { useSession } from "@/features/auth/auth-hooks";
-
 import { useLocation, useRouter } from "@tanstack/react-router";
-
 import { Loader2 } from "lucide-react";
 import { useEffect } from "react";
+import { useSession } from "@/features/auth/auth-hooks";
 
 const isAuthRoute = (path: string) => {
   return ["/login", "/register"].includes(path);

@@ -32,9 +32,7 @@ const getQuote = async () => {
 
 const getJoke = async () => {
   try {
-    const res = await fetch(
-      "https://official-joke-api.appspot.com/random_joke",
-    );
+    const res = await fetch("https://official-joke-api.appspot.com/random_joke");
     const data = await res.json();
     return {
       content: [
@@ -55,10 +53,7 @@ const getWelcomeMessage = async ({ name }: { name: string }) => {
   };
 };
 
-const calculateBMI = async ({
-  weight,
-  height,
-}: { weight: number; height: number }) => {
+const calculateBMI = async ({ weight, height }: { weight: number; height: number }) => {
   const bmi = weight / (height * height);
   console.log("💪 BMI", bmi);
   return {

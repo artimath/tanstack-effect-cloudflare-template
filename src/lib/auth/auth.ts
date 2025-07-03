@@ -1,3 +1,10 @@
+import { betterAuth } from "better-auth";
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { admin, magicLink, mcp, openAPI, organization } from "better-auth/plugins";
+import { emailOTP } from "better-auth/plugins/email-otp";
+import { passkey } from "better-auth/plugins/passkey";
+import { twoFactor } from "better-auth/plugins/two-factor";
+import { reactStartCookies } from "better-auth/react-start";
 import { ResetPasswordEmail } from "@/components/emails/reset-password-email";
 import { SendMagicLinkEmail } from "@/components/emails/send-magic-link-email";
 import { SendVerificationOTP } from "@/components/emails/send-verification-otp";
@@ -6,16 +13,7 @@ import { WelcomeEmail } from "@/components/emails/welcome-email";
 import { db } from "@/lib/db";
 import * as schema from "@/lib/db/schema/auth";
 import { sendEmail } from "@/lib/resend";
-import { betterAuth } from "better-auth";
-import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { admin, magicLink, openAPI, organization } from "better-auth/plugins";
-import { mcp } from "better-auth/plugins";
-import { emailOTP } from "better-auth/plugins/email-otp";
-import { passkey } from "better-auth/plugins/passkey";
-import { twoFactor } from "better-auth/plugins/two-factor";
-import { reactStartCookies } from "better-auth/react-start";
 import { env } from "../env.server";
-
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -24,10 +22,8 @@ export const auth = betterAuth({
   }),
   secret: env.BETTER_AUTH_SECRET,
   basePath: "/api/auth",
-  baseURL: env.SERVER_URL   ,
-  trustedOrigins: [
-    env.SERVER_URL,
-  ],
+  baseURL: env.SERVER_URL,
+  trustedOrigins: [env.SERVER_URL],
   onAPIError: {
     throw: true,
     onError: (error) => {
@@ -128,5 +124,3 @@ export const auth = betterAuth({
     reactStartCookies(), // make sure this is the last plugin in the array
   ],
 });
-
-

@@ -42,8 +42,7 @@ export default {
   CREATE_POST: "Beitrag erstellen",
   CREATE_POST_DESC: "Schreiben Sie über ein interessantes Thema!",
   POST_CREATED_SUCCESS: "Ihr Beitrag wurde erstellt!",
-  POST_CREATION_ERROR:
-    "Ein unbekannter Fehler ist aufgetreten. Bitte versuchen Sie es erneut!",
+  POST_CREATION_ERROR: "Ein unbekannter Fehler ist aufgetreten. Bitte versuchen Sie es erneut!",
   TITLE: "Titel",
   CONTENT: "Inhalt",
   NO_POSTS_AVAILABLE: "Es sind keine Beiträge verfügbar.",
@@ -60,13 +59,11 @@ export default {
   LOGOUT: "Abmelden",
   // Authentication Pages
   SIGN_IN: "Anmelden",
-  SIGN_IN_DESC:
-    "Geben Sie Ihre E-Mail-Adresse ein, um sich bei Ihrem Konto anzumelden",
+  SIGN_IN_DESC: "Geben Sie Ihre E-Mail-Adresse ein, um sich bei Ihrem Konto anzumelden",
   SIGN_UP: "Registrieren",
   SIGN_UP_DESC: "Geben Sie Ihre Daten ein, um Ihr Konto zu erstellen",
   FORGOT_PASSWORD: "Passwort vergessen",
-  FORGOT_PASSWORD_DESC:
-    "Geben Sie Ihre E-Mail-Adresse ein, um Ihr Passwort zurückzusetzen",
+  FORGOT_PASSWORD_DESC: "Geben Sie Ihre E-Mail-Adresse ein, um Ihr Passwort zurückzusetzen",
   RESET_PASSWORD: "Passwort zurücksetzen",
   RESET_PASSWORD_DESC: "Geben Sie Ihr neues Passwort ein",
   REMEMBER_ME: "Angemeldet bleiben",
@@ -93,10 +90,8 @@ export default {
   RESET_PASSWORD_BUTTON: "Passwort zurücksetzen",
   // Forgot Password
   CHECK_EMAIL: "Überprüfen Sie Ihre E-Mail",
-  PASSWORD_RESET_LINK_SENT:
-    "Wir haben einen Link zum Zurücksetzen des Passworts an Ihre E-Mail gesendet.",
-  CHECK_SPAM:
-    "Wenn Sie die E-Mail nicht sehen, überprüfen Sie Ihren Spam-Ordner.",
+  PASSWORD_RESET_LINK_SENT: "Wir haben einen Link zum Zurücksetzen des Passworts an Ihre E-Mail gesendet.",
+  CHECK_SPAM: "Wenn Sie die E-Mail nicht sehen, überprüfen Sie Ihren Spam-Ordner.",
   BACK_TO_RESET: "Zurück zum Zurücksetzen des Passworts",
   ENTER_EMAIL: "Geben Sie Ihre E-Mail-Adresse ein",
   SENDING: "Wird gesendet...",
@@ -115,8 +110,7 @@ export default {
   INVALID_OTP: "Ungültiges OTP",
   // TOTP Verification
   TOTP_VERIFICATION: "TOTP-Verifizierung",
-  ENTER_TOTP:
-    "Geben Sie Ihren 6-stelligen TOTP-Code ein, um sich zu authentifizieren",
+  ENTER_TOTP: "Geben Sie Ihren 6-stelligen TOTP-Code ein, um sich zu authentifizieren",
   TOTP_CODE: "TOTP-Code",
   ENTER_6_DIGIT_CODE: "6-stelligen Code eingeben",
   TOTP_ERROR: "TOTP-Code muss 6 Ziffern haben",
@@ -129,8 +123,7 @@ export default {
   INVITED_BY: "hat Sie eingeladen, beizutreten",
   INVITATION_SENT_TO: "Diese Einladung wurde gesendet an",
   WELCOME_TO: "Willkommen bei",
-  JOIN_SUCCESS:
-    "Sie sind der Organisation erfolgreich beigetreten. Wir freuen uns, Sie an Bord zu haben!",
+  JOIN_SUCCESS: "Sie sind der Organisation erfolgreich beigetreten. Wir freuen uns, Sie an Bord zu haben!",
   INVITATION_DECLINED: "Einladung abgelehnt",
   DECLINED_MESSAGE: "Sie haben die Einladung abgelehnt, beizutreten",
   DECLINE: "Ablehnen",
@@ -154,10 +147,8 @@ export default {
   OWNER: "Besitzer",
   INVITES: "Einladungen",
   NO_ACTIVE_INVITATIONS: "Keine aktiven Einladungen",
-  CANT_INVITE_PERSONAL:
-    "Sie können keine Mitglieder zu Ihrem persönlichen Arbeitsbereich einladen.",
-  CREATE_ORGANIZATION:
-    "Erstellen Sie eine neue Organisation, um mit Ihrem Team zusammenzuarbeiten.",
+  CANT_INVITE_PERSONAL: "Sie können keine Mitglieder zu Ihrem persönlichen Arbeitsbereich einladen.",
+  CREATE_ORGANIZATION: "Erstellen Sie eine neue Organisation, um mit Ihrem Team zusammenzuarbeiten.",
   ORGANIZATION_NAME: "Organisationsname",
   ORGANIZATION_SLUG: "Organisations-Slug",
   LOGO: "Logo",
@@ -185,8 +176,7 @@ export default {
   SHOW_QR_CODE: "QR-Code anzeigen",
   DISABLE_2FA: "2FA deaktivieren",
   ENABLE_2FA: "2FA aktivieren",
-  DISABLE_2FA_DESC:
-    "Deaktivieren Sie die Zwei-Faktor-Authentifizierung für Ihr Konto",
+  DISABLE_2FA_DESC: "Deaktivieren Sie die Zwei-Faktor-Authentifizierung für Ihr Konto",
   ENABLE_2FA_DESC: "Aktivieren Sie 2FA, um Ihr Konto zu sichern",
   ENTER_OTP: "OTP eingeben",
   SIGN_OUT_DEVICES: "Von anderen Geräten abmelden",
@@ -198,8 +188,7 @@ export default {
   FULL_NAME: "Vollständiger Name",
   UPDATE: "Aktualisieren",
   ADD_NEW_PASSKEY: "Neuen Passkey hinzufügen",
-  ADD_PASSKEY_DESC:
-    "Erstellen Sie einen neuen Passkey, um sicher ohne Passwort auf Ihr Konto zuzugreifen.",
+  ADD_PASSKEY_DESC: "Erstellen Sie einen neuen Passkey, um sicher ohne Passwort auf Ihr Konto zuzugreifen.",
   PASSKEY_NAME: "Passkey-Name",
   CREATE_PASSKEY: "Passkey erstellen",
   LIST_PASSKEYS: "Liste der Passkeys",

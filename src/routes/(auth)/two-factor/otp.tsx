@@ -1,6 +1,6 @@
-import { useTranslation } from "@/lib/intl/react";
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import OtpForm from "@/features/auth/otp";
+import { useTranslation } from "@/lib/intl/react";
 
 export const Route = createFileRoute("/(auth)/two-factor/otp")({
   component: RouteComponent,
@@ -10,8 +10,8 @@ function RouteComponent() {
   const { t } = useTranslation();
 
   return (
-    <div className="p-2 md:p-6 flex flex-col items-center">
-      <div className="p-4 md:p-8 w-full max-w-md rounded-lg bg-elevated">
+    <div className="flex flex-col items-center p-2 md:p-6">
+      <div className="w-full max-w-md rounded-lg bg-elevated p-4 md:p-8">
         <OtpForm />
 
         <div className="mt-4 text-center">

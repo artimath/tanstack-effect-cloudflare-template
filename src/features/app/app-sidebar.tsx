@@ -1,24 +1,9 @@
-import {
-  AudioWaveform,
-  Command,
-  File,
-  GalleryVerticalEnd,
-  Home,
-  MessageCircle,
-  Settings2,
-} from "lucide-react";
+import { AudioWaveform, Command, File, GalleryVerticalEnd, Home, MessageCircle, Settings2 } from "lucide-react";
 import * as React from "react";
-
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from "@/components/ui/sidebar";
 import { NavItems } from "@/features/app/nav-items";
 import { NavUser } from "@/features/app/nav-user";
 import { OrganizationSwitcher } from "@/features/organization/organization-switcher";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarRail,
-} from "@/components/ui/sidebar";
 
 // This is sample data.
 const data = {

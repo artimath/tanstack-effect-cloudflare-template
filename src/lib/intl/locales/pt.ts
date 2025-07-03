@@ -43,8 +43,7 @@ export default {
   CREATE_POST: "Criar Postagem",
   CREATE_POST_DESC: "Escreva sobre um tópico interessante!",
   POST_CREATED_SUCCESS: "Sua postagem foi criada!",
-  POST_CREATION_ERROR:
-    "Ocorreu um erro desconhecido. Por favor, tente novamente!",
+  POST_CREATION_ERROR: "Ocorreu um erro desconhecido. Por favor, tente novamente!",
   TITLE: "Título",
   CONTENT: "Conteúdo",
   NO_POSTS_AVAILABLE: "Não há postagens disponíveis.",
@@ -92,8 +91,7 @@ export default {
   RESET_PASSWORD_BUTTON: "Redefinir senha",
   // Forgot Password
   CHECK_EMAIL: "Verifique seu email",
-  PASSWORD_RESET_LINK_SENT:
-    "Enviamos um link de redefinição de senha para seu email.",
+  PASSWORD_RESET_LINK_SENT: "Enviamos um link de redefinição de senha para seu email.",
   CHECK_SPAM: "Se você não vir o email, verifique sua pasta de spam.",
   BACK_TO_RESET: "Voltar para redefinir senha",
   ENTER_EMAIL: "Digite seu email",
@@ -126,8 +124,7 @@ export default {
   INVITED_BY: "convidou você para participar",
   INVITATION_SENT_TO: "Este convite foi enviado para",
   WELCOME_TO: "Bem-vindo a",
-  JOIN_SUCCESS:
-    "Você entrou com sucesso na organização. Estamos felizes em tê-lo conosco!",
+  JOIN_SUCCESS: "Você entrou com sucesso na organização. Estamos felizes em tê-lo conosco!",
   INVITATION_DECLINED: "Convite Recusado",
   DECLINED_MESSAGE: "Você recusou o convite para participar",
   DECLINE: "Recusar",
@@ -151,10 +148,8 @@ export default {
   OWNER: "Proprietário",
   INVITES: "Convites",
   NO_ACTIVE_INVITATIONS: "Sem Convites Ativos",
-  CANT_INVITE_PERSONAL:
-    "Você não pode convidar membros para seu espaço de trabalho pessoal.",
-  CREATE_ORGANIZATION:
-    "Crie uma nova organização para colaborar com sua equipe.",
+  CANT_INVITE_PERSONAL: "Você não pode convidar membros para seu espaço de trabalho pessoal.",
+  CREATE_ORGANIZATION: "Crie uma nova organização para colaborar com sua equipe.",
   ORGANIZATION_NAME: "Nome da Organização",
   ORGANIZATION_SLUG: "Slug da Organização",
   LOGO: "Logo",
@@ -194,8 +189,7 @@ export default {
   FULL_NAME: "Nome Completo",
   UPDATE: "Atualizar",
   ADD_NEW_PASSKEY: "Adicionar Nova Passkey",
-  ADD_PASSKEY_DESC:
-    "Crie uma nova passkey para acessar sua conta com segurança sem uma senha.",
+  ADD_PASSKEY_DESC: "Crie uma nova passkey para acessar sua conta com segurança sem uma senha.",
   PASSKEY_NAME: "Nome da Passkey",
   CREATE_PASSKEY: "Criar Passkey",
   LIST_PASSKEYS: "Lista de passkeys",

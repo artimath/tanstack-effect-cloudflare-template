@@ -1,16 +1,9 @@
 import { openai } from "@ai-sdk/openai";
-import {
-  Agent,
-  type AgentInputItem,
-  Runner,
-  run,
-  tool,
-  webSearchTool,
-} from "@openai/agents";
+import { Agent, type AgentInputItem, Runner, run, tool, webSearchTool } from "@openai/agents";
 import { aisdk } from "@openai/agents-extensions";
 import { json } from "@tanstack/react-start";
 import { createServerFileRoute } from "@tanstack/react-start/server";
-import { StreamData, createDataStream, createDataStreamResponse } from "ai";
+import { createDataStream, createDataStreamResponse, StreamData } from "ai";
 import { z } from "zod";
 
 const model = aisdk(openai("gpt-4.1-nano"));
@@ -18,8 +11,7 @@ const thread: AgentInputItem[] = [];
 
 const refundAgent = new Agent({
   name: "Refund Agent",
-  instructions:
-    "You are a refund agent. You are responsible for refunding customers.",
+  instructions: "You are a refund agent. You are responsible for refunding customers.",
   outputType: z.object({
     refundApproved: z.boolean(),
   }),
@@ -37,8 +29,7 @@ const agentNews = new Agent({
 
 const orderAgent = new Agent({
   name: "Order Agent",
-  instructions:
-    "You are an order agent. You are responsible for processing orders.",
+  instructions: "You are an order agent. You are responsible for processing orders.",
   outputType: z.object({
     orderId: z.string(),
   }),
@@ -46,8 +37,7 @@ const orderAgent = new Agent({
 
 const triageAgent = Agent.create({
   name: "Triage Agent",
-  instructions:
-    "You are a triage agent. You are responsible for triaging customer issues.",
+  instructions: "You are a triage agent. You are responsible for triaging customer issues.",
   handoffs: [refundAgent, orderAgent, agentNews],
 });
 
@@ -116,8 +106,7 @@ export const ServerRoute = createServerFileRoute("/api/ai/agent/sdk").methods({
 
         dataStream.merge(data);
       },
-      onError: (error: unknown) =>
-        `Custom error: ${error instanceof Error ? error.message : "Unknown error"}`,
+      onError: (error: unknown) => `Custom error: ${error instanceof Error ? error.message : "Unknown error"}`,
     });
 
     return response;

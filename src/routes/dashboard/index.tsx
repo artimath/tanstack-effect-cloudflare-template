@@ -1,21 +1,12 @@
-
-import { useTRPC } from "@/lib/trpc/react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { useMutation } from "@tanstack/react-query";
 import { Loader2, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { useTRPC } from "@/lib/trpc/react";
 
 export const Route = createFileRoute("/dashboard/")({
   component: RouteComponent,
@@ -23,7 +14,7 @@ export const Route = createFileRoute("/dashboard/")({
 
 function RouteComponent() {
   return (
-    <div className="flex flex-col items-center justify-center w-full">
+    <div className="flex w-full flex-col items-center justify-center">
       <TodosRoute />
     </div>
   );
@@ -76,25 +67,15 @@ function TodosRoute() {
           <CardDescription>Manage your tasks efficiently</CardDescription>
         </CardHeader>
         <CardContent>
-          <form
-            onSubmit={handleAddTodo}
-            className="mb-6 flex items-center space-x-2"
-          >
+          <form onSubmit={handleAddTodo} className="mb-6 flex items-center space-x-2">
             <Input
               value={newTodoText}
               onChange={(e) => setNewTodoText(e.target.value)}
               placeholder="Add a new task..."
               disabled={createMutation.isPending}
             />
-            <Button
-              type="submit"
-              disabled={createMutation.isPending || !newTodoText.trim()}
-            >
-              {createMutation.isPending ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                "Add"
-              )}
+            <Button type="submit" disabled={createMutation.isPending || !newTodoText.trim()}>
+              {createMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Add"}
             </Button>
           </form>
 
@@ -107,22 +88,14 @@ function TodosRoute() {
           ) : (
             <ul className="space-y-2">
               {todos.data?.map((todo) => (
-                <li
-                  key={todo.id}
-                  className="flex items-center justify-between rounded-md border p-2"
-                >
+                <li key={todo.id} className="flex items-center justify-between rounded-md border p-2">
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       checked={todo.completed}
-                      onCheckedChange={() =>
-                        handleToggleTodo(todo.id, todo.completed)
-                      }
+                      onCheckedChange={() => handleToggleTodo(todo.id, todo.completed)}
                       id={`todo-${todo.id}`}
                     />
-                    <label
-                      htmlFor={`todo-${todo.id}`}
-                      className={`${todo.completed ? "line-through" : ""}`}
-                    >
+                    <label htmlFor={`todo-${todo.id}`} className={`${todo.completed ? "line-through" : ""}`}>
                       {todo.text}
                     </label>
                   </div>

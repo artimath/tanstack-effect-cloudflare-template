@@ -24,11 +24,7 @@ const cookieSettings = !runsOnServerSide
 i18n
   .use(initReactI18next)
   .use(LanguageDetector)
-  .use(
-    resourcesToBackend(
-      (language: string) => import(`./locales/${language}.ts`),
-    ),
-  )
+  .use(resourcesToBackend((language: string) => import(`./locales/${language}.ts`)))
   .init({
     compatibilityJSON: "v4",
     resources,

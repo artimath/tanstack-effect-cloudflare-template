@@ -1,7 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute } from "@tanstack/react-router";
 import { Chat } from "@/features/ai/chat-rag";
 import UploadComponent from "@/features/files/file-upload";
-import { } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/dashboard/chat/rag")({
   component: RouteComponent,
@@ -9,11 +8,11 @@ export const Route = createFileRoute("/dashboard/chat/rag")({
 
 function RouteComponent() {
   return (
-    <div className="flex w-full py-24 mx-auto gap-4 h-[90vh] overflow-hidden">
-      <div className="flex flex-col w-full max-w-md mx-auto stretch min-w-[50%] px-14 overflow-y-auto border-r border-gray-200 dark:border-gray-800">
+    <div className="mx-auto flex h-[90vh] w-full gap-4 overflow-hidden py-24">
+      <div className="stretch mx-auto flex w-full min-w-[50%] max-w-md flex-col overflow-y-auto border-gray-200 border-r px-14 dark:border-gray-800">
         <Chat />
       </div>
-      <div className="w-full max-w-md min-w-[50vw] sticky top-0">
+      <div className="sticky top-0 w-full min-w-[50vw] max-w-md">
         <UploadComponent />
       </div>
     </div>

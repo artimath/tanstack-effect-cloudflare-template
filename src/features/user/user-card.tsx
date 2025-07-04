@@ -1,3 +1,4 @@
+import { useForm } from "@tanstack/react-form";
 import { useNavigate } from "@tanstack/react-router";
 import { Laptop, Loader2, LogOut, PhoneIcon, QrCode, ShieldCheck, ShieldOff } from "lucide-react";
 import { useState } from "react";
@@ -5,9 +6,11 @@ import { useTranslation } from "react-i18next";
 import QRCode from "react-qr-code";
 import { toast } from "sonner";
 import { UAParser } from "ua-parser-js";
+import * as z from "zod";
 import CopyButton from "@/components/copy-button";
+import { FormField } from "@/components/form/form-field";
+import { PasswordField } from "@/components/form/password-field";
 import { LanguageSwitch } from "@/components/language-switch";
-import { PasswordInput } from "@/components/password-input";
 import { AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -21,28 +24,190 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AddPasskey } from "@/features/auth/add-passkey";
-import { useLogout } from "@/features/auth/auth-hooks";
+import { useAuthHelpers, useLogout } from "@/features/auth/auth-hooks";
 import { ChangePassword } from "@/features/auth/change-password";
 import { ChangeUser } from "@/features/auth/change-user";
 import { ListPasskeys } from "@/features/auth/list-passkeys";
 import type { AuthClient } from "@/lib/auth/auth-client";
 import { authClient } from "@/lib/auth/auth-client";
 
+// Validation schemas
+const qrCodePasswordSchema = z.object({
+  password: z.string().min(8, "Password must be at least 8 characters"),
+});
+
+const twoFactorPasswordSchema = z.object({
+  password: z.string().min(8, "Password must be at least 8 characters"),
+});
+
+const twoFactorOtpSchema = z.object({
+  otp: z.string().length(6, "OTP must be exactly 6 digits").regex(/^\d+$/, "OTP must contain only digits"),
+});
+
 export default function UserCard(props: { activeSessions: AuthClient["$Infer"]["Session"]["session"][] }) {
   const { t } = useTranslation();
   const logout = useLogout();
   const navigate = useNavigate();
   const { data: session } = authClient.useSession();
+  const {
+    getTotpUri,
+    enableTwoFactor,
+    disableTwoFactor,
+    verifyTotpForEnable,
+    sendVerificationEmail,
+    signOut,
+    revokeSession,
+  } = useAuthHelpers();
   const [isTerminating, setIsTerminating] = useState<string>();
-  const [isPendingTwoFa, setIsPendingTwoFa] = useState<boolean>(false);
-  const [twoFaPassword, setTwoFaPassword] = useState<string>("");
   const [twoFactorDialog, setTwoFactorDialog] = useState<boolean>(false);
   const [twoFactorVerifyURI, setTwoFactorVerifyURI] = useState<string>("");
-  const [emailVerificationPending, setEmailVerificationPending] = useState<boolean>(false);
 
+  // Form for QR code password verification
+  const qrCodeForm = useForm({
+    defaultValues: {
+      password: "",
+    },
+    validators: {
+      onChange: ({ value }) => {
+        const result = qrCodePasswordSchema.safeParse(value);
+        if (!result.success) {
+          return result.error.formErrors.fieldErrors;
+        }
+        return undefined;
+      },
+    },
+    onSubmit: async ({ value }) => {
+      getTotpUri.mutate(
+        { password: value.password },
+        {
+          onSuccess: (data) => {
+            setTwoFactorVerifyURI(data.data?.totpURI || "");
+            qrCodeForm.setFieldValue("password", "");
+          },
+          onError: (error) => {
+            toast.error(error.message);
+          },
+        },
+      );
+    },
+  });
+
+  // Form for two-factor enable/disable
+  const twoFactorForm = useForm({
+    defaultValues: {
+      password: "",
+      otp: "",
+    },
+    validators: {
+      onChange: ({ value }) => {
+        if (twoFactorVerifyURI) {
+          // When showing OTP input
+          const result = twoFactorOtpSchema.safeParse({ otp: value.otp });
+          if (!result.success) {
+            return result.error.formErrors.fieldErrors;
+          }
+        } else {
+          // When showing password input
+          const result = twoFactorPasswordSchema.safeParse({ password: value.password });
+          if (!result.success) {
+            return result.error.formErrors.fieldErrors;
+          }
+        }
+        return undefined;
+      },
+    },
+    onSubmit: async ({ value }) => {
+      if (session?.user.twoFactorEnabled) {
+        // Disable 2FA
+        disableTwoFactor.mutate(
+          { password: value.password },
+          {
+            onSuccess: () => {
+              toast("2FA disabled successfully");
+              setTwoFactorDialog(false);
+              twoFactorForm.setFieldValue("password", "");
+            },
+            onError: (error) => {
+              toast.error(error.message);
+            },
+          },
+        );
+      } else {
+        if (twoFactorVerifyURI) {
+          // Verify OTP to enable 2FA
+          verifyTotpForEnable.mutate(
+            { code: value.otp },
+            {
+              onSuccess: () => {
+                toast("2FA enabled successfully");
+                setTwoFactorVerifyURI("");
+                twoFactorForm.setFieldValue("otp", "");
+                twoFactorForm.setFieldValue("password", "");
+                setTwoFactorDialog(false);
+              },
+              onError: (error) => {
+                twoFactorForm.setFieldValue("otp", "");
+                toast.error(error.message);
+              },
+            },
+          );
+        } else {
+          // Enable 2FA - get TOTP URI
+          enableTwoFactor.mutate(
+            { password: value.password },
+            {
+              onSuccess: (data) => {
+                setTwoFactorVerifyURI(data.data?.totpURI || "");
+              },
+              onError: (error) => {
+                toast.error(error.message);
+              },
+            },
+          );
+        }
+      }
+    },
+  });
+
+  const handleSendVerificationEmail = async () => {
+    sendVerificationEmail.mutate(
+      {
+        email: session?.user.email || "",
+      },
+      {
+        onError(error) {
+          toast.error(error.message);
+        },
+        onSuccess() {
+          toast.success("Verification email sent successfully");
+        },
+      },
+    );
+  };
+
+  const handleRevokeSession = async (item: AuthClient["$Infer"]["Session"]["session"]) => {
+    setIsTerminating(item.id);
+    const res = await revokeSession.mutateAsync({
+      token: item.token,
+    });
+
+    if (res.error) {
+      toast.error(res.error.message);
+    } else {
+      toast.success("Session terminated successfully");
+    }
+    if (item.id === session?.session?.id) {
+      signOut.mutate(undefined, {
+        onSuccess() {
+          setIsTerminating(undefined);
+          navigate({ to: "/" });
+        },
+      });
+    }
+    setIsTerminating(undefined);
+  };
   return (
     <Card className="w-full">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -69,32 +234,12 @@ export default function UserCard(props: { activeSessions: AuthClient["$Infer"]["
             <div className="flex flex-col gap-2">
               <AlertTitle>{t("VERIFY_EMAIL")}</AlertTitle>
               <AlertDescription className="text-muted-foreground">{t("VERIFY_EMAIL_DESC")}</AlertDescription>
-              <Button
-                size="sm"
-                variant="secondary"
-                className="mt-2"
-                onClick={async () => {
-                  await authClient.sendVerificationEmail(
-                    {
-                      email: session?.user.email || "",
-                    },
-                    {
-                      onRequest(context) {
-                        setEmailVerificationPending(true);
-                      },
-                      onError(context) {
-                        toast.error(context.error.message);
-                        setEmailVerificationPending(false);
-                      },
-                      onSuccess() {
-                        toast.success("Verification email sent successfully");
-                        setEmailVerificationPending(false);
-                      },
-                    },
-                  );
-                }}
-              >
-                {emailVerificationPending ? <Loader2 size={15} className="animate-spin" /> : t("RESEND_VERIFICATION")}
+              <Button size="sm" variant="secondary" className="mt-2" onClick={handleSendVerificationEmail}>
+                {sendVerificationEmail.isPending ? (
+                  <Loader2 size={15} className="animate-spin" />
+                ) : (
+                  t("RESEND_VERIFICATION")
+                )}
               </Button>
             </div>
           </div>
@@ -118,32 +263,7 @@ export default function UserCard(props: { activeSessions: AuthClient["$Infer"]["
                     <Button
                       variant="outline"
                       className="min-w-[100px] cursor-pointer"
-                      onClick={async () => {
-                        setIsTerminating(item.id);
-                        const res = await authClient.revokeSession({
-                          token: item.token,
-                        });
-
-                        if (res.error) {
-                          toast.error(res.error.message);
-                        } else {
-                          toast.success("Session terminated successfully");
-                        }
-                        if (item.id === session?.session?.id) {
-                          await authClient.signOut({
-                            fetchOptions: {
-                              onSuccess() {
-                                setIsTerminating(undefined);
-                                // apply delay
-                                setTimeout(() => {
-                                  navigate({ to: "/" });
-                                }, 1000);
-                              },
-                            },
-                          });
-                        }
-                        setIsTerminating(undefined);
-                      }}
+                      onClick={() => handleRevokeSession(item)}
                     >
                       {isTerminating === item.id ? (
                         <Loader2 size={15} className="animate-spin" />
@@ -194,34 +314,34 @@ export default function UserCard(props: { activeSessions: AuthClient["$Infer"]["
                         </div>
                       </>
                     ) : (
-                      <div className="flex flex-col gap-2">
-                        <PasswordInput
-                          value={twoFaPassword}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTwoFaPassword(e.target.value)}
-                          placeholder={t("ENTER_PASSWORD")}
-                        />
-                        <Button
-                          onClick={async () => {
-                            if (twoFaPassword.length < 8) {
-                              toast.error("Password must be at least 8 characters");
-                              return;
-                            }
-                            await authClient.twoFactor.getTotpUri(
-                              {
-                                password: twoFaPassword,
-                              },
-                              {
-                                onSuccess(context) {
-                                  setTwoFactorVerifyURI(context.data.totpURI);
-                                },
-                              },
-                            );
-                            setTwoFaPassword("");
-                          }}
-                        >
-                          {t("SHOW_QR_CODE")}
-                        </Button>
-                      </div>
+                      <form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          qrCodeForm.handleSubmit();
+                        }}
+                      >
+                        <div className="flex flex-col gap-2">
+                          <qrCodeForm.Field
+                            name="password"
+                            children={(field) => (
+                              <PasswordField field={field} label="" placeholder={t("ENTER_PASSWORD")} />
+                            )}
+                          />
+                          <qrCodeForm.Subscribe
+                            selector={(state) => [state.canSubmit, state.isSubmitting]}
+                            children={([canSubmit, isSubmitting]) => {
+                              const isLoading = isSubmitting || getTotpUri.isPending;
+
+                              return (
+                                <Button type="submit" disabled={!canSubmit || isLoading}>
+                                  {isLoading ? <Loader2 size={15} className="animate-spin" /> : t("SHOW_QR_CODE")}
+                                </Button>
+                              );
+                            }}
+                          />
+                        </div>
+                      </form>
                     )}
                   </DialogContent>
                 </Dialog>
@@ -243,98 +363,59 @@ export default function UserCard(props: { activeSessions: AuthClient["$Infer"]["
                     </DialogDescription>
                   </DialogHeader>
 
-                  {twoFactorVerifyURI ? (
-                    <div className="flex flex-col gap-2">
-                      <div className="flex items-center justify-center">
-                        <QRCode value={twoFactorVerifyURI} />
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      twoFactorForm.handleSubmit();
+                    }}
+                  >
+                    {twoFactorVerifyURI ? (
+                      <div className="flex flex-col gap-2">
+                        <div className="flex items-center justify-center">
+                          <QRCode value={twoFactorVerifyURI} />
+                        </div>
+                        <Label>{t("SCAN_QR_DESC")}</Label>
+                        <twoFactorForm.Field
+                          name="otp"
+                          children={(field) => <FormField field={field} label="" placeholder={t("ENTER_OTP")} />}
+                        />
                       </div>
-                      <Label htmlFor="password">{t("SCAN_QR_DESC")}</Label>
-                      <Input
-                        value={twoFaPassword}
-                        onChange={(e) => setTwoFaPassword(e.target.value)}
-                        placeholder={t("ENTER_OTP")}
+                    ) : (
+                      <div className="flex flex-col gap-2">
+                        <twoFactorForm.Field
+                          name="password"
+                          children={(field) => (
+                            <PasswordField field={field} label={t("PASSWORD")} placeholder={t("PASSWORD")} />
+                          )}
+                        />
+                      </div>
+                    )}
+                    <DialogFooter>
+                      <twoFactorForm.Subscribe
+                        selector={(state) => [state.canSubmit, state.isSubmitting]}
+                        children={([canSubmit, isSubmitting]) => {
+                          const isLoading =
+                            isSubmitting ||
+                            disableTwoFactor.isPending ||
+                            enableTwoFactor.isPending ||
+                            verifyTotpForEnable.isPending;
+
+                          return (
+                            <Button type="submit" disabled={!canSubmit || isLoading}>
+                              {isLoading ? (
+                                <Loader2 size={15} className="animate-spin" />
+                              ) : session?.user.twoFactorEnabled ? (
+                                t("DISABLE_2FA")
+                              ) : (
+                                t("ENABLE_2FA")
+                              )}
+                            </Button>
+                          );
+                        }}
                       />
-                    </div>
-                  ) : (
-                    <div className="flex flex-col gap-2">
-                      <Label htmlFor="password">{t("PASSWORD")}</Label>
-                      <PasswordInput
-                        id="password"
-                        placeholder={t("PASSWORD")}
-                        value={twoFaPassword}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTwoFaPassword(e.target.value)}
-                      />
-                    </div>
-                  )}
-                  <DialogFooter>
-                    <Button
-                      disabled={isPendingTwoFa}
-                      onClick={async () => {
-                        if (twoFaPassword.length < 8 && !twoFactorVerifyURI) {
-                          toast.error("Password must be at least 8 characters");
-                          return;
-                        }
-                        setIsPendingTwoFa(true);
-                        if (session?.user.twoFactorEnabled) {
-                          const res = await authClient.twoFactor.disable({
-                            //@ts-ignore
-                            password: twoFaPassword,
-                            fetchOptions: {
-                              onError(context) {
-                                toast.error(context.error.message);
-                              },
-                              onSuccess() {
-                                toast("2FA disabled successfully");
-                                setTwoFactorDialog(false);
-                              },
-                            },
-                          });
-                        } else {
-                          if (twoFactorVerifyURI) {
-                            await authClient.twoFactor.verifyTotp({
-                              code: twoFaPassword,
-                              fetchOptions: {
-                                onError(context) {
-                                  setIsPendingTwoFa(false);
-                                  setTwoFaPassword("");
-                                  toast.error(context.error.message);
-                                },
-                                onSuccess() {
-                                  toast("2FA enabled successfully");
-                                  setTwoFactorVerifyURI("");
-                                  setIsPendingTwoFa(false);
-                                  setTwoFaPassword("");
-                                  setTwoFactorDialog(false);
-                                },
-                              },
-                            });
-                            return;
-                          }
-                          const res = await authClient.twoFactor.enable({
-                            password: twoFaPassword,
-                            fetchOptions: {
-                              onError(context) {
-                                toast.error(context.error.message);
-                              },
-                              onSuccess(ctx) {
-                                setTwoFactorVerifyURI(ctx.data.totpURI);
-                              },
-                            },
-                          });
-                        }
-                        setIsPendingTwoFa(false);
-                        setTwoFaPassword("");
-                      }}
-                    >
-                      {isPendingTwoFa ? (
-                        <Loader2 size={15} className="animate-spin" />
-                      ) : session?.user.twoFactorEnabled ? (
-                        t("DISABLE_2FA")
-                      ) : (
-                        t("ENABLE_2FA")
-                      )}
-                    </Button>
-                  </DialogFooter>
+                    </DialogFooter>
+                  </form>
                 </DialogContent>
               </Dialog>
             </div>

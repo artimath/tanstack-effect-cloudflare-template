@@ -20,11 +20,13 @@ import { Route as authRegisterRouteImport } from './routes/(auth)/register'
 import { Route as authLoginRouteImport } from './routes/(auth)/login'
 import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-password'
 import { Route as DashboardSettingsIndexRouteImport } from './routes/dashboard/settings/index'
+import { Route as DashboardSettingsEnhancedIndexRouteImport } from './routes/dashboard/settings-enhanced/index'
 import { Route as DashboardChatIndexRouteImport } from './routes/dashboard/chat/index'
 import { Route as authTwoFactorIndexRouteImport } from './routes/(auth)/two-factor/index'
 import { Route as DashboardChatVercelRouteImport } from './routes/dashboard/chat/vercel'
 import { Route as DashboardChatRagRouteImport } from './routes/dashboard/chat/rag'
 import { Route as DashboardChatAgentRouteImport } from './routes/dashboard/chat/agent'
+import { Route as DashboardAdminUsersRouteImport } from './routes/dashboard/admin/users'
 import { Route as authTwoFactorOtpRouteImport } from './routes/(auth)/two-factor/otp'
 import { Route as authAcceptInvitationInvitationIdIndexRouteImport } from './routes/(auth)/accept-invitation/$invitationId/index'
 import { ServerRoute as DotwellKnownOauthAuthorizationServerServerRouteImport } from './routes/[.]well-known.oauth-authorization-server'
@@ -83,6 +85,12 @@ const DashboardSettingsIndexRoute = DashboardSettingsIndexRouteImport.update({
   path: '/settings/',
   getParentRoute: () => DashboardLayoutRoute,
 } as any)
+const DashboardSettingsEnhancedIndexRoute =
+  DashboardSettingsEnhancedIndexRouteImport.update({
+    id: '/settings-enhanced/',
+    path: '/settings-enhanced/',
+    getParentRoute: () => DashboardLayoutRoute,
+  } as any)
 const DashboardChatIndexRoute = DashboardChatIndexRouteImport.update({
   id: '/chat/',
   path: '/chat/',
@@ -106,6 +114,11 @@ const DashboardChatRagRoute = DashboardChatRagRouteImport.update({
 const DashboardChatAgentRoute = DashboardChatAgentRouteImport.update({
   id: '/chat/agent',
   path: '/chat/agent',
+  getParentRoute: () => DashboardLayoutRoute,
+} as any)
+const DashboardAdminUsersRoute = DashboardAdminUsersRouteImport.update({
+  id: '/admin/users',
+  path: '/admin/users',
   getParentRoute: () => DashboardLayoutRoute,
 } as any)
 const authTwoFactorOtpRoute = authTwoFactorOtpRouteImport.update({
@@ -176,11 +189,13 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof authResetPasswordRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/two-factor/otp': typeof authTwoFactorOtpRoute
+  '/dashboard/admin/users': typeof DashboardAdminUsersRoute
   '/dashboard/chat/agent': typeof DashboardChatAgentRoute
   '/dashboard/chat/rag': typeof DashboardChatRagRoute
   '/dashboard/chat/vercel': typeof DashboardChatVercelRoute
   '/two-factor': typeof authTwoFactorIndexRoute
   '/dashboard/chat': typeof DashboardChatIndexRoute
+  '/dashboard/settings-enhanced': typeof DashboardSettingsEnhancedIndexRoute
   '/dashboard/settings': typeof DashboardSettingsIndexRoute
   '/accept-invitation/$invitationId': typeof authAcceptInvitationInvitationIdIndexRoute
 }
@@ -192,11 +207,13 @@ export interface FileRoutesByTo {
   '/reset-password': typeof authResetPasswordRoute
   '/dashboard': typeof DashboardIndexRoute
   '/two-factor/otp': typeof authTwoFactorOtpRoute
+  '/dashboard/admin/users': typeof DashboardAdminUsersRoute
   '/dashboard/chat/agent': typeof DashboardChatAgentRoute
   '/dashboard/chat/rag': typeof DashboardChatRagRoute
   '/dashboard/chat/vercel': typeof DashboardChatVercelRoute
   '/two-factor': typeof authTwoFactorIndexRoute
   '/dashboard/chat': typeof DashboardChatIndexRoute
+  '/dashboard/settings-enhanced': typeof DashboardSettingsEnhancedIndexRoute
   '/dashboard/settings': typeof DashboardSettingsIndexRoute
   '/accept-invitation/$invitationId': typeof authAcceptInvitationInvitationIdIndexRoute
 }
@@ -211,11 +228,13 @@ export interface FileRoutesById {
   '/(public)/': typeof publicIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/(auth)/two-factor/otp': typeof authTwoFactorOtpRoute
+  '/dashboard/admin/users': typeof DashboardAdminUsersRoute
   '/dashboard/chat/agent': typeof DashboardChatAgentRoute
   '/dashboard/chat/rag': typeof DashboardChatRagRoute
   '/dashboard/chat/vercel': typeof DashboardChatVercelRoute
   '/(auth)/two-factor/': typeof authTwoFactorIndexRoute
   '/dashboard/chat/': typeof DashboardChatIndexRoute
+  '/dashboard/settings-enhanced/': typeof DashboardSettingsEnhancedIndexRoute
   '/dashboard/settings/': typeof DashboardSettingsIndexRoute
   '/(auth)/accept-invitation/$invitationId/': typeof authAcceptInvitationInvitationIdIndexRoute
 }
@@ -230,11 +249,13 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/dashboard/'
     | '/two-factor/otp'
+    | '/dashboard/admin/users'
     | '/dashboard/chat/agent'
     | '/dashboard/chat/rag'
     | '/dashboard/chat/vercel'
     | '/two-factor'
     | '/dashboard/chat'
+    | '/dashboard/settings-enhanced'
     | '/dashboard/settings'
     | '/accept-invitation/$invitationId'
   fileRoutesByTo: FileRoutesByTo
@@ -246,11 +267,13 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/dashboard'
     | '/two-factor/otp'
+    | '/dashboard/admin/users'
     | '/dashboard/chat/agent'
     | '/dashboard/chat/rag'
     | '/dashboard/chat/vercel'
     | '/two-factor'
     | '/dashboard/chat'
+    | '/dashboard/settings-enhanced'
     | '/dashboard/settings'
     | '/accept-invitation/$invitationId'
   id:
@@ -264,11 +287,13 @@ export interface FileRouteTypes {
     | '/(public)/'
     | '/dashboard/'
     | '/(auth)/two-factor/otp'
+    | '/dashboard/admin/users'
     | '/dashboard/chat/agent'
     | '/dashboard/chat/rag'
     | '/dashboard/chat/vercel'
     | '/(auth)/two-factor/'
     | '/dashboard/chat/'
+    | '/dashboard/settings-enhanced/'
     | '/dashboard/settings/'
     | '/(auth)/accept-invitation/$invitationId/'
   fileRoutesById: FileRoutesById
@@ -423,6 +448,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardSettingsIndexRouteImport
       parentRoute: typeof DashboardLayoutRoute
     }
+    '/dashboard/settings-enhanced/': {
+      id: '/dashboard/settings-enhanced/'
+      path: '/settings-enhanced'
+      fullPath: '/dashboard/settings-enhanced'
+      preLoaderRoute: typeof DashboardSettingsEnhancedIndexRouteImport
+      parentRoute: typeof DashboardLayoutRoute
+    }
     '/dashboard/chat/': {
       id: '/dashboard/chat/'
       path: '/chat'
@@ -456,6 +488,13 @@ declare module '@tanstack/react-router' {
       path: '/chat/agent'
       fullPath: '/dashboard/chat/agent'
       preLoaderRoute: typeof DashboardChatAgentRouteImport
+      parentRoute: typeof DashboardLayoutRoute
+    }
+    '/dashboard/admin/users': {
+      id: '/dashboard/admin/users'
+      path: '/admin/users'
+      fullPath: '/dashboard/admin/users'
+      preLoaderRoute: typeof DashboardAdminUsersRouteImport
       parentRoute: typeof DashboardLayoutRoute
     }
     '/(auth)/two-factor/otp': {
@@ -569,19 +608,23 @@ const authLayoutRouteWithChildren = authLayoutRoute._addFileChildren(
 
 interface DashboardLayoutRouteChildren {
   DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardAdminUsersRoute: typeof DashboardAdminUsersRoute
   DashboardChatAgentRoute: typeof DashboardChatAgentRoute
   DashboardChatRagRoute: typeof DashboardChatRagRoute
   DashboardChatVercelRoute: typeof DashboardChatVercelRoute
   DashboardChatIndexRoute: typeof DashboardChatIndexRoute
+  DashboardSettingsEnhancedIndexRoute: typeof DashboardSettingsEnhancedIndexRoute
   DashboardSettingsIndexRoute: typeof DashboardSettingsIndexRoute
 }
 
 const DashboardLayoutRouteChildren: DashboardLayoutRouteChildren = {
   DashboardIndexRoute: DashboardIndexRoute,
+  DashboardAdminUsersRoute: DashboardAdminUsersRoute,
   DashboardChatAgentRoute: DashboardChatAgentRoute,
   DashboardChatRagRoute: DashboardChatRagRoute,
   DashboardChatVercelRoute: DashboardChatVercelRoute,
   DashboardChatIndexRoute: DashboardChatIndexRoute,
+  DashboardSettingsEnhancedIndexRoute: DashboardSettingsEnhancedIndexRoute,
   DashboardSettingsIndexRoute: DashboardSettingsIndexRoute,
 }
 

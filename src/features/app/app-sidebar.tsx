@@ -1,4 +1,14 @@
-import { AudioWaveform, Command, File, GalleryVerticalEnd, Home, MessageCircle, Settings2 } from "lucide-react";
+import {
+  AudioWaveform,
+  Command,
+  File,
+  GalleryVerticalEnd,
+  Home,
+  MessageCircle,
+  Settings,
+  Settings2,
+  Users,
+} from "lucide-react";
 import * as React from "react";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from "@/components/ui/sidebar";
 import { NavItems } from "@/features/app/nav-items";
@@ -35,11 +45,20 @@ const data = {
       url: "/dashboard",
       icon: Home,
     },
-
     {
       name: "Settings",
       url: "/dashboard/settings",
       icon: Settings2,
+    },
+    {
+      name: "Enhanced Settings",
+      url: "/dashboard/settings-enhanced",
+      icon: Settings,
+    },
+    {
+      name: "Admin Users",
+      url: "/dashboard/admin/users",
+      icon: Users,
     },
     {
       name: "Chat",

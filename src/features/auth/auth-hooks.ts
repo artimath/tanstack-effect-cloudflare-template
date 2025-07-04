@@ -138,11 +138,75 @@ export const useAuthHelpers = () => {
     mutationFn: async ({ code }: { code: string }) => await authClient.twoFactor.verifyTotp({ code }),
   });
 
+  const getTotpUri = useMutation({
+    mutationFn: async ({ password }: { password: string }) => {
+      const result = await authClient.twoFactor.getTotpUri({ password });
+      if (result.error) {
+        throw new Error(result.error.message || "Failed to get TOTP URI");
+      }
+      return result;
+    },
+  });
+
+  const enableTwoFactor = useMutation({
+    mutationFn: async ({ password }: { password: string }) => {
+      const result = await authClient.twoFactor.enable({ password });
+      if (result.error) {
+        throw new Error(result.error.message || "Failed to enable two-factor authentication");
+      }
+      return result;
+    },
+  });
+
+  const disableTwoFactor = useMutation({
+    mutationFn: async ({ password }: { password: string }) => {
+      const result = await authClient.twoFactor.disable({ password });
+      if (result.error) {
+        throw new Error(result.error.message || "Failed to disable two-factor authentication");
+      }
+      return result;
+    },
+  });
+
+  const verifyTotpForEnable = useMutation({
+    mutationFn: async ({ code }: { code: string }) => {
+      const result = await authClient.twoFactor.verifyTotp({ code });
+      if (result.error) {
+        throw new Error(result.error.message || "Invalid TOTP code");
+      }
+      return result;
+    },
+  });
+
+  const sendVerificationEmail = useMutation({
+    mutationFn: async ({ email }: { email: string }) => await authClient.sendVerificationEmail({ email }),
+  });
+
+  const verifyEmail = useMutation({
+    mutationFn: async ({ token }: { token: string }) => await authClient.verifyEmail({ query: { token } }),
+  });
+
+  const revokeSession = useMutation({
+    mutationFn: async ({ token }: { token: string }) => await authClient.revokeSession({ token }),
+  });
+
+  const signOut = useMutation({
+    mutationFn: async () => await authClient.signOut(),
+  });
+
   return {
     forgotPassword,
     sendOtp,
     verifyOtp,
     resetPassword,
     verifyTwoFactor,
+    getTotpUri,
+    enableTwoFactor,
+    disableTwoFactor,
+    verifyTotpForEnable,
+    sendVerificationEmail,
+    verifyEmail,
+    revokeSession,
+    signOut,
   };
 };

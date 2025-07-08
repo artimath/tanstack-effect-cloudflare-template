@@ -1,7 +1,7 @@
 import { Button, Text } from "@react-email/components";
 import { EmailLayout } from "./layout-email";
 
-export const ResetPasswordEmail = ({ resetLink, username }: { resetLink: string; username: string }) => {
+const ResetPasswordEmail = ({ resetLink, username }: { resetLink: string; username: string }) => {
   return (
     <EmailLayout preview="Reset your password">
       <Text className="font-bold text-2xl text-gray-800">Reset Your Password</Text>
@@ -15,4 +15,11 @@ export const ResetPasswordEmail = ({ resetLink, username }: { resetLink: string;
       </Text>
     </EmailLayout>
   );
+};
+
+export default ResetPasswordEmail;
+
+ResetPasswordEmail.PreviewProps = {
+  resetLink: "https://example.com/reset-password",
+  username: "John Doe",
 };

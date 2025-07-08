@@ -1,7 +1,7 @@
 import { Text } from "@react-email/components";
 import { EmailLayout } from "./layout-email";
 
-export const SendVerificationOTP = ({ username, otp }: { username: string; otp: string }) => {
+const SendVerificationOTP = ({ username, otp }: { username: string; otp: string }) => {
   return (
     <EmailLayout preview="Your verification code">
       <Text className="font-bold text-2xl text-gray-800">Verify your email</Text>
@@ -13,4 +13,11 @@ export const SendVerificationOTP = ({ username, otp }: { username: string; otp: 
       </Text>
     </EmailLayout>
   );
+};
+
+export default SendVerificationOTP;
+
+SendVerificationOTP.PreviewProps = {
+  username: "John Doe",
+  otp: "596853",
 };

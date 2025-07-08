@@ -1,7 +1,7 @@
 import { Text } from "@react-email/components";
 import { EmailLayout } from "./layout-email";
 
-export const WelcomeEmail = ({ username }: { username: string }) => {
+const WelcomeEmail = ({ username }: { username: string }) => {
   return (
     <EmailLayout preview="Welcome to our app!">
       <Text className="font-bold text-2xl text-gray-800">Welcome to our app!</Text>
@@ -12,4 +12,10 @@ export const WelcomeEmail = ({ username }: { username: string }) => {
       </Text>
     </EmailLayout>
   );
+};
+
+export default WelcomeEmail;
+
+WelcomeEmail.PreviewProps = {
+  username: "John Doe",
 };

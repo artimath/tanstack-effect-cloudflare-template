@@ -5,11 +5,11 @@ import { emailOTP } from "better-auth/plugins/email-otp";
 import { passkey } from "better-auth/plugins/passkey";
 import { twoFactor } from "better-auth/plugins/two-factor";
 import { reactStartCookies } from "better-auth/react-start";
-import { ResetPasswordEmail } from "@/components/emails/reset-password-email";
-import { SendMagicLinkEmail } from "@/components/emails/send-magic-link-email";
-import { SendVerificationOTP } from "@/components/emails/send-verification-otp";
-import { VerifyEmail } from "@/components/emails/verify-email";
-import { WelcomeEmail } from "@/components/emails/welcome-email";
+import ResetPasswordEmail from "@/components/emails/reset-password-email";
+import SendMagicLinkEmail from "@/components/emails/send-magic-link-email";
+import SendVerificationOTP from "@/components/emails/send-verification-otp";
+import VerifyEmail from "@/components/emails/verify-email";
+import WelcomeEmail from "@/components/emails/welcome-email";
 import { db } from "@/lib/db";
 import * as schema from "@/lib/db/schema/auth";
 import { sendEmail } from "@/lib/resend";
@@ -97,7 +97,7 @@ export const auth = betterAuth({
       loginPage: "/login",
     }),
     emailOTP({
-      async sendVerificationOTP({ email, otp, type }) {
+      async sendVerificationOTP({ email, otp }) {
         await sendEmail({
           subject: "Verify your email",
           template: SendVerificationOTP({
@@ -109,7 +109,7 @@ export const auth = betterAuth({
       },
     }),
     magicLink({
-      sendMagicLink: async ({ email, token, url }, request) => {
+      sendMagicLink: async ({ email, token, url }) => {
         await sendEmail({
           subject: "Magic Link",
           template: SendMagicLinkEmail({

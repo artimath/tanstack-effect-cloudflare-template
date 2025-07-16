@@ -1,12 +1,12 @@
 import { openai } from "@ai-sdk/openai";
 
 import { createServerFileRoute } from "@tanstack/react-start/server";
-import { experimental_generateImage as generateImage, type Message, streamText, tool } from "ai";
+import { experimental_generateImage as generateImage, type UIMessage, streamText, tool } from "ai";
 import { z } from "zod";
 
 export const ServerRoute = createServerFileRoute("/api/ai/chat/image/generation").methods({
   POST: async ({ request }) => {
-    const { messages }: { messages: Message[] } = await request.json();
+    const { messages }: { messages: UIMessage[] } = await request.json();
 
     // filter through messages and remove base64 image data to avoid sending to the model
     const formattedMessages = messages.map((m) => {

@@ -1,100 +1,120 @@
 import {
-  AudioWaveform,
-  Command,
+  Briefcase,
   File,
   GalleryVerticalEnd,
   Home,
+  Lock,
   MessageCircle,
   Settings,
   Settings2,
+  Shield,
   Users,
-} from "lucide-react";
-import * as React from "react";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from "@/components/ui/sidebar";
-import { NavItems } from "@/features/app/nav-items";
-import { NavUser } from "@/features/app/nav-user";
-import { OrganizationSwitcher } from "@/features/organization/organization-switcher";
+} from 'lucide-react';
+import { type ComponentProps } from 'react';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar';
+import { NavItems } from '@/features/app/nav-items';
+import { NavUser } from '@/features/app/nav-user';
+import { useOrganizations } from '@/features/organization/organization-hooks';
+import { OrganizationSwitcher } from '@/features/organization/organization-switcher';
+import { authClient } from '@/lib/auth/auth-client';
+import { canManageUsers, type UserRole } from '@/lib/auth/permissions';
 
-// This is sample data.
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+const navigationItems = [
+  {
+    name: 'Overview',
+    url: '/dashboard',
+    icon: Home,
   },
-  organizations: [
-    {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
-  ],
-  items: [
-    {
-      name: "Overview",
-      url: "/dashboard",
-      icon: Home,
-    },
-    {
-      name: "Settings",
-      url: "/dashboard/settings",
-      icon: Settings2,
-    },
-    {
-      name: "Enhanced Settings",
-      url: "/dashboard/settings-enhanced",
-      icon: Settings,
-    },
-    {
-      name: "Admin Users",
-      url: "/dashboard/admin/users",
-      icon: Users,
-    },
-    {
-      name: "Chat",
-      url: "/dashboard/chat",
-      icon: MessageCircle,
-    },
-    {
-      name: "RAG",
-      url: "/dashboard/chat/rag",
-      icon: File,
-    },
-    {
-      name: "Vercel",
-      url: "/dashboard/chat/vercel",
-      icon: MessageCircle,
-    },
-    {
-      name: "Agent",
-      url: "/dashboard/chat/agent",
-      icon: MessageCircle,
-    },
-  ],
-};
+  {
+    name: 'Workspace',
+    url: '/dashboard/workspace',
+    icon: Briefcase,
+  },
+  {
+    name: 'Settings',
+    url: '/dashboard/settings',
+    icon: Settings2,
+  },
+  {
+    name: 'Enhanced Settings',
+    url: '/dashboard/settings-enhanced',
+    icon: Settings,
+  },
+  {
+    name: 'Chat',
+    url: '/dashboard/chat',
+    icon: MessageCircle,
+  },
+  {
+    name: 'RAG',
+    url: '/dashboard/chat/rag',
+    icon: File,
+  },
+  {
+    name: 'Vercel',
+    url: '/dashboard/chat/vercel',
+    icon: MessageCircle,
+  },
+  {
+    name: 'Agent',
+    url: '/dashboard/chat/agent',
+    icon: MessageCircle,
+  },
+  {
+    name: 'Protect Examples',
+    url: '/dashboard/protect-examples',
+    icon: Lock,
+  },
+];
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
+  const { data: session } = authClient.useSession();
+  const { data: organizations } = useOrganizations();
+
+  const currentUserRole = (session?.user?.role as UserRole) || 'user';
+
+  const userData = session?.user
+    ? {
+        name: session.user.name || session.user.email,
+        email: session.user.email,
+        avatar: session.user.image || '/placeholder-user.jpg',
+      }
+    : undefined;
+
+  const organizationData =
+    organizations?.map((org) => ({
+      name: org.name,
+      logo: GalleryVerticalEnd,
+      plan: 'Free', // TODO: Add plan information to organization data
+    })) || [];
+
+  // Admin navigation items - only show if user has admin permissions
+  const adminItems = canManageUsers(currentUserRole)
+    ? [
+        {
+          name: 'Admin Dashboard',
+          url: '/dashboard/admin',
+          icon: Shield,
+        },
+        {
+          name: 'User Management',
+          url: '/dashboard/admin/users',
+          icon: Users,
+        },
+      ]
+    : [];
+
+  const allNavigationItems = [...navigationItems, ...adminItems];
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <OrganizationSwitcher organizations={data.organizations} />
+        <OrganizationSwitcher organizations={organizationData} />
       </SidebarHeader>
       <SidebarContent>
-        <NavItems items={data.items} label="" />
+        <NavItems items={allNavigationItems} label="" />
       </SidebarContent>
-      <SidebarFooter>
-        <NavUser user={data.user} />
-      </SidebarFooter>
+      <SidebarFooter>{userData && <NavUser user={userData} />}</SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );

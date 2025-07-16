@@ -62,7 +62,10 @@ export const ServerRoute = createServerFileRoute("/api/ai/agent/sdk").methods({
 
     const data = createDataStream({
       async execute(dataStream) {
-        dataStream.writeData({ value: JSON.stringify(finalOutput) });
+        dataStream.write({
+          'type': 'data',
+          'value': [{ value: JSON.stringify(finalOutput) }]
+        });
       },
     });
 
@@ -99,9 +102,13 @@ export const ServerRoute = createServerFileRoute("/api/ai/agent/sdk").methods({
 
         // // Merge another stream
 
-        dataStream.writeMessageAnnotation({
-          type: "status",
-          value: "processing",
+        dataStream.write({
+          'type': 'message-annotations',
+
+          'value': [{
+            type: "status",
+            value: "processing",
+          }]
         });
 
         dataStream.merge(data);

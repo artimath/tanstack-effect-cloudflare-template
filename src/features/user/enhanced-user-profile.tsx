@@ -16,11 +16,11 @@ export function EnhancedUserProfile() {
   const [profile, setProfile] = useState({
     name: session?.user?.name || "",
     email: session?.user?.email || "",
-    bio: "Software developer passionate about creating amazing user experiences.",
-    location: "San Francisco, CA",
-    website: "https://example.com",
-    github: "username",
-    twitter: "@username",
+    bio: "",
+    location: "",
+    website: "",
+    github: "",
+    twitter: "",
   });
 
   const handleSave = () => {
@@ -34,11 +34,11 @@ export function EnhancedUserProfile() {
     setProfile({
       name: session?.user?.name || "",
       email: session?.user?.email || "",
-      bio: "Software developer passionate about creating amazing user experiences.",
-      location: "San Francisco, CA",
-      website: "https://example.com",
-      github: "username",
-      twitter: "@username",
+      bio: "",
+      location: "",
+      website: "",
+      github: "",
+      twitter: "",
     });
     setIsEditing(false);
   };
@@ -74,13 +74,15 @@ export function EnhancedUserProfile() {
           </div>
           <p className="text-muted-foreground">{session?.user?.email}</p>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <div className="flex items-center gap-1">
-              <MapPin className="h-4 w-4" />
-              {profile.location}
-            </div>
+            {profile.location && (
+              <div className="flex items-center gap-1">
+                <MapPin className="h-4 w-4" />
+                {profile.location}
+              </div>
+            )}
             <div className="flex items-center gap-1">
               <Calendar className="h-4 w-4" />
-              Member since {new Date().getFullYear() - 1}
+              Member since {session?.user?.createdAt ? new Date(session.user.createdAt).getFullYear() : new Date().getFullYear()}
             </div>
           </div>
         </div>

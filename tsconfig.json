@@ -5,25 +5,25 @@
     "eslint.config.js",
     "prettier.config.js",
     "vite.config.js",
-
     "src/lib/intl/react-i18next.d.ts",
     "src/lib/intl/i18next.d.ts"
   ],
-
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "react-jsx",
     "module": "ESNext",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "types": ["vite/client"],
-
-    /* Bundler mode */
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "types": [
+      "vite/client"
+    ],
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "noEmit": true,
-
-    /* Linting */
     "skipLibCheck": true,
     "strict": true,
     "noUnusedLocals": true,
@@ -32,7 +32,10 @@
     "noUncheckedSideEffectImports": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "strictNullChecks": true
   }
 }

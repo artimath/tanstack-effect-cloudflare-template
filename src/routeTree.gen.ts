@@ -15,6 +15,7 @@ import { Route as DashboardLayoutRouteImport } from './routes/dashboard/layout'
 import { Route as authLayoutRouteImport } from './routes/(auth)/layout'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as publicIndexRouteImport } from './routes/(public)/index'
+import { Route as DashboardTanstackDbExampleRouteImport } from './routes/dashboard/tanstack-db-example'
 import { Route as DashboardProtectExamplesRouteImport } from './routes/dashboard/protect-examples'
 import { Route as authResetPasswordRouteImport } from './routes/(auth)/reset-password'
 import { Route as authRegisterRouteImport } from './routes/(auth)/register'
@@ -61,6 +62,12 @@ const publicIndexRoute = publicIndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardTanstackDbExampleRoute =
+  DashboardTanstackDbExampleRouteImport.update({
+    id: '/tanstack-db-example',
+    path: '/tanstack-db-example',
+    getParentRoute: () => DashboardLayoutRoute,
+  } as any)
 const DashboardProtectExamplesRoute =
   DashboardProtectExamplesRouteImport.update({
     id: '/protect-examples',
@@ -195,6 +202,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof authRegisterRoute
   '/reset-password': typeof authResetPasswordRoute
   '/dashboard/protect-examples': typeof DashboardProtectExamplesRoute
+  '/dashboard/tanstack-db-example': typeof DashboardTanstackDbExampleRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/two-factor/otp': typeof authTwoFactorOtpRoute
   '/dashboard/admin/users': typeof DashboardAdminUsersRoute
@@ -215,6 +223,7 @@ export interface FileRoutesByTo {
   '/register': typeof authRegisterRoute
   '/reset-password': typeof authResetPasswordRoute
   '/dashboard/protect-examples': typeof DashboardProtectExamplesRoute
+  '/dashboard/tanstack-db-example': typeof DashboardTanstackDbExampleRoute
   '/dashboard': typeof DashboardIndexRoute
   '/two-factor/otp': typeof authTwoFactorOtpRoute
   '/dashboard/admin/users': typeof DashboardAdminUsersRoute
@@ -237,6 +246,7 @@ export interface FileRoutesById {
   '/(auth)/register': typeof authRegisterRoute
   '/(auth)/reset-password': typeof authResetPasswordRoute
   '/dashboard/protect-examples': typeof DashboardProtectExamplesRoute
+  '/dashboard/tanstack-db-example': typeof DashboardTanstackDbExampleRoute
   '/(public)/': typeof publicIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/(auth)/two-factor/otp': typeof authTwoFactorOtpRoute
@@ -261,6 +271,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/dashboard/protect-examples'
+    | '/dashboard/tanstack-db-example'
     | '/dashboard/'
     | '/two-factor/otp'
     | '/dashboard/admin/users'
@@ -281,6 +292,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/dashboard/protect-examples'
+    | '/dashboard/tanstack-db-example'
     | '/dashboard'
     | '/two-factor/otp'
     | '/dashboard/admin/users'
@@ -302,6 +314,7 @@ export interface FileRouteTypes {
     | '/(auth)/register'
     | '/(auth)/reset-password'
     | '/dashboard/protect-examples'
+    | '/dashboard/tanstack-db-example'
     | '/(public)/'
     | '/dashboard/'
     | '/(auth)/two-factor/otp'
@@ -424,6 +437,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof publicIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/tanstack-db-example': {
+      id: '/dashboard/tanstack-db-example'
+      path: '/tanstack-db-example'
+      fullPath: '/dashboard/tanstack-db-example'
+      preLoaderRoute: typeof DashboardTanstackDbExampleRouteImport
+      parentRoute: typeof DashboardLayoutRoute
     }
     '/dashboard/protect-examples': {
       id: '/dashboard/protect-examples'
@@ -627,6 +647,7 @@ const authLayoutRouteWithChildren = authLayoutRoute._addFileChildren(
 
 interface DashboardLayoutRouteChildren {
   DashboardProtectExamplesRoute: typeof DashboardProtectExamplesRoute
+  DashboardTanstackDbExampleRoute: typeof DashboardTanstackDbExampleRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   DashboardAdminUsersRoute: typeof DashboardAdminUsersRoute
   DashboardChatRagRoute: typeof DashboardChatRagRoute
@@ -640,6 +661,7 @@ interface DashboardLayoutRouteChildren {
 
 const DashboardLayoutRouteChildren: DashboardLayoutRouteChildren = {
   DashboardProtectExamplesRoute: DashboardProtectExamplesRoute,
+  DashboardTanstackDbExampleRoute: DashboardTanstackDbExampleRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   DashboardAdminUsersRoute: DashboardAdminUsersRoute,
   DashboardChatRagRoute: DashboardChatRagRoute,

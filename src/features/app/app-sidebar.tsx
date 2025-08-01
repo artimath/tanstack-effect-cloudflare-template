@@ -1,5 +1,6 @@
 import {
   Briefcase,
+  Database,
   File,
   GalleryVerticalEnd,
   Home,
@@ -24,6 +25,11 @@ const navigationItems = [
     name: 'Overview',
     url: '/dashboard',
     icon: Home,
+  },
+  {
+    name: 'TanStack DB Example',
+    url: '/dashboard/tanstack-db-example',
+    icon: Database,
   },
   {
     name: 'Workspace',

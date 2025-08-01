@@ -2,7 +2,7 @@ import { vercel } from "@ai-sdk/vercel";
 import { json } from "@tanstack/react-start";
 import { createServerFileRoute } from "@tanstack/react-start/server";
 
-import { streamText } from "ai";
+import { convertToModelMessages, streamText } from "ai";
 
 export const ServerRoute = createServerFileRoute("/api/ai/vercel/chat").methods({
   POST: async ({ request }) => {
@@ -13,10 +13,10 @@ export const ServerRoute = createServerFileRoute("/api/ai/vercel/chat").methods(
 
       const response = streamText({
         model: vercel("v0-1.0-md"),
-        messages,
+        messages: convertToModelMessages(messages),
       });
 
-      return response.toDataStreamResponse();
+      return response.toUIMessageStreamResponse();
     } catch (error) {
       console.error("🔑 Error", error);
       return json({ error: "Internal server error" }, { status: 500 });

@@ -56,11 +56,6 @@ const navigationItems = [
     icon: MessageCircle,
   },
   {
-    name: 'Agent',
-    url: '/dashboard/chat/agent',
-    icon: MessageCircle,
-  },
-  {
     name: 'Protect Examples',
     url: '/dashboard/protect-examples',
     icon: Lock,

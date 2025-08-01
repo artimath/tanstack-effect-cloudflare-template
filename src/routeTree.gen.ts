@@ -28,7 +28,6 @@ import { Route as DashboardAdminIndexRouteImport } from './routes/dashboard/admi
 import { Route as authTwoFactorIndexRouteImport } from './routes/(auth)/two-factor/index'
 import { Route as DashboardChatVercelRouteImport } from './routes/dashboard/chat/vercel'
 import { Route as DashboardChatRagRouteImport } from './routes/dashboard/chat/rag'
-import { Route as DashboardChatAgentRouteImport } from './routes/dashboard/chat/agent'
 import { Route as DashboardAdminUsersRouteImport } from './routes/dashboard/admin/users'
 import { Route as authTwoFactorOtpRouteImport } from './routes/(auth)/two-factor/otp'
 import { Route as authAcceptInvitationInvitationIdIndexRouteImport } from './routes/(auth)/accept-invitation/$invitationId/index'
@@ -39,7 +38,6 @@ import { ServerRoute as ApiAiChatServerRouteImport } from './routes/api/ai/chat'
 import { ServerRoute as ApiAiVercelChatServerRouteImport } from './routes/api/ai/vercel/chat'
 import { ServerRoute as ApiAiMcpTransportServerRouteImport } from './routes/api/ai/mcp/$transport'
 import { ServerRoute as ApiAiChatRagServerRouteImport } from './routes/api/ai/chat.rag'
-import { ServerRoute as ApiAiAgentSdkServerRouteImport } from './routes/api/ai/agent/sdk'
 import { ServerRoute as ApiAiChatImageGenerationServerRouteImport } from './routes/api/ai/chat.image.generation'
 
 const rootServerRouteImport = createServerRootRoute()
@@ -130,11 +128,6 @@ const DashboardChatRagRoute = DashboardChatRagRouteImport.update({
   path: '/chat/rag',
   getParentRoute: () => DashboardLayoutRoute,
 } as any)
-const DashboardChatAgentRoute = DashboardChatAgentRouteImport.update({
-  id: '/chat/agent',
-  path: '/chat/agent',
-  getParentRoute: () => DashboardLayoutRoute,
-} as any)
 const DashboardAdminUsersRoute = DashboardAdminUsersRouteImport.update({
   id: '/admin/users',
   path: '/admin/users',
@@ -187,11 +180,6 @@ const ApiAiChatRagServerRoute = ApiAiChatRagServerRouteImport.update({
   path: '/rag',
   getParentRoute: () => ApiAiChatServerRoute,
 } as any)
-const ApiAiAgentSdkServerRoute = ApiAiAgentSdkServerRouteImport.update({
-  id: '/api/ai/agent/sdk',
-  path: '/api/ai/agent/sdk',
-  getParentRoute: () => rootServerRouteImport,
-} as any)
 const ApiAiChatImageGenerationServerRoute =
   ApiAiChatImageGenerationServerRouteImport.update({
     id: '/image/generation',
@@ -210,7 +198,6 @@ export interface FileRoutesByFullPath {
   '/dashboard/': typeof DashboardIndexRoute
   '/two-factor/otp': typeof authTwoFactorOtpRoute
   '/dashboard/admin/users': typeof DashboardAdminUsersRoute
-  '/dashboard/chat/agent': typeof DashboardChatAgentRoute
   '/dashboard/chat/rag': typeof DashboardChatRagRoute
   '/dashboard/chat/vercel': typeof DashboardChatVercelRoute
   '/two-factor': typeof authTwoFactorIndexRoute
@@ -231,7 +218,6 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardIndexRoute
   '/two-factor/otp': typeof authTwoFactorOtpRoute
   '/dashboard/admin/users': typeof DashboardAdminUsersRoute
-  '/dashboard/chat/agent': typeof DashboardChatAgentRoute
   '/dashboard/chat/rag': typeof DashboardChatRagRoute
   '/dashboard/chat/vercel': typeof DashboardChatVercelRoute
   '/two-factor': typeof authTwoFactorIndexRoute
@@ -255,7 +241,6 @@ export interface FileRoutesById {
   '/dashboard/': typeof DashboardIndexRoute
   '/(auth)/two-factor/otp': typeof authTwoFactorOtpRoute
   '/dashboard/admin/users': typeof DashboardAdminUsersRoute
-  '/dashboard/chat/agent': typeof DashboardChatAgentRoute
   '/dashboard/chat/rag': typeof DashboardChatRagRoute
   '/dashboard/chat/vercel': typeof DashboardChatVercelRoute
   '/(auth)/two-factor/': typeof authTwoFactorIndexRoute
@@ -279,7 +264,6 @@ export interface FileRouteTypes {
     | '/dashboard/'
     | '/two-factor/otp'
     | '/dashboard/admin/users'
-    | '/dashboard/chat/agent'
     | '/dashboard/chat/rag'
     | '/dashboard/chat/vercel'
     | '/two-factor'
@@ -300,7 +284,6 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/two-factor/otp'
     | '/dashboard/admin/users'
-    | '/dashboard/chat/agent'
     | '/dashboard/chat/rag'
     | '/dashboard/chat/vercel'
     | '/two-factor'
@@ -323,7 +306,6 @@ export interface FileRouteTypes {
     | '/dashboard/'
     | '/(auth)/two-factor/otp'
     | '/dashboard/admin/users'
-    | '/dashboard/chat/agent'
     | '/dashboard/chat/rag'
     | '/dashboard/chat/vercel'
     | '/(auth)/two-factor/'
@@ -345,7 +327,6 @@ export interface FileServerRoutesByFullPath {
   '/api/ai/chat': typeof ApiAiChatServerRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatServerRoute
   '/api/trpc/$': typeof ApiTrpcSplatServerRoute
-  '/api/ai/agent/sdk': typeof ApiAiAgentSdkServerRoute
   '/api/ai/chat/rag': typeof ApiAiChatRagServerRoute
   '/api/ai/mcp/$transport': typeof ApiAiMcpTransportServerRoute
   '/api/ai/vercel/chat': typeof ApiAiVercelChatServerRoute
@@ -356,7 +337,6 @@ export interface FileServerRoutesByTo {
   '/api/ai/chat': typeof ApiAiChatServerRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatServerRoute
   '/api/trpc/$': typeof ApiTrpcSplatServerRoute
-  '/api/ai/agent/sdk': typeof ApiAiAgentSdkServerRoute
   '/api/ai/chat/rag': typeof ApiAiChatRagServerRoute
   '/api/ai/mcp/$transport': typeof ApiAiMcpTransportServerRoute
   '/api/ai/vercel/chat': typeof ApiAiVercelChatServerRoute
@@ -368,7 +348,6 @@ export interface FileServerRoutesById {
   '/api/ai/chat': typeof ApiAiChatServerRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatServerRoute
   '/api/trpc/$': typeof ApiTrpcSplatServerRoute
-  '/api/ai/agent/sdk': typeof ApiAiAgentSdkServerRoute
   '/api/ai/chat/rag': typeof ApiAiChatRagServerRoute
   '/api/ai/mcp/$transport': typeof ApiAiMcpTransportServerRoute
   '/api/ai/vercel/chat': typeof ApiAiVercelChatServerRoute
@@ -381,7 +360,6 @@ export interface FileServerRouteTypes {
     | '/api/ai/chat'
     | '/api/auth/$'
     | '/api/trpc/$'
-    | '/api/ai/agent/sdk'
     | '/api/ai/chat/rag'
     | '/api/ai/mcp/$transport'
     | '/api/ai/vercel/chat'
@@ -392,7 +370,6 @@ export interface FileServerRouteTypes {
     | '/api/ai/chat'
     | '/api/auth/$'
     | '/api/trpc/$'
-    | '/api/ai/agent/sdk'
     | '/api/ai/chat/rag'
     | '/api/ai/mcp/$transport'
     | '/api/ai/vercel/chat'
@@ -403,7 +380,6 @@ export interface FileServerRouteTypes {
     | '/api/ai/chat'
     | '/api/auth/$'
     | '/api/trpc/$'
-    | '/api/ai/agent/sdk'
     | '/api/ai/chat/rag'
     | '/api/ai/mcp/$transport'
     | '/api/ai/vercel/chat'
@@ -415,7 +391,6 @@ export interface RootServerRouteChildren {
   ApiAiChatServerRoute: typeof ApiAiChatServerRouteWithChildren
   ApiAuthSplatServerRoute: typeof ApiAuthSplatServerRoute
   ApiTrpcSplatServerRoute: typeof ApiTrpcSplatServerRoute
-  ApiAiAgentSdkServerRoute: typeof ApiAiAgentSdkServerRoute
   ApiAiMcpTransportServerRoute: typeof ApiAiMcpTransportServerRoute
   ApiAiVercelChatServerRoute: typeof ApiAiVercelChatServerRoute
 }
@@ -541,13 +516,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardChatRagRouteImport
       parentRoute: typeof DashboardLayoutRoute
     }
-    '/dashboard/chat/agent': {
-      id: '/dashboard/chat/agent'
-      path: '/chat/agent'
-      fullPath: '/dashboard/chat/agent'
-      preLoaderRoute: typeof DashboardChatAgentRouteImport
-      parentRoute: typeof DashboardLayoutRoute
-    }
     '/dashboard/admin/users': {
       id: '/dashboard/admin/users'
       path: '/admin/users'
@@ -622,13 +590,6 @@ declare module '@tanstack/react-start/server' {
       preLoaderRoute: typeof ApiAiChatRagServerRouteImport
       parentRoute: typeof ApiAiChatServerRoute
     }
-    '/api/ai/agent/sdk': {
-      id: '/api/ai/agent/sdk'
-      path: '/api/ai/agent/sdk'
-      fullPath: '/api/ai/agent/sdk'
-      preLoaderRoute: typeof ApiAiAgentSdkServerRouteImport
-      parentRoute: typeof rootServerRouteImport
-    }
     '/api/ai/chat/image/generation': {
       id: '/api/ai/chat/image/generation'
       path: '/image/generation'
@@ -668,7 +629,6 @@ interface DashboardLayoutRouteChildren {
   DashboardProtectExamplesRoute: typeof DashboardProtectExamplesRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   DashboardAdminUsersRoute: typeof DashboardAdminUsersRoute
-  DashboardChatAgentRoute: typeof DashboardChatAgentRoute
   DashboardChatRagRoute: typeof DashboardChatRagRoute
   DashboardChatVercelRoute: typeof DashboardChatVercelRoute
   DashboardAdminIndexRoute: typeof DashboardAdminIndexRoute
@@ -682,7 +642,6 @@ const DashboardLayoutRouteChildren: DashboardLayoutRouteChildren = {
   DashboardProtectExamplesRoute: DashboardProtectExamplesRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   DashboardAdminUsersRoute: DashboardAdminUsersRoute,
-  DashboardChatAgentRoute: DashboardChatAgentRoute,
   DashboardChatRagRoute: DashboardChatRagRoute,
   DashboardChatVercelRoute: DashboardChatVercelRoute,
   DashboardAdminIndexRoute: DashboardAdminIndexRoute,
@@ -724,7 +683,6 @@ const rootServerRouteChildren: RootServerRouteChildren = {
   ApiAiChatServerRoute: ApiAiChatServerRouteWithChildren,
   ApiAuthSplatServerRoute: ApiAuthSplatServerRoute,
   ApiTrpcSplatServerRoute: ApiTrpcSplatServerRoute,
-  ApiAiAgentSdkServerRoute: ApiAiAgentSdkServerRoute,
   ApiAiMcpTransportServerRoute: ApiAiMcpTransportServerRoute,
   ApiAiVercelChatServerRoute: ApiAiVercelChatServerRoute,
 }

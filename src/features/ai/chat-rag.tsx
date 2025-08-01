@@ -1,10 +1,11 @@
-import { type UseChatHelpers, useChat } from "@ai-sdk/react";
+import { type UIMessage, useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 import { ArrowUpIcon, StopCircleIcon } from "lucide-react";
-import { memo, useEffect, useRef } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
-// Types
+// Types - Using AI SDK v5 types
 interface Attachment {
   contentType?: string;
   url: string;
@@ -25,13 +26,8 @@ interface MessagePart {
   toolInvocation: ToolInvocationType;
 }
 
-interface MessageType {
-  id: string;
-  role: string;
-  content: string;
-  parts?: MessagePart[];
-  experimental_attachments?: Attachment[];
-}
+// Using AI SDK v5 UIMessage type
+type MessageType = UIMessage;
 
 // Message Components
 const MessageHeader = ({ role }: { role: string }) => <div className="font-bold">{role}</div>;
@@ -69,70 +65,68 @@ const ToolInvocation = ({ toolInvocation }: { toolInvocation: ToolInvocationType
   return null;
 };
 
-const ImageAttachment = ({ url, name, id }: { url: string; name?: string; id: string }) => (
-  <img src={url} width={500} height={500} alt={name ?? "image attachment"} />
-);
 
-const PdfAttachment = ({ url, name, id }: { url: string; name?: string; id: string }) => (
-  <iframe src={url} width="500" height="600" title={name ?? "pdf attachment"} />
-);
-
-const MessageAttachments = ({ attachments = [], messageId }: { attachments?: Attachment[]; messageId: string }) => {
-  if (!attachments.length) return null;
-
-  const filteredAttachments = attachments.filter(
-    (attachment) =>
-      attachment?.contentType?.startsWith("image/") || attachment?.contentType?.startsWith("application/pdf"),
-  );
-
-  if (!filteredAttachments.length) return null;
-
-  return (
-    <div>
-      {filteredAttachments.map((attachment, index) => {
-        const uniqueId = `${messageId}-${index}`;
-
-        if (attachment.contentType?.startsWith("image/")) {
-          return <ImageAttachment key={uniqueId} url={attachment.url} name={attachment.name} id={uniqueId} />;
-        }
-
-        if (attachment.contentType?.startsWith("application/pdf")) {
-          return <PdfAttachment key={uniqueId} url={attachment.url} name={attachment.name} id={uniqueId} />;
-        }
-
-        return null;
-      })}
-    </div>
-  );
-};
-
-const MessageContent = ({ content }: { content: string }) => <p>{content}</p>;
-
-const MessageToolInvocations = ({ parts }: { parts?: MessagePart[] }) => {
-  if (!parts) return null;
-
-  return (
-    <>
-      {parts.map((part, index) =>
-        part.type === "tool-invocation" && part.toolInvocation.state === "call" ? (
-          <ToolInvocation key={`${part.toolInvocation.toolCallId}-${index}`} toolInvocation={part.toolInvocation} />
-        ) : part.type === "tool-invocation" && part.toolInvocation.state === "result" ? (
-          <ToolInvocation key={`${part.toolInvocation.toolCallId}-${index}`} toolInvocation={part.toolInvocation} />
-        ) : null,
-      )}
-    </>
-  );
-};
 
 const Message = ({ message }: { message: MessageType }) => {
   return (
     <div className="whitespace-pre-wrap">
       <div>
-        <MessageHeader role={message.role} />
-        <MessageToolInvocations parts={message.parts} />
-        <MessageContent content={message.content} />
+        <div className="font-bold">{message.role}</div>
+        <div>
+          {message.parts.map((part, index) => {
+            if (part.type === "text") {
+              return <p key={index}>{part.text}</p>;
+            }
+            
+            // Handle new v5 tool patterns - tools are prefixed with 'tool-'
+            if (part.type.startsWith("tool-")) {
+              const toolPart = part as any; // Type assertion for tool part
+              const { toolCallId, state } = toolPart;
+              const toolName = part.type.replace("tool-", "");
+              
+              // Tool is completed and has output
+              if (state === "output-available" && toolPart.output) {
+                if (toolName === "getInformation") {
+                  return (
+                    <div key={toolCallId} className="bg-blue-50 border border-blue-200 rounded-lg p-3 my-2">
+                      <div className="font-medium text-blue-800">Information Retrieved:</div>
+                      <div className="text-blue-700">{JSON.stringify(toolPart.output, null, 2)}</div>
+                    </div>
+                  );
+                }
+                
+                return (
+                  <div key={toolCallId} className="bg-green-50 border border-green-200 rounded-lg p-3 my-2">
+                    <div className="font-medium text-green-800">{toolName} completed:</div>
+                    <pre className="text-green-700 text-sm">{JSON.stringify(toolPart.output, null, 2)}</pre>
+                  </div>
+                );
+              }
+              
+              // Tool is still processing
+              return (
+                <div key={toolCallId || index} className="animate-pulse bg-yellow-50 border border-yellow-200 rounded-lg p-3 my-2">
+                  <div className="flex items-center space-x-2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-yellow-500"></div>
+                    <span className="text-yellow-700">
+                      {state === "input-streaming" && `Preparing ${toolName}...`}
+                      {state === "input-available" && `Executing ${toolName}...`}
+                      {state === "output-available" && `Processing ${toolName}...`}
+                    </span>
+                  </div>
+                </div>
+              );
+            }
+            
+            // Handle step indicators
+            if (part.type === "step-start") {
+              return null; // Don't render step indicators for cleaner UI
+            }
+            
+            return null;
+          })}
+        </div>
       </div>
-      <MessageAttachments attachments={message.experimental_attachments} messageId={message.id} />
     </div>
   );
 };
@@ -155,11 +149,14 @@ const MessageList = ({
 };
 
 export function Chat({ api }: { api?: string }) {
-  const { messages, input, handleInputChange, handleSubmit, status, setMessages, stop, data } = useChat({
-    api: api || "/api/ai/chat/rag",
+  const [input, setInput] = useState("");
+  const { messages, sendMessage, status, stop } = useChat({
+    transport: new DefaultChatTransport({
+      api: api || "/api/ai/chat/rag",
+    }),
   });
 
-  console.log({ messages, data });
+  console.log({ messages });
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -177,10 +174,22 @@ export function Chat({ api }: { api?: string }) {
 
   // Scroll when status changes
   useEffect(() => {
-    if (status === "submitted") {
+    if (status === "streaming") {
       scrollToBottom();
     }
   }, [status]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (input.trim()) {
+      sendMessage({ text: input });
+      setInput("");
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInput(e.target.value);
+  };
 
   return (
     <div className="relative flex w-full flex-col items-center justify-center gap-4">
@@ -208,8 +217,8 @@ export function Chat({ api }: { api?: string }) {
               }}
             />
             <div className="absolute right-2">
-              {status === "submitted" ? (
-                <StopButton stop={stop} setMessages={setMessages} />
+              {status === "streaming" ? (
+                <StopButton stop={stop} />
               ) : (
                 <SendButton input={input} submitForm={handleSubmit} uploadQueue={[]} />
               )}
@@ -221,7 +230,7 @@ export function Chat({ api }: { api?: string }) {
   );
 }
 
-function PureStopButton({ stop, setMessages }: { stop: () => void; setMessages: UseChatHelpers["setMessages"] }) {
+function PureStopButton({ stop }: { stop: () => void }) {
   return (
     <Button
       data-testid="stop-button"
@@ -229,7 +238,6 @@ function PureStopButton({ stop, setMessages }: { stop: () => void; setMessages: 
       onClick={(event) => {
         event.preventDefault();
         stop();
-        setMessages((messages) => messages);
       }}
     >
       <StopCircleIcon size={14} />
@@ -244,7 +252,7 @@ function PureSendButton({
   input,
   uploadQueue,
 }: {
-  submitForm: () => void;
+  submitForm: (e: React.FormEvent) => void;
   input: string;
   uploadQueue: Array<string>;
 }) {
@@ -254,7 +262,7 @@ function PureSendButton({
       className="h-fit rounded-full border p-1.5 dark:border-zinc-600"
       onClick={(event) => {
         event.preventDefault();
-        submitForm();
+        submitForm(event as React.FormEvent);
       }}
       disabled={input.length === 0 || uploadQueue.length > 0}
     >

@@ -1,6 +1,7 @@
-import { type UseChatHelpers, useChat } from "@ai-sdk/react";
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 import { ArrowUpIcon, StopCircleIcon } from "lucide-react";
-import { memo, useEffect, useRef } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -50,17 +51,18 @@ function ChatWelcome({ onSelectSuggestion }: { onSelectSuggestion: (suggestion: 
 }
 
 export function Chat() {
-  const { messages, input, handleInputChange, handleSubmit, status, setMessages, stop } = useChat({
-    api: "/api/ai/chat/image/generation",
+  const [input, setInput] = useState("");
+  const { messages, sendMessage, status, stop } = useChat({
+    transport: new DefaultChatTransport({
+      api: "/api/ai/chat/image/generation",
+    }),
   });
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const handleSelectSuggestion = (suggestion: string) => {
-    handleInputChange({
-      target: { value: suggestion },
-    } as React.ChangeEvent<HTMLTextAreaElement>);
+    setInput(suggestion);
   };
 
   const scrollToBottom = () => {
@@ -78,10 +80,22 @@ export function Chat() {
 
   // Scroll when status changes
   useEffect(() => {
-    if (status === "submitted") {
+    if (status === "streaming") {
       scrollToBottom();
     }
   }, [status]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (input.trim()) {
+      sendMessage({ text: input });
+      setInput("");
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInput(e.target.value);
+  };
 
   return (
     <div className="relative flex w-full flex-col items-center justify-center gap-4">
@@ -91,27 +105,60 @@ export function Chat() {
             <div key={m.id} className="whitespace-pre-wrap">
               <div key={m.id}>
                 <div className="font-bold">{m.role}</div>
-                {m.parts
-                  ? m.parts.map((ti) =>
-                      ti.type === "tool-invocation" ? (
-                        ti.toolInvocation.toolName === "generateImage" && ti.toolInvocation.state === "result" ? (
+                                <div>
+                  {m.parts.map((part, index) => {
+                    console.log("🔑 Part", part);
+                    
+                    if (part.type === "text") {
+                      return <p key={index}>{part.text}</p>;
+                    }
+                    
+                    // Handle new v5 tool pattern - tools are prefixed with 'tool-'
+                    if (part.type === "tool-generateImage") {
+                      const toolPart = part as any; // Type assertion for tool part
+                      const { toolCallId, state } = toolPart;
+                      
+                      // Tool is completed and has output
+                      if (state === "output-available" && toolPart.output) {
+                        const output = toolPart.output as { image: string; prompt?: string };
+                        const input = toolPart.input as { prompt?: string };
+                        
+                        return (
                           <img
-                            key={ti.toolInvocation.toolCallId}
-                            src={`data:image/png;base64,${ti.toolInvocation.result.image}`}
-                            alt={ti.toolInvocation.result.prompt}
+                            key={toolCallId}
+                            src={`data:image/png;base64,${output.image}`}
+                            alt={input?.prompt || "Generated image"}
                             height={400}
                             width={400}
                             onLoad={scrollToBottom}
+                            className="rounded-lg shadow-lg"
                           />
-                        ) : (
-                          <div key={ti.toolInvocation.toolCallId} className="animate-pulse">
-                            Generating image...
+                        );
+                      }
+                      
+                      // Tool is still processing (input streaming, input available, etc.)
+                      return (
+                        <div key={toolCallId} className="animate-pulse bg-gray-100 rounded-lg p-4">
+                          <div className="flex items-center space-x-2">
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
+                            <span className="text-gray-600">
+                              {state === "input-streaming" && "Preparing image generation..."}
+                              {state === "input-available" && "Starting image generation..."}
+                              {state === "output-available" && "Generating image..."}
+                            </span>
                           </div>
-                        )
-                      ) : null,
-                    )
-                  : null}
-                <p>{m.content}</p>
+                        </div>
+                      );
+                    }
+                    
+                    // Handle step indicators
+                    if (part.type === "step-start") {
+                      return null; // Don't render step indicators for cleaner UI
+                    }
+                    
+                    return null;
+                  })}
+                </div>
               </div>
             </div>
           ))
@@ -143,8 +190,8 @@ export function Chat() {
               }}
             />
             <div className="absolute right-2">
-              {status === "submitted" ? (
-                <StopButton stop={stop} setMessages={setMessages} />
+              {status === "streaming" ? (
+                <StopButton stop={stop} />
               ) : (
                 <SendButton input={input} submitForm={handleSubmit} uploadQueue={[]} />
               )}
@@ -156,7 +203,7 @@ export function Chat() {
   );
 }
 
-function PureStopButton({ stop, setMessages }: { stop: () => void; setMessages: UseChatHelpers["setMessages"] }) {
+function PureStopButton({ stop }: { stop: () => void }) {
   return (
     <Button
       data-testid="stop-button"
@@ -164,7 +211,6 @@ function PureStopButton({ stop, setMessages }: { stop: () => void; setMessages: 
       onClick={(event) => {
         event.preventDefault();
         stop();
-        setMessages((messages) => messages);
       }}
     >
       <StopCircleIcon size={14} />
@@ -179,7 +225,7 @@ function PureSendButton({
   input,
   uploadQueue,
 }: {
-  submitForm: () => void;
+  submitForm: (e: React.FormEvent) => void;
   input: string;
   uploadQueue: Array<string>;
 }) {
@@ -189,9 +235,9 @@ function PureSendButton({
       className="h-fit rounded-full border p-1.5 dark:border-zinc-600"
       onClick={(event) => {
         event.preventDefault();
-        submitForm();
+        submitForm(event as React.FormEvent);
       }}
-      disabled={input.length === 0 || uploadQueue.length > 0}
+      disabled={!input || input.length === 0 || uploadQueue.length > 0}
     >
       <ArrowUpIcon size={14} />
     </Button>

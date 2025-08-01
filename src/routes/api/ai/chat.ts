@@ -1,7 +1,7 @@
 import { openai } from "@ai-sdk/openai";
 
 import { createServerFileRoute } from "@tanstack/react-start/server";
-import { streamText } from "ai";
+import { convertToModelMessages, streamText } from "ai";
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
@@ -12,9 +12,9 @@ export const ServerRoute = createServerFileRoute("/api/ai/chat").methods({
 
     const result = streamText({
       model: openai("gpt-4o-2024-05-13"),
-      messages,
+      messages: convertToModelMessages(messages),
     });
 
-    return result.toDataStreamResponse();
+    return result.toUIMessageStreamResponse();
   },
 });

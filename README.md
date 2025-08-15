@@ -27,6 +27,12 @@ This project provides a solid foundation for building modern web applications us
 - **AI:** [@ai-sdk/react](https://sdk.vercel.ai/), [ai](https://sdk.vercel.ai/) (Ready for AI features)
 - **i18n:** [i18next](https://www.i18next.com/) (Internationalization)
 
+## Quick Demo: TanStack DB Example
+
+- **Route:** `/dashboard/tanstack-db-example`
+- **What it demonstrates:** Reactive collections with live queries, multiple filtered views (All, Pending, Completed), and seamless integration with TanStack Query/tRPC.
+- **Docs:** [TanStack DB Overview](https://tanstack.com/db/latest/docs/overview)
+
 ## Database with Neon
 
 This boilerplate uses [Neon](https://neon.com/) as the primary database solution, providing a modern serverless PostgreSQL experience that's perfect for full-stack applications.

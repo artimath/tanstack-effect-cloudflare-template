@@ -1,17 +1,17 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useLiveQuery, createCollection } from "@tanstack/react-db";
-import { queryCollectionOptions } from "@tanstack/query-db-collection";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Loader2, Trash2 } from "lucide-react";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { useTRPC } from "@/lib/trpc/react";
-import { eq } from "@tanstack/db";
+import { eq } from '@tanstack/db';
+import { queryCollectionOptions } from '@tanstack/query-db-collection';
+import { createCollection, useLiveQuery } from '@tanstack/react-db';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { createFileRoute } from '@tanstack/react-router';
+import { Loader2, Trash2 } from 'lucide-react';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+import { useTRPC } from '@/lib/trpc/react';
 
-export const Route = createFileRoute("/dashboard/tanstack-db-example")({
+export const Route = createFileRoute('/dashboard/tanstack-db-example')({
   component: RouteComponent,
 });
 
@@ -31,19 +31,18 @@ function RouteComponent() {
 }
 
 function TanStackDBTodosRoute() {
-  const [newTodoText, setNewTodoText] = useState("");
+  const [newTodoText, setNewTodoText] = useState('');
   const trpc = useTRPC();
   const queryClient = useQueryClient();
-  const todos = useQuery({...trpc.todo.getAll.queryOptions(), enabled: false});
+  const todos = useQuery({ ...trpc.todo.getAll.queryOptions(), enabled: false });
 
   // Create TanStack DB collection using queryCollectionOptions
   const todoCollection = createCollection(
-    queryCollectionOptions<Todo>({
-      queryKey: ["todos"],
+    queryCollectionOptions({
+      queryKey: ['todos'],
       queryFn: async () => {
-        // Use fetch with the same endpoint pattern
         const data = await todos.refetch();
-        return data.data ?? [];
+        return data.data;
       },
       queryClient,
       getKey: (item) => item.id,
@@ -54,55 +53,53 @@ function TanStackDBTodosRoute() {
   const createMutation = useMutation(
     trpc.todo.create.mutationOptions({
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["todos"] });
-        setNewTodoText("");
+        queryClient.invalidateQueries({ queryKey: ['todos'] });
+        setNewTodoText('');
       },
-    }),
+    })
   );
 
   const toggleMutation = useMutation(
     trpc.todo.toggle.mutationOptions({
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["todos"] });
+        queryClient.invalidateQueries({ queryKey: ['todos'] });
       },
-    }),
+    })
   );
 
   const deleteMutation = useMutation(
     trpc.todo.delete.mutationOptions({
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["todos"] });
+        queryClient.invalidateQueries({ queryKey: ['todos'] });
       },
-    }),
+    })
   );
 
   // Live query for all todos
-  const { data: allTodos, isLoading, isError } = useLiveQuery((q) =>
-    q.from({ todo: todoCollection })
-  );
-
-
+  const { data: allTodos, isLoading, isError } = useLiveQuery((q) => q.from({ todo: todoCollection }));
 
   // Live query for completed todos only
   const { data: completedTodos } = useLiveQuery((q) =>
-    q.from({ todo: todoCollection })
-     .where(({ todo }) => eq(todo.completed, true))
-     .select(({ todo }) => ({
-       id: todo.id,
-       text: todo.text,
-       completed: todo.completed
-     }))
+    q
+      .from({ todo: todoCollection })
+      .where(({ todo }) => eq(todo.completed, true))
+      .select(({ todo }) => ({
+        id: todo.id,
+        text: todo.text,
+        completed: todo.completed,
+      }))
   );
 
-  // Live query for pending todos only  
+  // Live query for pending todos only
   const { data: pendingTodos } = useLiveQuery((q) =>
-    q.from({ todo: todoCollection })
-     .where(({ todo }) => eq(todo.completed, false))
-     .select(({ todo }) => ({
-       id: todo.id,
-       text: todo.text,
-       completed: todo.completed
-     }))
+    q
+      .from({ todo: todoCollection })
+      .where(({ todo }) => eq(todo.completed, false))
+      .select(({ todo }) => ({
+        id: todo.id,
+        text: todo.text,
+        completed: todo.completed,
+      }))
   );
 
   const handleAddTodo = async (e: React.FormEvent) => {
@@ -137,10 +134,8 @@ function TanStackDBTodosRoute() {
   return (
     <div className="mx-auto w-full max-w-4xl space-y-6 py-10">
       <div className="text-center">
-        <h1 className="text-3xl font-bold">TanStack DB Example</h1>
-        <p className="text-muted-foreground mt-2">
-          Reactive todos with live queries and TanStack Query integration
-        </p>
+        <h1 className="font-bold text-3xl">TanStack DB Example</h1>
+        <p className="mt-2 text-muted-foreground">Reactive todos with live queries and TanStack Query integration</p>
       </div>
 
       {/* Add Todo Form */}
@@ -150,25 +145,21 @@ function TanStackDBTodosRoute() {
           <CardDescription>Create a new task and see live query updates</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleAddTodo} className="flex items-center space-x-2">
+          <form className="flex items-center space-x-2" onSubmit={handleAddTodo}>
             <Input
-              value={newTodoText}
+              className="flex-1"
               onChange={(e) => setNewTodoText(e.target.value)}
               placeholder="Add a new task..."
-              className="flex-1"
+              value={newTodoText}
             />
-            <Button type="submit" disabled={!newTodoText.trim() || createMutation.isPending}>
-              {createMutation.isPending ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                "Add Todo"
-              )}
+            <Button disabled={!newTodoText.trim() || createMutation.isPending} type="submit">
+              {createMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Add Todo'}
             </Button>
           </form>
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {/* All Todos */}
         <Card>
           <CardHeader>
@@ -185,25 +176,25 @@ function TanStackDBTodosRoute() {
             ) : (
               <ul className="space-y-2">
                 {allTodos?.map((todo) => (
-                  <li key={todo.id} className="flex items-center justify-between rounded-md border p-2">
+                  <li className="flex items-center justify-between rounded-md border p-2" key={todo.id}>
                     <div className="flex items-center space-x-2">
                       <Checkbox
                         checked={todo.completed}
-                        onCheckedChange={() => handleToggleTodo(todo.id, todo.completed)}
                         id={`todo-all-${todo.id}`}
+                        onCheckedChange={() => handleToggleTodo(todo.id, todo.completed)}
                       />
-                      <label 
-                        htmlFor={`todo-all-${todo.id}`} 
-                        className={`text-sm ${todo.completed ? "line-through text-muted-foreground" : ""}`}
+                      <label
+                        className={`text-sm ${todo.completed ? 'text-muted-foreground line-through' : ''}`}
+                        htmlFor={`todo-all-${todo.id}`}
                       >
                         {todo.text}
                       </label>
                     </div>
                     <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleDeleteTodo(todo.id)}
                       aria-label="Delete todo"
+                      onClick={() => handleDeleteTodo(todo.id)}
+                      size="icon"
+                      variant="ghost"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -226,25 +217,22 @@ function TanStackDBTodosRoute() {
             ) : (
               <ul className="space-y-2">
                 {pendingTodos?.map((todo) => (
-                  <li key={todo.id} className="flex items-center justify-between rounded-md border p-2">
+                  <li className="flex items-center justify-between rounded-md border p-2" key={todo.id}>
                     <div className="flex items-center space-x-2">
                       <Checkbox
                         checked={todo.completed}
-                        onCheckedChange={() => handleToggleTodo(todo.id, todo.completed)}
                         id={`todo-pending-${todo.id}`}
+                        onCheckedChange={() => handleToggleTodo(todo.id, todo.completed)}
                       />
-                      <label 
-                        htmlFor={`todo-pending-${todo.id}`} 
-                        className="text-sm"
-                      >
+                      <label className="text-sm" htmlFor={`todo-pending-${todo.id}`}>
                         {todo.text}
                       </label>
                     </div>
                     <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleDeleteTodo(todo.id)}
                       aria-label="Delete todo"
+                      onClick={() => handleDeleteTodo(todo.id)}
+                      size="icon"
+                      variant="ghost"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -267,25 +255,25 @@ function TanStackDBTodosRoute() {
             ) : (
               <ul className="space-y-2">
                 {completedTodos?.map((todo) => (
-                  <li key={todo.id} className="flex items-center justify-between rounded-md border p-2">
+                  <li className="flex items-center justify-between rounded-md border p-2" key={todo.id}>
                     <div className="flex items-center space-x-2">
                       <Checkbox
                         checked={todo.completed}
-                        onCheckedChange={() => handleToggleTodo(todo.id, todo.completed)}
                         id={`todo-completed-${todo.id}`}
+                        onCheckedChange={() => handleToggleTodo(todo.id, todo.completed)}
                       />
-                      <label 
-                        htmlFor={`todo-completed-${todo.id}`} 
-                        className="text-sm line-through text-muted-foreground"
+                      <label
+                        className="text-muted-foreground text-sm line-through"
+                        htmlFor={`todo-completed-${todo.id}`}
                       >
                         {todo.text}
                       </label>
                     </div>
                     <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleDeleteTodo(todo.id)}
                       aria-label="Delete todo"
+                      onClick={() => handleDeleteTodo(todo.id)}
+                      size="icon"
+                      variant="ghost"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -304,7 +292,7 @@ function TanStackDBTodosRoute() {
           <CardDescription>Key benefits of this implementation</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+          <div className="grid grid-cols-1 gap-4 text-sm md:grid-cols-2">
             <div className="space-y-2">
               <h4 className="font-semibold text-green-600">✅ Live Queries</h4>
               <p className="text-muted-foreground">
@@ -319,15 +307,11 @@ function TanStackDBTodosRoute() {
             </div>
             <div className="space-y-2">
               <h4 className="font-semibold text-green-600">✅ Filtered Views</h4>
-              <p className="text-muted-foreground">
-                Multiple live-filtered views from the same data source
-              </p>
+              <p className="text-muted-foreground">Multiple live-filtered views from the same data source</p>
             </div>
             <div className="space-y-2">
               <h4 className="font-semibold text-green-600">✅ Type Safety</h4>
-              <p className="text-muted-foreground">
-                Full TypeScript support with schema validation
-              </p>
+              <p className="text-muted-foreground">Full TypeScript support with schema validation</p>
             </div>
           </div>
         </CardContent>

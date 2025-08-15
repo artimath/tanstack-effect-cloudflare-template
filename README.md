@@ -33,6 +33,9 @@ This project provides a solid foundation for building modern web applications us
 - **What it demonstrates:** Reactive collections with live queries, multiple filtered views (All, Pending, Completed), and seamless integration with TanStack Query/tRPC.
 - **Docs:** [TanStack DB Overview](https://tanstack.com/db/latest/docs/overview)
 
+<img width="1599" height="1112" alt="image" src="https://github.com/user-attachments/assets/3e0d9de1-e7c4-4f0e-93f9-1cca421fc424" />
+
+
 ## Database with Neon
 
 This boilerplate uses [Neon](https://neon.com/) as the primary database solution, providing a modern serverless PostgreSQL experience that's perfect for full-stack applications.

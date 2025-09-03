@@ -4,7 +4,7 @@ import viteTsConfigPaths from "vite-tsconfig-paths";
 import { sentryVitePlugin } from "@sentry/vite-plugin";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import { defineConfig } from "vite";
-import viteReact from "@vitejs/plugin-react-oxc";
+import viteReact from "@vitejs/plugin-react";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -22,7 +22,7 @@ export default defineConfig({
     viteTsConfigPaths({
       projects: ["./tsconfig.json"],
     }),
-    		viteReact(),
+    viteReact(),
     postgresPlugin({
       // env: ".env.local", // Path to your .env file (default: ".env")
       // envKey: "DATABASE_URL", // Name of the env variable (default: "DATABASE_URL")

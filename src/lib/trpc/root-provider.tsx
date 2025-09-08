@@ -1,5 +1,5 @@
 import { QueryCache, QueryClient } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
 import { createIsomorphicFn, createServerFn } from "@tanstack/react-start";
 import { getWebRequest } from "@tanstack/react-start/server";
 import { createTRPCClient, httpBatchLink, httpLink, isNonJsonSerializable, loggerLink, splitLink } from "@trpc/client";
@@ -92,16 +92,15 @@ export const createQueryClient = () => {
 export const createServerHelpers = ({ queryClient }: { queryClient: QueryClient }) => {
   const serverHelpers = createTRPCOptionsProxy({
     client: trpcClient,
-    queryClient: queryClient,
+    queryClient,
   });
   return serverHelpers;
 };
 
 export function Provider({ children, queryClient }: { children: React.ReactNode; queryClient: QueryClient }) {
   return (
-    <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
+    <TRPCProvider queryClient={queryClient} trpcClient={trpcClient}>
       {children}
-      <ReactQueryDevtools buttonPosition="bottom-right" />
     </TRPCProvider>
   );
 }

@@ -1,6 +1,9 @@
 import { wrapCreateRootRouteWithSentry } from "@sentry/tanstackstart-react";
+import { TanStackDevtools } from "@tanstack/react-devtools";
 import type { QueryClient } from "@tanstack/react-query";
+import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
+import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import type { TRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import { ThemeProvider } from "next-themes";
 import React from "react";
@@ -22,7 +25,7 @@ const TanStackRouterDevtools =
     : React.lazy(() =>
         import("@tanstack/react-router-devtools").then((res) => ({
           default: res.TanStackRouterDevtools,
-        })),
+        }))
       );
 
 export const Route = wrapCreateRootRouteWithSentry(
@@ -53,7 +56,7 @@ export const Route = wrapCreateRootRouteWithSentry(
     }),
     component: () => <RootDocument />,
     wrapInSuspense: true,
-  }),
+  })
 );
 
 function RootDocument() {
@@ -63,11 +66,37 @@ function RootDocument() {
         <HeadContent />
       </head>
       <body suppressHydrationWarning>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <I18nextProvider i18n={i18n} defaultNS={"translation"}>
+        <ThemeProvider attribute="class" defaultTheme="system" disableTransitionOnChange enableSystem>
+          <I18nextProvider defaultNS={"translation"} i18n={i18n}>
             <Outlet />
             <Toaster />
-            <TanStackRouterDevtools />
+            <TanStackDevtools
+              config={{ defaultOpen: false }}
+              plugins={[
+                {
+                  name: "Tanstack Query",
+                  render: <ReactQueryDevtoolsPanel />,
+                },
+                {
+                  name: "Tanstack Router",
+                  render: <TanStackRouterDevtoolsPanel />,
+                },
+                {
+                  name: "Drizzle Studio",
+                  render: () => (
+                    <iframe
+                      src="https://local.drizzle.studio"
+                      style={{
+                        flexGrow: 1,
+                        width: "100%",
+                        height: "100%",
+                        border: 0,
+                      }}
+                    />
+                  ),
+                },
+              ]}
+            />
             <Scripts />
           </I18nextProvider>
         </ThemeProvider>

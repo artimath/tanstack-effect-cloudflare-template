@@ -6,6 +6,7 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import { defineConfig } from "vite";
 import viteReact from "@vitejs/plugin-react";
 import dotenv from "dotenv";
+import { devtools } from "@tanstack/devtools-vite";
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ export default defineConfig({
     },
   },
   plugins: [
+    	devtools(),
     viteTsConfigPaths({
       projects: ["./tsconfig.json"],
     }),

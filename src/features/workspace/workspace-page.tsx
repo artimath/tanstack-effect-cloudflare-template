@@ -1,19 +1,19 @@
 import { useForm } from "@tanstack/react-form";
 import { AnimatePresence, motion } from "framer-motion";
-import { 
-  ChevronDownIcon, 
-  Copy, 
-  Loader2, 
-  MailPlus, 
-  MoreHorizontal, 
-  PlusIcon, 
-  RefreshCw, 
-  Settings, 
-  Shield, 
-  Trash2, 
-  UserMinus, 
-  Users, 
-  UserX 
+import {
+  ChevronDownIcon,
+  Copy,
+  Loader2,
+  MailPlus,
+  MoreHorizontal,
+  PlusIcon,
+  RefreshCw,
+  Settings,
+  Shield,
+  Trash2,
+  UserMinus,
+  Users,
+  UserX,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -87,7 +87,7 @@ function InviteMemberDialog() {
         if (!result.success) {
           return result.error.formErrors.fieldErrors;
         }
-        return undefined;
+        return;
       },
     },
     onSubmit: async ({ value }) => {
@@ -105,15 +105,15 @@ function InviteMemberDialog() {
           onError: (error) => {
             toast.error(error.message);
           },
-        },
+        }
       );
     },
   });
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger asChild>
-        <Button size="sm" className="gap-2">
+        <Button className="gap-2" size="sm">
           <MailPlus size={16} />
           Invite Member
         </Button>
@@ -121,9 +121,7 @@ function InviteMemberDialog() {
       <DialogContent className="w-11/12 sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Invite Member</DialogTitle>
-          <DialogDescription>
-            Send an invitation to join your organization
-          </DialogDescription>
+          <DialogDescription>Send an invitation to join your organization</DialogDescription>
         </DialogHeader>
         <form
           onSubmit={(e) => {
@@ -135,20 +133,19 @@ function InviteMemberDialog() {
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
               <form.Field
-                name="email"
                 children={(field) => (
-                  <FormField field={field} label="Email" type="email" placeholder="Enter email address" />
+                  <FormField field={field} label="Email" placeholder="Enter email address" type="email" />
                 )}
+                name="email"
               />
             </div>
             <div className="flex flex-col gap-2">
               <Label>Role</Label>
               <form.Field
-                name="role"
                 children={(field) => (
                   <Select
-                    value={field.state.value}
                     onValueChange={(value) => field.handleChange(value as "admin" | "member")}
+                    value={field.state.value}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select role" />
@@ -159,13 +156,13 @@ function InviteMemberDialog() {
                     </SelectContent>
                   </Select>
                 )}
+                name="role"
               />
             </div>
           </div>
         </form>
         <DialogFooter>
           <form.Subscribe
-            selector={(state) => [state.canSubmit, state.isSubmitting]}
             children={([canSubmit, isSubmitting]) => (
               <DialogClose asChild>
                 <Button
@@ -183,6 +180,7 @@ function InviteMemberDialog() {
                 </Button>
               </DialogClose>
             )}
+            selector={(state) => [state.canSubmit, state.isSubmitting]}
           />
         </DialogFooter>
       </DialogContent>
@@ -212,8 +210,9 @@ export function WorkspacePage() {
 
   const stats = {
     totalMembers: optimisticOrg?.members?.length || 0,
-    pendingInvitations: optimisticOrg?.invitations?.filter(inv => inv.status === "pending").length || 0,
-    adminMembers: optimisticOrg?.members?.filter(member => member.role === "admin" || member.role === "owner").length || 0,
+    pendingInvitations: optimisticOrg?.invitations?.filter((inv) => inv.status === "pending").length || 0,
+    adminMembers:
+      optimisticOrg?.members?.filter((member) => member.role === "admin" || member.role === "owner").length || 0,
   };
 
   const handleRemoveMember = (memberId: string) => {
@@ -226,7 +225,7 @@ export function WorkspacePage() {
     setIsRevoking([...isRevoking, invitationId]);
     cancelInvitation.mutate(
       {
-        invitationId: invitationId,
+        invitationId,
       },
       {
         onSuccess: () => {
@@ -236,7 +235,7 @@ export function WorkspacePage() {
         onError: () => {
           setIsRevoking(isRevoking.filter((id) => id !== invitationId));
         },
-      },
+      }
     );
   };
 
@@ -247,19 +246,17 @@ export function WorkspacePage() {
   };
 
   return (
-    <div className="container mx-auto py-6 space-y-6">
+    <div className="container mx-auto space-y-6 py-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Workspace</h1>
-          <p className="text-muted-foreground">
-            Manage your organization members and invitations
-          </p>
+          <h1 className="font-bold text-3xl tracking-tight">Workspace</h1>
+          <p className="text-muted-foreground">Manage your organization members and invitations</p>
         </div>
         <div className="flex items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
+              <Button size="sm" variant="outline">
                 <span className="mr-2">{optimisticOrg?.name || "Personal"}</span>
                 <ChevronDownIcon className="h-4 w-4" />
               </Button>
@@ -294,63 +291,45 @@ export function WorkspacePage() {
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Members</CardTitle>
+            <CardTitle className="font-medium text-sm">Total Members</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.totalMembers}</div>
+            <div className="font-bold text-2xl">{stats.totalMembers}</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending Invitations</CardTitle>
+            <CardTitle className="font-medium text-sm">Pending Invitations</CardTitle>
             <MailPlus className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.pendingInvitations}</div>
+            <div className="font-bold text-2xl">{stats.pendingInvitations}</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Admins</CardTitle>
+            <CardTitle className="font-medium text-sm">Admins</CardTitle>
             <Shield className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.adminMembers}</div>
+            <div className="font-bold text-2xl">{stats.adminMembers}</div>
           </CardContent>
         </Card>
       </div>
 
-      {!optimisticOrg?.id ? (
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-center py-8">
-              <Users className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Personal Workspace</h3>
-              <p className="text-muted-foreground mb-4">
-                Create an organization to collaborate with team members
-              </p>
-              <Button>
-                <PlusIcon className="h-4 w-4 mr-2" />
-                Create Organization
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      ) : (
-        <Tabs defaultValue="members" className="space-y-4">
+      {optimisticOrg?.id ? (
+        <Tabs className="space-y-4" defaultValue="members">
           <TabsList>
             <TabsTrigger value="members">Members</TabsTrigger>
             <TabsTrigger value="invitations">Invitations</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="members" className="space-y-4">
+          <TabsContent className="space-y-4" value="members">
             <Card>
               <CardHeader>
                 <CardTitle>Organization Members</CardTitle>
-                <CardDescription>
-                  Manage your organization members and their roles
-                </CardDescription>
+                <CardDescription>Manage your organization members and their roles</CardDescription>
               </CardHeader>
               <CardContent>
                 <Table>
@@ -369,56 +348,55 @@ export function WorkspacePage() {
                           <div className="flex items-center gap-3">
                             <Avatar className="h-8 w-8">
                               <AvatarImage src={member.user.image || ""} />
-                              <AvatarFallback>
-                                {member.user.name?.charAt(0) || "U"}
-                              </AvatarFallback>
+                              <AvatarFallback>{member.user.name?.charAt(0) || "U"}</AvatarFallback>
                             </Avatar>
                             <div>
                               <div className="font-medium">{member.user.name}</div>
-                              <div className="text-sm text-muted-foreground">{member.user.email}</div>
+                              <div className="text-muted-foreground text-sm">{member.user.email}</div>
                             </div>
                           </div>
                         </TableCell>
                         <TableCell>
-                          <Badge 
-                            variant={member.role === "owner" ? "default" : "outline"}
+                          <Badge
                             className={
-                              member.role === "owner" 
-                                ? "bg-purple-100 text-purple-800 border-purple-200" 
+                              member.role === "owner"
+                                ? "border-purple-200 bg-purple-100 text-purple-800"
                                 : member.role === "admin"
-                                ? "bg-blue-100 text-blue-800 border-blue-200"
-                                : ""
+                                  ? "border-blue-200 bg-blue-100 text-blue-800"
+                                  : ""
                             }
+                            variant={member.role === "owner" ? "default" : "outline"}
                           >
                             {member.role === "owner" ? "Owner" : member.role === "admin" ? "Admin" : "Member"}
                           </Badge>
                         </TableCell>
                         <TableCell>
-                          <div className="text-sm text-muted-foreground">
+                          <div className="text-muted-foreground text-sm">
                             {new Date(member.createdAt).toLocaleDateString()}
                           </div>
                         </TableCell>
                         <TableCell>
-                          {member.role !== "owner" && (currentMember?.role === "owner" || currentMember?.role === "admin") && (
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" className="h-8 w-8 p-0">
-                                  <span className="sr-only">Open menu</span>
-                                  <MoreHorizontal className="h-4 w-4" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                <DropdownMenuItem
-                                  onClick={() => handleRemoveMember(member.id)}
-                                  className="text-destructive"
-                                >
-                                  <UserMinus className="mr-2 h-4 w-4" />
-                                  {currentMember?.id === member.id ? "Leave" : "Remove"}
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          )}
+                          {member.role !== "owner" &&
+                            (currentMember?.role === "owner" || currentMember?.role === "admin") && (
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button className="h-8 w-8 p-0" variant="ghost">
+                                    <span className="sr-only">Open menu</span>
+                                    <MoreHorizontal className="h-4 w-4" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                  <DropdownMenuItem
+                                    className="text-destructive"
+                                    onClick={() => handleRemoveMember(member.id)}
+                                  >
+                                    <UserMinus className="mr-2 h-4 w-4" />
+                                    {currentMember?.id === member.id ? "Leave" : "Remove"}
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            )}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -428,18 +406,16 @@ export function WorkspacePage() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="invitations" className="space-y-4">
+          <TabsContent className="space-y-4" value="invitations">
             <Card>
               <CardHeader>
                 <CardTitle>Pending Invitations</CardTitle>
-                <CardDescription>
-                  Manage and track your organization invitations
-                </CardDescription>
+                <CardDescription>Manage and track your organization invitations</CardDescription>
               </CardHeader>
               <CardContent>
-                {optimisticOrg?.invitations?.filter(inv => inv.status === "pending").length === 0 ? (
-                  <div className="text-center py-8">
-                    <MailPlus className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
+                {optimisticOrg?.invitations?.filter((inv) => inv.status === "pending").length === 0 ? (
+                  <div className="py-8 text-center">
+                    <MailPlus className="mx-auto mb-2 h-8 w-8 text-muted-foreground" />
                     <p className="text-muted-foreground">No pending invitations</p>
                   </div>
                 ) : (
@@ -459,23 +435,21 @@ export function WorkspacePage() {
                           ?.filter((invitation) => invitation.status === "pending")
                           .map((invitation) => (
                             <motion.tr
-                              key={invitation.id}
-                              variants={inviteVariants}
-                              initial="hidden"
                               animate="visible"
                               exit="exit"
+                              initial="hidden"
+                              key={invitation.id}
                               layout
+                              variants={inviteVariants}
                             >
                               <TableCell>
                                 <div className="font-medium">{invitation.email}</div>
                               </TableCell>
                               <TableCell>
-                                <Badge variant="outline">
-                                  {invitation.role === "admin" ? "Admin" : "Member"}
-                                </Badge>
+                                <Badge variant="outline">{invitation.role === "admin" ? "Admin" : "Member"}</Badge>
                               </TableCell>
                               <TableCell>
-                                <div className="text-sm text-muted-foreground">
+                                <div className="text-muted-foreground text-sm">
                                   {new Date(invitation.createdAt).toLocaleDateString()}
                                 </div>
                               </TableCell>
@@ -484,21 +458,17 @@ export function WorkspacePage() {
                               </TableCell>
                               <TableCell>
                                 <div className="flex items-center gap-2">
-                                  <Button
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={() => copyInvitationLink(invitation.id)}
-                                  >
+                                  <Button onClick={() => copyInvitationLink(invitation.id)} size="sm" variant="outline">
                                     <Copy className="h-3 w-3" />
                                   </Button>
                                   <Button
                                     disabled={isRevoking.includes(invitation.id)}
+                                    onClick={() => handleCancelInvitation(invitation.id)}
                                     size="sm"
                                     variant="destructive"
-                                    onClick={() => handleCancelInvitation(invitation.id)}
                                   >
                                     {isRevoking.includes(invitation.id) ? (
-                                      <Loader2 className="animate-spin h-3 w-3" />
+                                      <Loader2 className="h-3 w-3 animate-spin" />
                                     ) : (
                                       <UserX className="h-3 w-3" />
                                     )}
@@ -515,6 +485,20 @@ export function WorkspacePage() {
             </Card>
           </TabsContent>
         </Tabs>
+      ) : (
+        <Card>
+          <CardContent className="pt-6">
+            <div className="py-8 text-center">
+              <Users className="mx-auto mb-4 h-12 w-12 text-muted-foreground" />
+              <h3 className="mb-2 font-semibold text-lg">Personal Workspace</h3>
+              <p className="mb-4 text-muted-foreground">Create an organization to collaborate with team members</p>
+              <Button>
+                <PlusIcon className="mr-2 h-4 w-4" />
+                Create Organization
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       )}
     </div>
   );

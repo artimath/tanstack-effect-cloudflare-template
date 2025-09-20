@@ -164,30 +164,30 @@ export default function LandingPage() {
           <nav className="hidden items-center justify-center md:flex">
             <ModeToggle />
             <a
-              href="https://github.com/carlosziegler/fullstack-start-template"
-              target="_blank"
-              rel="noopener noreferrer"
               className="flex items-center gap-1 font-medium text-muted-foreground text-sm transition-colors hover:text-foreground"
+              href="https://github.com/carlosziegler/fullstack-start-template"
+              rel="noopener noreferrer"
+              target="_blank"
             >
               <Github className="h-4 w-4" /> GitHub
             </a>
             <Link
-              to="/login"
               className="ml-8 font-medium text-muted-foreground text-sm transition-colors hover:text-foreground"
+              to="/login"
             >
               Login
             </Link>
           </nav>
 
           <div className="flex items-center gap-4 md:hidden">
-            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+            <Sheet onOpenChange={setMobileMenuOpen} open={mobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
+                <Button size="icon" variant="ghost">
                   <Menu className="h-5 w-5" />
                   <span className="sr-only">Toggle menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+              <SheetContent className="w-[300px] sm:w-[400px]" side="right">
                 <div className="flex flex-col gap-6 pt-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -197,19 +197,19 @@ export default function LandingPage() {
                   </div>
                   <nav className="flex flex-col gap-4">
                     <ModeToggle />
-                    <Button variant="ghost" className="w-full justify-start" asChild>
+                    <Button asChild className="w-full justify-start" variant="ghost">
                       <a
-                        href="https://github.com/YOUR_REPO_LINK"
-                        target="_blank"
-                        rel="noopener noreferrer"
                         className="flex items-center gap-2"
+                        href="https://github.com/YOUR_REPO_LINK"
                         onClick={() => setMobileMenuOpen(false)}
+                        rel="noopener noreferrer"
+                        target="_blank"
                       >
                         <Github className="h-4 w-4" /> GitHub
                       </a>
                     </Button>
-                    <Button variant="ghost" className="w-full justify-start" asChild>
-                      <Link to="/login" className="flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
+                    <Button asChild className="w-full justify-start" variant="ghost">
+                      <Link className="flex items-center gap-2" onClick={() => setMobileMenuOpen(false)} to="/login">
                         Login
                       </Link>
                     </Button>
@@ -234,7 +234,7 @@ export default function LandingPage() {
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {techStack.map((tech) => (
-            <Card key={tech.category} className="flex flex-col transition-shadow duration-200 hover:shadow-lg">
+            <Card className="flex flex-col transition-shadow duration-200 hover:shadow-lg" key={tech.category}>
               <CardHeader className="flex flex-row items-center gap-3 pb-4">
                 <tech.icon className="h-6 w-6 text-primary" />
                 <CardTitle className="font-semibold text-lg">{tech.category}</CardTitle>
@@ -246,10 +246,10 @@ export default function LandingPage() {
                     <Badge key={lib.name} variant="secondary">
                       {lib.href ? (
                         <a
-                          href={lib.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
                           className="flex items-center gap-1 hover:underline"
+                          href={lib.href}
+                          rel="noopener noreferrer"
+                          target="_blank"
                         >
                           {lib.name} <BookOpen className="h-3 w-3 text-muted-foreground" />
                         </a>

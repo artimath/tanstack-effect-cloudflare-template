@@ -1,12 +1,12 @@
 import postgresPlugin from "@neondatabase/vite-plugin-postgres";
-import tailwindcss from "@tailwindcss/vite";
-import viteTsConfigPaths from "vite-tsconfig-paths";
 import { sentryVitePlugin } from "@sentry/vite-plugin";
+import tailwindcss from "@tailwindcss/vite";
+import { devtools } from "@tanstack/devtools-vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
-import { defineConfig } from "vite";
 import viteReact from "@vitejs/plugin-react";
 import dotenv from "dotenv";
-import { devtools } from "@tanstack/devtools-vite";
+import { defineConfig } from "vite";
+import viteTsConfigPaths from "vite-tsconfig-paths";
 
 dotenv.config();
 
@@ -18,9 +18,10 @@ export default defineConfig({
     warmup: {
       clientFiles: ["./src/server.tsx"],
     },
+    port: 5050,
   },
   plugins: [
-    	devtools(),
+    devtools(),
     viteTsConfigPaths({
       projects: ["./tsconfig.json"],
     }),
@@ -37,8 +38,7 @@ export default defineConfig({
       spa: {
         enabled: true,
       },
- 		    customViteReactPlugin: true,
-
+      customViteReactPlugin: true,
     }),
     sentryVitePlugin({
       org: process.env.VITE_SENTRY_ORG,

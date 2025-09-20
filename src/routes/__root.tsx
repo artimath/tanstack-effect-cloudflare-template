@@ -19,15 +19,6 @@ interface MyRouterContext {
   trpc: TRPCOptionsProxy<TRPCRouter>;
 }
 
-const TanStackRouterDevtools =
-  process.env.NODE_ENV === "production"
-    ? () => null
-    : React.lazy(() =>
-        import("@tanstack/react-router-devtools").then((res) => ({
-          default: res.TanStackRouterDevtools,
-        }))
-      );
-
 export const Route = wrapCreateRootRouteWithSentry(
   createRootRouteWithContext<MyRouterContext>()({
     head: () => ({

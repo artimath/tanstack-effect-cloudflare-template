@@ -36,7 +36,7 @@ export default defineConfig({
         routeToken: "layout",
       },
       spa: {
-        enabled: true,
+        enabled: false,
       },
       customViteReactPlugin: true,
     }),

@@ -9,3 +9,4 @@ dist-ssr
 .tanstack-start
 .tanstack
 .nitro
+tsconfig.tsbuildinfo

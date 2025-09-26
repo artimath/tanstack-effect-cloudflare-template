@@ -10,7 +10,7 @@ export const Route = createFileRoute("/api/ai/chat/rag")({
   server: {
     handlers: {
   POST: async ({ request }) => {
-    const { messages } = await request.json();
+    const { messages } = await request.json() as { messages: any[] };
 
     const result = streamText({
       model: openai("gpt-4o"),

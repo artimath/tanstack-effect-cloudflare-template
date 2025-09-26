@@ -9,7 +9,7 @@ export const Route = createFileRoute("/api/ai/vercel/chat")({
     handlers: {
   POST: async ({ request }) => {
     try {
-      const { messages } = await request.json();
+      const { messages } = await request.json() as { messages: any[] };
 
       console.log("🔑 Messages", messages);
 

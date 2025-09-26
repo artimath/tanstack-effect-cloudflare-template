@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 const getCatFact = async () => {
   try {
     const res = await fetch("https://catfact.ninja/fact");
-    const data = await res.json();
+    const data = await res.json() as { fact: string };
 
     return { content: [{ type: "text", text: `🐱 ${data.fact}` }] };
   } catch (error) {
@@ -16,7 +16,7 @@ const getCatFact = async () => {
 const getQuote = async () => {
   try {
     const res = await fetch("https://api.quotable.io/random");
-    const data = await res.json();
+    const data = await res.json() as { content: string; author: string };
     return {
       content: [
         {
@@ -33,7 +33,7 @@ const getQuote = async () => {
 const getJoke = async () => {
   try {
     const res = await fetch("https://official-joke-api.appspot.com/random_joke");
-    const data = await res.json();
+    const data = await res.json() as { setup: string; punchline: string };
     return {
       content: [
         {

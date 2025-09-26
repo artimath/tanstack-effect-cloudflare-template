@@ -140,7 +140,7 @@ function ChangeRoleDialog({
   onOpenChange: (open: boolean) => void;
   currentUserRole: UserRole;
 }) {
-  const [selectedRole, setSelectedRole] = useState<string>(user?.role || "user");
+  const [selectedRole, setSelectedRole] = useState<UserRole>((user?.role || "user") as UserRole);
   const { mutate: setUserRole, isPending } = useSetUserRole();
 
   const assignableRoles = getAssignableRoles(currentUserRole);
@@ -202,7 +202,7 @@ function ChangeRoleDialog({
         <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="role">New Role</Label>
-            <Select value={selectedRole} onValueChange={setSelectedRole}>
+            <Select value={selectedRole} onValueChange={(value) => setSelectedRole(value as UserRole)}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>

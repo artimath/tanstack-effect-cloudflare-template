@@ -1,13 +1,15 @@
 import { vercel } from "@ai-sdk/vercel";
 import { json } from "@tanstack/react-start";
-import { createServerFileRoute } from "@tanstack/react-start/server";
+import { createFileRoute } from "@tanstack/react-router";
 
 import { convertToModelMessages, streamText } from "ai";
 
-export const ServerRoute = createServerFileRoute("/api/ai/vercel/chat").methods({
+export const Route = createFileRoute("/api/ai/vercel/chat")({
+  server: {
+    handlers: {
   POST: async ({ request }) => {
     try {
-      const { messages } = await request.json();
+      const { messages } = await request.json() as { messages: any[] };
 
       console.log("🔑 Messages", messages);
 
@@ -21,5 +23,7 @@ export const ServerRoute = createServerFileRoute("/api/ai/vercel/chat").methods(
       console.error("🔑 Error", error);
       return json({ error: "Internal server error" }, { status: 500 });
     }
+  },
+  },
   },
 });

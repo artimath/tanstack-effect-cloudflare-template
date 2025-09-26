@@ -46,7 +46,7 @@ export function SignUpForm() {
       onChange: ({ value }) => {
         const result = signUpSchema.safeParse(value);
         if (!result.success) {
-          return result.error.formErrors.fieldErrors;
+          return result.error.flatten().fieldErrors;
         }
         return undefined;
       },

@@ -6,5 +6,13 @@
   "compatibility_flags": ["nodejs_compat"],
   "vars": {
     "MY_VAR": "Hello from Cloudflare"
-  }
+  },
+  // Uncomment and configure Hyperdrive for production database connection pooling
+  // "hyperdrive": [
+  //   {
+  //     "binding": "HYPERDRIVE",
+  //     "id": "your-hyperdrive-config-id",
+  //     "localConnectionString": "postgresql://user:pass@localhost:5432/db"
+  //   }
+  // ]
 }

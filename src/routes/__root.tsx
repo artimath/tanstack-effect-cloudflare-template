@@ -1,9 +1,9 @@
 import { wrapCreateRootRouteWithSentry } from "@sentry/tanstackstart-react";
-import { TanStackDevtools } from "@tanstack/react-devtools";
+// import { TanStackDevtools } from "@tanstack/react-devtools";
 import type { QueryClient } from "@tanstack/react-query";
-import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
+// import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
-import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+// import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import type { TRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import { ThemeProvider } from "next-themes";
 import React from "react";
@@ -61,7 +61,7 @@ function RootDocument() {
           <I18nextProvider defaultNS={"translation"} i18n={i18n}>
             <Outlet />
             <Toaster />
-            <TanStackDevtools
+            {/* <TanStackDevtools
               config={{ defaultOpen: false }}
               plugins={[
                 {
@@ -87,7 +87,7 @@ function RootDocument() {
                   ),
                 },
               ]}
-            />
+            /> */}
             <Scripts />
           </I18nextProvider>
         </ThemeProvider>

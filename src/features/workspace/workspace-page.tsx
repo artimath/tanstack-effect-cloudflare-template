@@ -65,9 +65,10 @@ import { useTranslation } from "@/lib/intl/react";
 type ActiveOrganization = Awaited<ReturnType<typeof authClient.organization.getFullOrganization>>;
 
 const inviteMemberSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
+  email: z.email("Please enter a valid email address"),
   role: z.enum(["admin", "member"], {
-    required_error: "Please select a role",
+
+    error: "Please select a role",
   }),
 });
 
@@ -85,7 +86,7 @@ function InviteMemberDialog() {
       onChange: ({ value }) => {
         const result = inviteMemberSchema.safeParse(value);
         if (!result.success) {
-          return result.error.formErrors.fieldErrors;
+          return result.error.message;
         }
         return;
       },
@@ -163,7 +164,7 @@ function InviteMemberDialog() {
         </form>
         <DialogFooter>
           <form.Subscribe
-            children={([canSubmit, isSubmitting]) => (
+            children={([canSubmit, isSubmitting]: any) => (
               <DialogClose asChild>
                 <Button
                   disabled={!canSubmit || isSubmitting || inviteMember.isPending}
@@ -188,19 +189,19 @@ function InviteMemberDialog() {
   );
 }
 
-export function WorkspacePage() {
+export async function WorkspacePage() {
   const { t } = useTranslation();
   const { data: session } = useSession();
   const { data: organizations } = useOrganizations();
-  const { data: activeOrgData } = authClient.organization.useGetFullOrganization();
+  const data = await authClient.organization.getFullOrganization();
   const setActiveOrganization = useSetActiveOrganization();
   const removeMember = useRemoveMember();
   const cancelInvitation = useCancelInvitation();
 
   const [isRevoking, setIsRevoking] = useState<string[]>([]);
 
-  const optimisticOrg = activeOrgData?.data;
-  const currentMember = optimisticOrg?.members?.find((member) => member.userId === session?.user.id);
+  const optimisticOrg = data?.data;
+  const currentMember = optimisticOrg?.members?.find((member: any) => member.userId === session?.user.id);
 
   const inviteVariants = {
     hidden: { opacity: 0, height: 0 },
@@ -210,9 +211,9 @@ export function WorkspacePage() {
 
   const stats = {
     totalMembers: optimisticOrg?.members?.length || 0,
-    pendingInvitations: optimisticOrg?.invitations?.filter((inv) => inv.status === "pending").length || 0,
+    pendingInvitations: optimisticOrg?.invitations?.filter((inv: any) => inv.status === "pending").length || 0,
     adminMembers:
-      optimisticOrg?.members?.filter((member) => member.role === "admin" || member.role === "owner").length || 0,
+      optimisticOrg?.members?.filter((member: any ) => member.role === "admin" || member.role === "owner").length || 0,
   };
 
   const handleRemoveMember = (memberId: string) => {
@@ -342,7 +343,7 @@ export function WorkspacePage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {optimisticOrg?.members?.map((member) => (
+                    {optimisticOrg?.members?.map((member: any) => (
                       <TableRow key={member.id}>
                         <TableCell>
                           <div className="flex items-center gap-3">
@@ -450,7 +451,7 @@ export function WorkspacePage() {
                               </TableCell>
                               <TableCell>
                                 <div className="text-muted-foreground text-sm">
-                                  {new Date(invitation.createdAt).toLocaleDateString()}
+                                  {new Date(invitation.expiresAt).toLocaleDateString()}
                                 </div>
                               </TableCell>
                               <TableCell>

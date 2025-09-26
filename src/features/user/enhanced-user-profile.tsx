@@ -49,7 +49,7 @@ export function EnhancedUserProfile() {
       <div className="flex items-start gap-6">
         <div className="relative">
           <Avatar className="h-24 w-24">
-            <AvatarImage src={session?.user?.image} alt={session?.user?.name} />
+            <AvatarImage src={session?.user?.image || undefined} alt={session?.user?.name || undefined} />
             <AvatarFallback className="text-lg">
               {session?.user?.name
                 ?.split(" ")

@@ -73,7 +73,7 @@ export default function UserCard(props: { activeSessions: AuthClient["$Infer"]["
       onChange: ({ value }) => {
         const result = qrCodePasswordSchema.safeParse(value);
         if (!result.success) {
-          return result.error.formErrors.fieldErrors;
+          return result.error.flatten().fieldErrors;
         }
         return undefined;
       },
@@ -106,13 +106,13 @@ export default function UserCard(props: { activeSessions: AuthClient["$Infer"]["
           // When showing OTP input
           const result = twoFactorOtpSchema.safeParse({ otp: value.otp });
           if (!result.success) {
-            return result.error.formErrors.fieldErrors;
+            return result.error.flatten().fieldErrors;
           }
         } else {
           // When showing password input
           const result = twoFactorPasswordSchema.safeParse({ password: value.password });
           if (!result.success) {
-            return result.error.formErrors.fieldErrors;
+            return result.error.flatten().fieldErrors;
           }
         }
         return undefined;

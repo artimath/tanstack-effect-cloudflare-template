@@ -32,7 +32,7 @@ export default function SignInForm() {
       onChange: ({ value }) => {
         const result = signInSchema.safeParse(value);
         if (!result.success) {
-          return result.error.formErrors.fieldErrors;
+          return result.error.flatten().fieldErrors;
         }
         return undefined;
       },

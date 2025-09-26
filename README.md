@@ -668,6 +668,123 @@ The Docker Compose setup automatically uses your local `.env` file, so ensure yo
 
 This allows you to test the exact same containerized environment that will be used in production, ensuring consistency across development and deployment environments.
 
+## Cloudflare Workers Deployment
+
+This project is configured for deployment to Cloudflare Workers with Hyperdrive for optimized database connections.
+
+### Hyperdrive Setup (Database Connection Pooling)
+
+Hyperdrive is Cloudflare's connection pooling service that maintains persistent database connections, reducing latency and improving performance for edge deployments.
+
+#### 1. Prepare Your Neon Database
+
+Create a dedicated user for Hyperdrive in your Neon database:
+
+1. Go to the [Neon dashboard](https://console.neon.tech)
+2. Select your project and go to **Roles**
+3. Click **New Role** and create a user named `hyperdrive-user`
+4. Copy and save the generated password
+5. Go to **Dashboard** > **Connection Details**
+6. Select your branch, database, and the `hyperdrive-user` role
+7. Select `psql` and **uncheck** the connection pooling checkbox
+8. Copy the connection string
+
+#### 2. Create Hyperdrive Configuration
+
+```bash
+npx wrangler hyperdrive create my-neon-db \
+  --connection-string="postgresql://hyperdrive-user:PASSWORD@host.neon.tech:5432/database?sslmode=require"
+```
+
+#### 3. Update Configuration
+
+After creation, update `wrangler.jsonc` with your Hyperdrive ID:
+
+```json
+{
+  "hyperdrive": [
+    {
+      "binding": "HYPERDRIVE",
+      "id": "your-actual-hyperdrive-id"
+    }
+  ]
+}
+```
+
+#### 4. Generate Types
+
+```bash
+pnpm cf-typegen
+```
+
+### Local Development with Hyperdrive
+
+#### Option 1: Direct Database Connection (Default)
+```env
+# .env
+DATABASE_URL=postgresql://username:password@host.neon.tech:5432/database
+```
+
+#### Option 2: Test with Real Hyperdrive
+```bash
+# Runs on Cloudflare's network with actual Hyperdrive
+npx wrangler dev --local=false
+```
+
+#### Option 3: Mock Hyperdrive Locally
+Add to `wrangler.jsonc`:
+```json
+{
+  "hyperdrive": [
+    {
+      "binding": "HYPERDRIVE",
+      "id": "your-hyperdrive-id",
+      "localConnectionString": "postgresql://username:password@host.neon.tech:5432/database"
+    }
+  ]
+}
+```
+
+Then run:
+```bash
+npx wrangler dev --local --persist
+```
+
+### Deployment to Cloudflare Workers
+
+1. **Login to Cloudflare:**
+   ```bash
+   npx wrangler login
+   ```
+
+2. **Deploy:**
+   ```bash
+   pnpm deploy:cf
+   ```
+
+3. **Set Environment Variables:**
+   ```bash
+   npx wrangler secret put BETTER_AUTH_SECRET
+   npx wrangler secret put RESEND_API_KEY
+   npx wrangler secret put OPENAI_API_KEY
+   npx wrangler secret put ANTHROPIC_API_KEY
+   ```
+
+### Benefits of Hyperdrive
+
+- **Reduced Latency**: Connection pooling eliminates connection overhead
+- **Better Performance**: Persistent connections improve query response times
+- **Automatic Failover**: Built-in resilience and retry mechanisms
+- **Edge Optimization**: Connections managed closer to your users
+- **Cost Efficiency**: Reduces database connection overhead
+
+### Monitoring
+
+Monitor your Hyperdrive performance in the Cloudflare dashboard:
+1. Go to your Cloudflare dashboard
+2. Navigate to Workers & Pages > Hyperdrive
+3. View metrics and connection details
+
 ## TODO List & Potential Improvements
 
 - [x] **Implement Planned Auth Features:**

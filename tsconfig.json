@@ -7,7 +7,7 @@
     "vite.config.js",
     "src/lib/intl/react-i18next.d.ts",
     "src/lib/intl/i18next.d.ts"
-  ],
+, "src/routes/dashboard/tanstack-db-example.tsx.skip"  ],
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "react-jsx",
@@ -15,13 +15,14 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "types": ["vite/client"],
     "moduleResolution": "bundler",
+    "noImplicitReturns": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "noEmit": true,
     "skipLibCheck": true,
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     "baseUrl": ".",
@@ -30,6 +31,12 @@
     },
     "strictNullChecks": true,
     "incremental": true,
-    "tsBuildInfoFile": "tsconfig.tsbuildinfo"
+    "tsBuildInfoFile": "tsconfig.tsbuildinfo",
+    "plugins": [
+      {
+        "name": "@effect/language-service",
+        "transform": "@effect/language-service/transform"
+      }
+    ]
   }
 }

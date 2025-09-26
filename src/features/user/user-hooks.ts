@@ -152,7 +152,7 @@ export const useSetUserRole = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ userId, role }: { userId: string; role: string }) => {
+    mutationFn: async ({ userId, role }: { userId: string; role: UserRole | UserRole[] }) => {
       const result = await authClient.admin.setRole({
         userId,
         role,

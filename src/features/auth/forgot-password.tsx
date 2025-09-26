@@ -27,7 +27,7 @@ export default function ForgotPasswordForm() {
       onChange: ({ value }) => {
         const result = forgotPasswordSchema.safeParse(value);
         if (!result.success) {
-          return result.error.formErrors.fieldErrors;
+          return result.error.flatten().fieldErrors;
         }
         return undefined;
       },

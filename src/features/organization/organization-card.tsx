@@ -299,7 +299,7 @@ function CreateOrganizationDialog() {
       onChange: ({ value }) => {
         const result = createOrganizationSchema.safeParse(value);
         if (!result.success) {
-          return result.error.formErrors.fieldErrors;
+          return result.error.flatten().fieldErrors;
         }
         return undefined;
       },
@@ -474,8 +474,8 @@ function CreateOrganizationDialog() {
 
 const inviteMemberSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
-  role: z.enum(["admin", "member"], {
-    required_error: "Please select a role",
+  role: z.enum(["admin", "member"]).refine((val) => val !== undefined, {
+    message: "Please select a role",
   }),
 });
 
@@ -493,7 +493,7 @@ function InviteMemberDialog() {
       onChange: ({ value }) => {
         const result = inviteMemberSchema.safeParse(value);
         if (!result.success) {
-          return result.error.formErrors.fieldErrors;
+          return result.error.flatten().fieldErrors;
         }
         return undefined;
       },

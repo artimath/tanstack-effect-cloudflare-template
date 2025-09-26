@@ -1,7 +1,7 @@
 import { QueryCache, QueryClient } from "@tanstack/react-query";
 
 import { createIsomorphicFn, createServerFn } from "@tanstack/react-start";
-import { getWebRequest } from "@tanstack/react-start/server";
+import { getRequest } from "@tanstack/react-start/server";
 import { createTRPCClient, httpBatchLink, httpLink, isNonJsonSerializable, loggerLink, splitLink } from "@trpc/client";
 import type { TRPCCombinedDataTransformer } from "@trpc/server";
 import { createTRPCOptionsProxy } from "@trpc/tanstack-react-query";
@@ -28,7 +28,7 @@ export const transformer: TRPCCombinedDataTransformer = {
 };
 
 const getRequestHeaders = createServerFn({ method: "GET" }).handler(async () => {
-  const request = getWebRequest();
+  const request = getRequest();
   const headers = new Headers(request?.headers);
 
   return Object.fromEntries(headers);

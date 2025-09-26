@@ -11,7 +11,7 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/s
 import { AppSidebar } from '@/features/app/app-sidebar';
 import { AuthProvider } from '@/features/auth/auth-provider';
 
-export const Route = createFileRoute('/dashboard')({
+export const Route = createFileRoute('/dashboard/layout')({
   component: RouteComponent,
 });
 

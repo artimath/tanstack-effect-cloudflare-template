@@ -10,7 +10,7 @@ import DefaultLoading from "./components/default-loading";
 import NotFound from "./components/not-found";
 
 // Create a new router instance
-export const createRouter = () => {
+export function getRouter() {
   const queryClient = TanstackQuery.createQueryClient();
   const serverHelpers = TanstackQuery.createServerHelpers({
     queryClient,
@@ -30,19 +30,16 @@ export const createRouter = () => {
       defaultPendingComponent: DefaultLoading,
       defaultNotFoundComponent: NotFound,
       defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
-      Wrap: (props: { children: React.ReactNode }) => {
-        return <TanstackQuery.Provider queryClient={queryClient}>{props.children}</TanstackQuery.Provider>;
-      },
     }),
-    queryClient,
+    queryClient
   );
 
   return router;
-};
+}
 
 // Register the router instance for type safety
 declare module "@tanstack/react-router" {
   interface Register {
-    router: ReturnType<typeof createRouter>;
+    router: ReturnType<typeof getRouter>;
   }
 }

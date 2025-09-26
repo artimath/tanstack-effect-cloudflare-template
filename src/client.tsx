@@ -1,9 +1,9 @@
-import { StartClient } from "@tanstack/react-start";
+import { StartClient } from "@tanstack/react-start/client";
 import { hydrateRoot } from "react-dom/client";
 
-import { createRouter } from "./router";
+import { getRouter } from "./router";
 
-const router = createRouter();
+const router = getRouter();
 
 import * as Sentry from "@sentry/tanstackstart-react";
 
@@ -29,4 +29,4 @@ Sentry.init({
   enabled: import.meta.env.PROD,
 });
 
-hydrateRoot(document, <StartClient router={router} />);
+hydrateRoot(document, <StartClient />);

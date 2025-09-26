@@ -14,13 +14,13 @@ import { cloudflare } from '@cloudflare/vite-plugin'
 dotenv.config();
 
 export default defineConfig({
-  optimizeDeps: {
-    entries: ["src/**/*.tsx", "src/**/*.ts"],
-  },
+  // optimizeDeps: {
+  //   entries: ["src/**/*.tsx", "src/**/*.ts"],
+  // },
   server: {
-    warmup: {
-      clientFiles: ["./src/server.tsx"],
-    },
+    // warmup: {
+    //   clientFiles: ["./src/server.tsx"],
+    // },
     port: 5050,
   },
   plugins: [

@@ -11,7 +11,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { useTRPC } from '@/lib/trpc/react';
 
-export const Route = createFileRoute('/dashboard/tanstack-db-example')({
+export const Route = createFileRoute('/dashboard/tanstack-db-example' as any)({
   component: RouteComponent,
 });
 
@@ -42,11 +42,11 @@ function TanStackDBTodosRoute() {
       queryKey: ['todos'],
       queryFn: async () => {
         const data = await todos.refetch();
-        return data.data;
+        return data.data ?? [];
       },
       queryClient,
-      getKey: (item) => item.id,
-    })
+      getKey: (item: Todo) => item.id,
+    } as any)
   );
 
   // Standard tRPC mutations for server communication (matching original pattern)
@@ -175,7 +175,7 @@ function TanStackDBTodosRoute() {
               <p className="py-4 text-center text-muted-foreground">No todos yet</p>
             ) : (
               <ul className="space-y-2">
-                {allTodos?.map((todo) => (
+                {allTodos?.map((todo: any) => (
                   <li className="flex items-center justify-between rounded-md border p-2" key={todo.id}>
                     <div className="flex items-center space-x-2">
                       <Checkbox
@@ -216,7 +216,7 @@ function TanStackDBTodosRoute() {
               <p className="py-4 text-center text-muted-foreground">No pending todos</p>
             ) : (
               <ul className="space-y-2">
-                {pendingTodos?.map((todo) => (
+                {pendingTodos?.map((todo: any) => (
                   <li className="flex items-center justify-between rounded-md border p-2" key={todo.id}>
                     <div className="flex items-center space-x-2">
                       <Checkbox
@@ -254,7 +254,7 @@ function TanStackDBTodosRoute() {
               <p className="py-4 text-center text-muted-foreground">No completed todos</p>
             ) : (
               <ul className="space-y-2">
-                {completedTodos?.map((todo) => (
+                {completedTodos?.map((todo: any) => (
                   <li className="flex items-center justify-between rounded-md border p-2" key={todo.id}>
                     <div className="flex items-center space-x-2">
                       <Checkbox

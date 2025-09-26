@@ -28,7 +28,7 @@ export default function Component() {
       onChange: ({ value }) => {
         const result = twoFactorSchema.safeParse(value);
         if (!result.success) {
-          return result.error.formErrors.fieldErrors;
+          return result.error.flatten().fieldErrors;
         }
         return undefined;
       },

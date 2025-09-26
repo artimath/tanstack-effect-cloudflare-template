@@ -1,4 +1,4 @@
-import { serverOnly } from "@tanstack/react-start";
+import { createServerOnlyFn } from "@tanstack/react-start";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { admin, magicLink, mcp, openAPI, organization } from "better-auth/plugins";
@@ -17,7 +17,7 @@ import { sendEmail } from "@/lib/resend";
 import { env } from "../env.server";
 import { ac, admin as adminRole, superadmin as superAdminRole, user as userRole } from "./permissions";
 
-export const auth = serverOnly(() =>
+export const auth = createServerOnlyFn(() =>
   betterAuth({
     database: drizzleAdapter(db, {
       provider: "pg",

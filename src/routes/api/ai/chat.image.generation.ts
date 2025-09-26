@@ -1,10 +1,12 @@
 import { openai } from "@ai-sdk/openai";
 
-import { createServerFileRoute } from "@tanstack/react-start/server";
+import { createFileRoute } from "@tanstack/react-router";
 import { experimental_generateImage as generateImage, type UIMessage, streamText, tool, convertToModelMessages } from "ai";
 import { z } from "zod";
 
-export const ServerRoute = createServerFileRoute("/api/ai/chat/image/generation").methods({
+export const Route = createFileRoute("/api/ai/chat/image/generation")({
+  server: {
+    handlers: {
   POST: async ({ request }) => {
     const { messages }: { messages: UIMessage[] } = await request.json();
 
@@ -59,5 +61,7 @@ export const ServerRoute = createServerFileRoute("/api/ai/chat/image/generation"
       },
     });
     return result.toUIMessageStreamResponse();
+  },
+  },
   },
 });

@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(pnpm check:*)",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(tsc:*)",
+      "Bash(pnpm install:*)",
+      "Bash(mkdir:*)",
+      "Bash(tsx:*)",
+      "mcp__ide__getDiagnostics",
+      "Bash(rg:*)",
+      "Bash(npx tsx:*)",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm add:*)",
+      "mcp__context7__get-library-docs",
+      "Bash(pnpm run:*)",
+      "Bash(grep:*)",
+      "Bash(pnpm test:*)",
+      "mcp__context7__resolve-library-id",
+      "mcp__exa__web_search_exa",
+      "Bash(pnpm typecheck:*)",
+      "Bash(pnpm -w run check-recursive 2 >& 1)",
+      "Bash(pnpm list:*)",
+      "Bash(sed:*)",
+      "Bash(mv:*)",
+      "Bash(npx tsc:*)",
+      "Bash(timeout 60 pnpm test:*)",
+      "Bash(pnpm info:*)",
+      "mcp__exa__research_paper_search",
+      "mcp__exa__crawling",
+      "WebFetch(domain:effect-ts.github.io)",
+      "WebFetch(domain:github.com)",
+      "mcp__RepoPrompt__search",
+      "mcp__RepoPrompt__get_file_tree",
+      "mcp__RepoPrompt__read_file",
+      "mcp__RepoPrompt__request_plan",
+      "mcp__RepoPrompt__set_selection",
+      "mcp__server-sequential-thinking__sequentialthinking",
+      "mcp__effect-docs__effect_doc_search",
+      "mcp__effect-docs__get_effect_doc",
+      "mcp__octocode__githubSearchCode",
+      "mcp__octocode__githubGetFileContent",
+      "mcp__octocode__githubViewRepoStructure",
+      "mcp__octocode__githubSearchRepositories",
+      "mcp__octocode__packageSearch",
+      "mcp__octocode__githubSearchPullRequests",
+      "mcp__octocode__githubSearchCommits",
+      "mcp__RepoPrompt__manage_selection",
+      "mcp__RepoPrompt__list_windows",
+      "mcp__RepoPrompt__select_window",
+      "mcp__graphite__run_gt_cmd",
+      "mcp__exa__deep_researcher_check",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_close",
+      "mcp__playwright__browser_take_screenshot",
+      "mcp__playwright__browser_click",
+      "mcp__playwright__browser_snapshot",
+      "mcp__playwright__browser_wait_for",
+      "mcp__playwright__browser_console_messages",
+      "mcp__playwright__browser_evaluate",
+      "mcp__linear-server__list_teams",
+      "mcp__linear-server__create_project",
+      "mcp__linear-server__create_issue",
+      "mcp__serena__check_onboarding_performed",
+      "mcp__serena__list_dir",
+      "mcp__serena__find_file",
+      "mcp__serena__get_symbols_overview",
+      "mcp__serena__find_symbol",
+      "mcp__serena__search_for_pattern",
+      "mcp__exa__deep_researcher_start",
+      "mcp__serena__read_memory",
+      "WebFetch(domain:agentclientprotocol.com)",
+      "mcp__temposerver__tempo_query",
+      "mcp__grafana__get_sift_investigation",
+      "WebFetch(domain:localhost)",
+      "Read(/Users/ryanhunter/Downloads/**)",
+      "mcp__serena__think_about_collected_information",
+      "mcp__serena__find_referencing_symbols",
+      "Read(//Users/ryanhunter/.claude/**)",
+      "mcp__RepoPrompt__file_search",
+      "Read(//Users/ryanhunter/helaix/agientic/aa-reference/effect-docs/content/src/content/docs/docs/**)",
+      "Read(//Users/ryanhunter/helaix/agientic/aa-reference/effect-docs/**)"
+    ],
+    "deny": [],
+    "additionalDirectories": [
+      "/Users/ryanhunter/git_forks"
+    ]
+  },
+  "disabledMcpjsonServers": [
+    "server-sequential-thinking",
+    "sentry",
+    "apple-mcp"
+  ],
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|MultiEdit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/ryanhunter/git_forks/tanstack-effect-cloudflare-template/.claude/hooks/typecheck.sh",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  },
+  "outputStyle": "Authentic Effect Excellence"
+}

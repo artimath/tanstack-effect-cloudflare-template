@@ -130,7 +130,12 @@ function getRoleBadge(role: string) {
 
 function CreateUserDialog() {
   const [open, setOpen] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    name: string;
+    email: string;
+    password: string;
+    role: UserRole;
+  }>({
     name: "",
     email: "",
     password: "",
@@ -144,7 +149,7 @@ function CreateUserDialog() {
     createUser(formData, {
       onSuccess: () => {
         setOpen(false);
-        setFormData({ name: "", email: "", password: "", role: "user" });
+        setFormData({ name: "", email: "", password: "", role: "user" as UserRole });
       },
     });
   };
@@ -196,7 +201,7 @@ function CreateUserDialog() {
           </div>
           <div className="space-y-2">
             <Label htmlFor="role">Role</Label>
-            <Select value={formData.role} onValueChange={(value) => setFormData({ ...formData, role: value })}>
+            <Select value={formData.role} onValueChange={(value) => setFormData({ ...formData, role: value as UserRole })}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
@@ -306,7 +311,7 @@ export function AdminUsersPage() {
         break;
       case "setRole":
         if (canSetUserRoles(currentUserRole) && userRole) {
-          setUserRole({ userId, role: userRole });
+          setUserRole({ userId, role: userRole as UserRole });
         }
         break;
       case "impersonate":

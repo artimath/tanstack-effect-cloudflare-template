@@ -2,7 +2,7 @@ import netlify from "@netlify/vite-plugin-tanstack-start";
 import postgresPlugin from "@neondatabase/vite-plugin-postgres";
 import { sentryVitePlugin } from "@sentry/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
-import { devtools } from "@tanstack/devtools-vite";
+// import { devtools } from "@tanstack/devtools-vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import dotenv from "dotenv";
@@ -30,7 +30,7 @@ export default defineConfig({
     tanstackStart(),
     // netlify(),
     viteReact(),
-    devtools(),
+    // devtools(),
     viteTsConfigPaths({
       projects: ["./tsconfig.json"],
     }),

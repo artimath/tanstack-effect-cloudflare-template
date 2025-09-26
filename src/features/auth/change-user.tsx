@@ -43,7 +43,7 @@ export function ChangeUser() {
       onChange: ({ value }) => {
         const result = changeUserSchema.safeParse(value);
         if (!result.success) {
-          return result.error.formErrors.fieldErrors;
+          return result.error.flatten().fieldErrors;
         }
         return undefined;
       },

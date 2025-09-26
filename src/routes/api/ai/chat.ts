@@ -1,12 +1,14 @@
 import { openai } from "@ai-sdk/openai";
 
-import { createServerFileRoute } from "@tanstack/react-start/server";
+import { createFileRoute } from "@tanstack/react-router";
 import { convertToModelMessages, streamText } from "ai";
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
-export const ServerRoute = createServerFileRoute("/api/ai/chat").methods({
+export const Route = createFileRoute("/api/ai/chat")({
+  server: {
+    handlers: {
   POST: async ({ request }) => {
     const { messages } = await request.json();
 
@@ -16,5 +18,7 @@ export const ServerRoute = createServerFileRoute("/api/ai/chat").methods({
     });
 
     return result.toUIMessageStreamResponse();
+  },
+  },
   },
 });

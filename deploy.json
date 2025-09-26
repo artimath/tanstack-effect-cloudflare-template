@@ -1,0 +1,50 @@
+{
+  "name": "tanstack-effect-cloudflare-template",
+  "description": "Full-stack TanStack Start template with Effect ecosystem integration for Cloudflare Workers",
+  "logo": "https://raw.githubusercontent.com/tanstack/router/main/media/router-logo.png",
+  "tags": [
+    "tanstack",
+    "react",
+    "effect",
+    "cloudflare",
+    "workers",
+    "typescript",
+    "fullstack"
+  ],
+  "keywords": [
+    "tanstack",
+    "start",
+    "effect",
+    "cloudflare",
+    "workers",
+    "typescript",
+    "react",
+    "rpc"
+  ],
+  "website": "https://tanstack-effect-cloudflare-template.ryanjhunter.workers.dev/",
+  "repository": "https://github.com/artimath/tanstack-effect-cloudflare-template",
+  "env": {
+    "VITE_SENTRY_DSN": {
+      "description": "Sentry DSN for error tracking (optional)",
+      "required": false
+    },
+    "VITE_SENTRY_ORG": {
+      "description": "Sentry organization slug (optional)",
+      "required": false
+    },
+    "VITE_SENTRY_PROJECT": {
+      "description": "Sentry project slug (optional)",
+      "required": false
+    },
+    "SENTRY_AUTH_TOKEN": {
+      "description": "Sentry auth token for source map uploads (optional)",
+      "required": false
+    }
+  },
+  "vars": {
+    "MY_VAR": {
+      "description": "Example environment variable",
+      "value": "Hello from Cloudflare"
+    }
+  }
+}

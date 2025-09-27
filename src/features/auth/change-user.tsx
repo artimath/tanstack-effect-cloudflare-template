@@ -51,8 +51,8 @@ export function ChangeUser() {
     onSubmit: async ({ value }) => {
       try {
         await authClient.updateUser({
-          image: value.image ? await convertImageToBase64(value.image) : undefined,
-          name: value.name ? value.name : undefined,
+          ...(value.image && { image: await convertImageToBase64(value.image) }),
+          ...(value.name && { name: value.name }),
           fetchOptions: {
             onSuccess: () => {
               toast.success("User updated successfully");
@@ -105,7 +105,7 @@ export function ChangeUser() {
           <form.Field
             name="name"
             children={(field) => (
-              <FormField field={field} label={t("FULL_NAME")} type="text" placeholder={data?.user.name} />
+               <FormField field={field} label={t("FULL_NAME")} type="text" placeholder={data?.user.name ?? ""} />
             )}
           />
           <div className="grid gap-2">

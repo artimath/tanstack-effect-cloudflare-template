@@ -24,6 +24,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import type { OrganizationInvitation } from "@/types/better-auth-augment";
 import {
   Dialog,
   DialogClose,
@@ -414,7 +415,7 @@ export async function WorkspacePage() {
                 <CardDescription>Manage and track your organization invitations</CardDescription>
               </CardHeader>
               <CardContent>
-                {optimisticOrg?.invitations?.filter((inv) => inv.status === "pending").length === 0 ? (
+                {optimisticOrg?.invitations?.filter((inv: OrganizationInvitation) => inv.status === "pending").length === 0 ? (
                   <div className="py-8 text-center">
                     <MailPlus className="mx-auto mb-2 h-8 w-8 text-muted-foreground" />
                     <p className="text-muted-foreground">No pending invitations</p>
@@ -433,8 +434,8 @@ export async function WorkspacePage() {
                     <TableBody>
                       <AnimatePresence>
                         {optimisticOrg?.invitations
-                          ?.filter((invitation) => invitation.status === "pending")
-                          .map((invitation) => (
+                          ?.filter((invitation: OrganizationInvitation) => invitation.status === "pending")
+                          .map((invitation: OrganizationInvitation) => (
                             <motion.tr
                               animate="visible"
                               exit="exit"

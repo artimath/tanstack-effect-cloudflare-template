@@ -176,13 +176,13 @@ export function Protect({
   }
 
   // Check permission-based authorization
-  if (permission && !checkPermissionAuthorization(user, permission)) {
+  if (permission && !checkPermissionAuthorization({ ...user, id: user.id!, role: user.role ?? null }, permission)) {
     return <>{fallback}</>;
   }
 
   // Check custom condition
   if (condition) {
-    const authContext = createAuthContext(session || null);
+    const authContext = createAuthContext({ ...session, user: session?.user ? { ...session.user, id: session.user.id!, role: session.user.role ?? null } : null });
     if (!condition(authContext)) {
       return <>{fallback}</>;
     }
@@ -231,7 +231,7 @@ export function useAuth() {
   };
 
   const checkCondition = (condition: ConditionFunction): boolean => {
-    const authContext = createAuthContext(session || null);
+    const authContext = createAuthContext({ ...session, user: session?.user ? { ...session.user, id: session.user.id!, role: session.user.role ?? null } : null });
     return condition(authContext);
   };
 
@@ -307,7 +307,7 @@ export function useAuth() {
 
     // Core authorization functions
     hasRole: checkRole,
-    hasPermission: (resource: ResourceType, action: ActionType) => checkPermissionHelper(user, { resource, action }),
+    hasPermission: (resource: ResourceType, action: ActionType) => checkPermissionHelper({ ...user, id: user.id! }, { resource, action }),
     checkCondition,
 
     // Convenience permission functions

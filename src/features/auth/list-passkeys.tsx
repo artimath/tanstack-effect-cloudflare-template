@@ -80,7 +80,7 @@ export function ListPasskeys() {
                               toast("Passkey deleted successfully");
                               setIsDeletePasskey(false);
                             },
-                            onError: (error) => {
+                            onError: (error: any) => {
                               toast.error(error.error.message);
                               setIsDeletePasskey(false);
                             },

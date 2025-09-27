@@ -257,7 +257,7 @@ export function AdminUsersPage() {
     );
   }
 
-  const normalizedUsers: User[] = users?.map(user => ({
+  const normalizedUsers: User[] = users?.map((user: any) => ({
     id: user.id,
     name: user.name || "Unknown",
     email: user.email,

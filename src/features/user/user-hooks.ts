@@ -343,8 +343,8 @@ export const useUpdateUser = () => {
   return useMutation({
     mutationFn: async ({ name, image }: { name?: string; image?: string }) => {
       const result = await authClient.updateUser({
-        name,
-        image,
+        ...(name && { name }),
+        ...(image && { image }),
       });
 
       if (result.error) {

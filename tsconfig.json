@@ -7,7 +7,7 @@
     "vite.config.js",
     "src/lib/intl/react-i18next.d.ts",
     "src/lib/intl/i18next.d.ts"
-, "src/routes/dashboard/tanstack-db-example.tsx.skip"  ],
+,  ],
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "react-jsx",
@@ -25,12 +25,15 @@
     "strict": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
+    "exactOptionalPropertyTypes": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
     "strictNullChecks": true,
     "incremental": true,
+    "composite": true,
+    "isolatedModules": true,
     "tsBuildInfoFile": "tsconfig.tsbuildinfo",
     "plugins": [
       {
@@ -38,5 +41,10 @@
         "transform": "@effect/language-service/transform"
       }
     ]
-  }
+  },
+  "exclude": [
+    "node_modules",
+    ".output",
+    "dist"
+  ]
 }

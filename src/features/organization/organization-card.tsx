@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import * as z from "zod";
 import CopyButton from "@/components/copy-button";
+import type { OrganizationInvitation } from "@/types/better-auth-augment";
 import { FormField } from "@/components/form/form-field";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -58,7 +59,6 @@ export function OrganizationCard(props: {
 
   const optimisticOrg =
     // TODO: Fix this type
-    // @ts-expect-error
     props.activeOrganization as typeof setActiveOrganization.data.data;
 
   const [isRevoking, setIsRevoking] = useState<string[]>([]);
@@ -71,7 +71,7 @@ export function OrganizationCard(props: {
   const { data } = useSession();
   const session = data || props.session;
 
-  const currentMember = optimisticOrg?.members?.find((member) => member.userId === session?.user.id);
+   const currentMember = optimisticOrg?.members?.find((member: any) => member.userId === session?.user.id);
 
   return (
     <Card className="w-full">
@@ -140,7 +140,7 @@ export function OrganizationCard(props: {
           <div className="flex flex-grow flex-col gap-2">
             <p className="border-b-2 border-b-foreground/10 font-medium">{t("MEMBERS")}</p>
             <div className="flex flex-col gap-2">
-              {optimisticOrg?.members.map((member) => (
+              {optimisticOrg?.members.map((member: any) => (
                 <div key={member.id} className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Avatar className="h-9 w-9 sm:flex">
@@ -190,8 +190,8 @@ export function OrganizationCard(props: {
             <div className="flex flex-col gap-2">
               <AnimatePresence>
                 {optimisticOrg?.invitations
-                  .filter((invitation) => invitation.status === "pending")
-                  .map((invitation) => (
+                  .filter((invitation: OrganizationInvitation) => invitation.status === "pending")
+                  .map((invitation: OrganizationInvitation) => (
                     <motion.div
                       key={invitation.id}
                       className="flex items-center justify-between"
@@ -315,7 +315,7 @@ function CreateOrganizationDialog() {
           {
             name: value.name,
             slug: value.slug,
-            logo: logoBase64,
+            ...(logoBase64 && { logo: logoBase64 }),
           },
           {
             onSuccess: () => {

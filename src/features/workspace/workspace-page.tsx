@@ -59,15 +59,12 @@ import {
   useSetActiveOrganization,
   useActiveOrganization,
 } from "@/features/organization/organization-hooks";
-import { authClient } from "@/lib/auth/auth-client";
+import { authClient, type ActiveOrganization } from "@/lib/auth/auth-client";
 import { useTranslation } from "@/lib/intl/react";
-
-type ActiveOrganization = typeof authClient.$Infer.ActiveOrganization;
-type OrganizationInvitation = ActiveOrganization["invitations"][0];
 
 const inviteMemberSchema = z.object({
   email: z.email("Please enter a valid email address"),
-  role: z.enum(["admin", "user"], {
+  role: z.enum(["admin", "member"], {
     error: "Please select a role",
   }),
 });
@@ -80,7 +77,7 @@ function InviteMemberDialog() {
   const form = useForm({
     defaultValues: {
       email: "",
-      role: "user" as "admin" | "user",
+      role: "member" as "admin" | "member",
     },
     validators: {
       onChange: ({ value }) => {
@@ -145,7 +142,7 @@ function InviteMemberDialog() {
               <form.Field
                 children={(field) => (
                   <Select
-                    onValueChange={(value) => field.handleChange(value as "admin" | "user")}
+                    onValueChange={(value) => field.handleChange(value as "admin" | "member")}
                     value={field.state.value}
                   >
                     <SelectTrigger>
@@ -153,7 +150,7 @@ function InviteMemberDialog() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="admin">Admin</SelectItem>
-                      <SelectItem value="user">User</SelectItem>
+                      <SelectItem value="member">Member</SelectItem>
                     </SelectContent>
                   </Select>
                 )}
@@ -213,7 +210,7 @@ export async function WorkspacePage() {
     totalMembers: optimisticOrg?.members?.length || 0,
     pendingInvitations: optimisticOrg?.invitations?.filter((inv: any) => inv.status === "pending").length || 0,
     adminMembers:
-      optimisticOrg?.members?.filter((member: any) => member.role === "admin" || member.role === "superadmin").length || 0,
+      optimisticOrg?.members?.filter((member: any) => member.role === "admin" || member.role === "owner").length || 0,
   };
 
   const handleRemoveMember = (memberId: string) => {
@@ -414,7 +411,7 @@ export async function WorkspacePage() {
                 <CardDescription>Manage and track your organization invitations</CardDescription>
               </CardHeader>
               <CardContent>
-                {optimisticOrg?.invitations?.filter((inv: OrganizationInvitation) => inv.status === "pending")
+                {optimisticOrg?.invitations?.filter((invitation) => invitation.status === "pending")
                   .length === 0 ? (
                   <div className="py-8 text-center">
                     <MailPlus className="mx-auto mb-2 h-8 w-8 text-muted-foreground" />
@@ -434,8 +431,8 @@ export async function WorkspacePage() {
                     <TableBody>
                       <AnimatePresence>
                         {optimisticOrg?.invitations
-                          ?.filter((invitation: OrganizationInvitation) => invitation.status === "pending")
-                          .map((invitation: OrganizationInvitation) => (
+                          ?.filter((invitation) => invitation.status === "pending")
+                          .map((invitation) => (
                             <motion.tr
                               animate="visible"
                               exit="exit"

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useSession } from '@/features/auth/auth-hooks';
+import type { Session, SessionUser } from '@/lib/auth/auth-client';
 // Import the statement type to get dynamic resource and action types
 import {
   canBanUsers,
@@ -21,19 +22,6 @@ import {
 type ResourceType = keyof typeof statement;
 type ActionType = (typeof statement)[keyof typeof statement][number];
 
-// Session type based on better-auth
-export interface SessionUser {
-  id: string;
-  email: string;
-  name: string;
-  role?: string | null;
-  image?: string | null;
-}
-
-export interface BetterAuthSession {
-  user?: SessionUser;
-}
-
 // Types for authorization checks
 export interface AuthorizationContext {
   user: {
@@ -42,7 +30,7 @@ export interface AuthorizationContext {
     name: string;
     role: UserRole;
   } | null;
-  session: BetterAuthSession | null;
+  session: Session | null;
 }
 
 export interface HasParams {
@@ -77,19 +65,21 @@ export interface ProtectProps {
 }
 
 // Helper function to create authorization context
-function createAuthContext(session: BetterAuthSession | null): AuthorizationContext {
-  const user = session?.user || null;
+function createAuthContext(session: Session | null): AuthorizationContext {
+  const user = session?.user ?? null;
+
+  if (!user) {
+    return { user: null, session: session ?? null };
+  }
 
   return {
-    user: user
-      ? {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: (user.role || 'user') as UserRole,
-        }
-      : null,
-    session,
+    user: {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      role: (user.role ?? 'user') as UserRole,
+    },
+    session: session ?? null,
   };
 }
 
@@ -101,12 +91,10 @@ function checkPermissionAuthorization(
     action: ActionType;
   }
 ): boolean {
-  if (!user) {
+  if (!user?.role) {
     return false;
   }
-
-  const userRole = (user.role || 'user') as UserRole;
-  return hasPermission(userRole, permission.resource, permission.action);
+  return hasPermission(user.role as UserRole, permission.resource, permission.action);
 }
 
 /**
@@ -163,7 +151,7 @@ export function Protect({
   }
 
   // Get user from session
-  const user = session?.user || null;
+  const user = session?.user ?? null;
 
   // Check authentication if required
   if (requireAuth && !user) {
@@ -176,13 +164,19 @@ export function Protect({
   }
 
   // Check permission-based authorization
-  if (permission && !checkPermissionAuthorization({ ...user, id: user.id!, role: user.role ?? null }, permission)) {
-    return <>{fallback}</>;
+  if (permission) {
+    if (!user) {
+      return <>{fallback}</>;
+    }
+
+    if (!checkPermissionAuthorization(user, permission)) {
+      return <>{fallback}</>;
+    }
   }
 
   // Check custom condition
   if (condition) {
-    const authContext = createAuthContext({ ...session, user: session?.user ? { ...session.user, id: session.user.id!, role: session.user.role ?? null } : null });
+    const authContext = createAuthContext(session ?? null);
     if (!condition(authContext)) {
       return <>{fallback}</>;
     }
@@ -204,7 +198,7 @@ export function Protect({
  */
 export function useAuth() {
   const { data: session, isPending } = useSession();
-  const user = session?.user || null;
+  const user = session?.user ?? null;
 
   const isAuthenticated = !!user;
 
@@ -226,70 +220,69 @@ export function useAuth() {
       return false;
     }
 
-    const userRole = sessionUser.role as UserRole;
-    return hasPermission(userRole, permissionCheck.resource, permissionCheck.action);
+    return hasPermission(sessionUser.role as UserRole, permissionCheck.resource, permissionCheck.action);
   };
 
   const checkCondition = (condition: ConditionFunction): boolean => {
-    const authContext = createAuthContext({ ...session, user: session?.user ? { ...session.user, id: session.user.id!, role: session.user.role ?? null } : null });
+    const authContext = createAuthContext(session ?? null);
     return condition(authContext);
   };
 
   // Helper functions using our permission system
   const canManageUsersCheck = (): boolean => {
-    if (!user) {
+    if (!user?.role) {
       return false;
     }
-    return canManageUsers((user.role || 'user') as UserRole);
+    return canManageUsers(user.role as UserRole);
   };
 
   const canBanUsersCheck = (): boolean => {
-    if (!user) {
+    if (!user?.role) {
       return false;
     }
-    return canBanUsers((user.role || 'user') as UserRole);
+    return canBanUsers(user.role as UserRole);
   };
 
   const canDeleteUsersCheck = (): boolean => {
-    if (!user) {
+    if (!user?.role) {
       return false;
     }
-    return canDeleteUsers((user.role || 'user') as UserRole);
+    return canDeleteUsers(user.role as UserRole);
   };
 
   const canImpersonateUsersCheck = (): boolean => {
-    if (!user) {
+    if (!user?.role) {
       return false;
     }
-    return canImpersonateUsers((user.role || 'user') as UserRole);
+    return canImpersonateUsers(user.role as UserRole);
   };
 
   const canSetUserRolesCheck = (): boolean => {
-    if (!user) {
+    if (!user?.role) {
       return false;
     }
-    return canSetUserRoles((user.role || 'user') as UserRole);
+    return canSetUserRoles(user.role as UserRole);
   };
 
   const canCreateUsersCheck = (): boolean => {
-    if (!user) {
+    if (!user?.role) {
       return false;
     }
-    return canCreateUsers((user.role || 'user') as UserRole);
+    return canCreateUsers(user.role as UserRole);
   };
 
   const canManageOrganizationsCheck = (): boolean => {
-    if (!user) {
+    if (!user?.role) {
       return false;
     }
-    return canManageOrganizations((user.role || 'user') as UserRole);
+    return canManageOrganizations(user.role as UserRole);
   };
 
   const canManageBillingCheck = (): boolean => {
-    if (!user) {
+    if (!user?.role) {
       return false;
     }
-    return canManageBilling((user.role || 'user') as UserRole);
+    return canManageBilling(user.role as UserRole);
   };
 
   return {
@@ -300,14 +293,14 @@ export function useAuth() {
           id: user.id,
           email: user.email,
           name: user.name,
-          role: (user.role || 'user') as UserRole,
+          role: (user.role ?? 'user') as UserRole,
         }
       : null,
     session,
 
     // Core authorization functions
     hasRole: checkRole,
-    hasPermission: (resource: ResourceType, action: ActionType) => checkPermissionHelper({ ...user, id: user.id! }, { resource, action }),
+    hasPermission: (resource: ResourceType, action: ActionType) => checkPermissionHelper(user, { resource, action }),
     checkCondition,
 
     // Convenience permission functions

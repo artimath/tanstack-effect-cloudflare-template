@@ -52,7 +52,10 @@ function RouteComponent() {
             <h2 className="font-semibold text-xl">{t("ORGANIZATION")}</h2>
             <p className="text-muted-foreground text-sm">Manage your organization settings and member access</p>
           </div>
-          <OrganizationCard session={data?.session?.data || null} activeOrganization={data?.organization?.data} />
+          <OrganizationCard
+            session={data?.session?.data || null}
+            activeOrganization={data?.organization?.data ?? null}
+          />
         </section>
 
         <Separator />

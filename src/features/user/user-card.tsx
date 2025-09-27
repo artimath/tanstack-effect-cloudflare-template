@@ -186,7 +186,7 @@ export default function UserCard(props: { activeSessions: Session["session"][] }
     );
   };
 
-  const handleRevokeSession = async (item: Session["$Infer"]["Session"]["session"]) => {
+  const handleRevokeSession = async (item: Session["session"]) => {
     setIsTerminating(item.id);
     const res = await revokeSession.mutateAsync({
       token: item.token,

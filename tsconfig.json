@@ -25,6 +25,7 @@
     "strict": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
+    "noErrorTruncation": true,
     "exactOptionalPropertyTypes": true,
     "baseUrl": ".",
     "paths": {

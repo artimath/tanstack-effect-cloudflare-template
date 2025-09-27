@@ -38,10 +38,9 @@ import {
   useRemoveMember,
   useSetActiveOrganization,
 } from "@/features/organization/organization-hooks";
-import { authClient, type Session } from "@/lib/auth/auth-client";
+import { authClient, type ActiveOrganization, type Session } from "@/lib/auth/auth-client";
 import { useTranslation } from "@/lib/intl/react";
 
-type ActiveOrganization = typeof authClient.$Infer.ActiveOrganization;
 type OrganizationInvitation = ActiveOrganization["invitations"][0];
 
 export function OrganizationCard(props: {
@@ -151,7 +150,7 @@ export function OrganizationCard(props: {
                       </p>
                     </div>
                   </div>
-                  {member.role !== "owner" && (currentMember?.role === "superadmin" || currentMember?.role === "admin") && (
+                  {member.role !== "owner" && (currentMember?.role === "owner" || currentMember?.role === "admin") && (
                     <Button
                       size="sm"
                       variant="destructive"
@@ -201,9 +200,9 @@ export function OrganizationCard(props: {
                       <div>
                         <p className="text-sm">{invitation.email}</p>
                         <p className="text-muted-foreground text-xs">
-                          {invitation.role === "superadmin"
+                          {invitation.role === "owner"
                             ? t("OWNER")
-                            : invitation.role === "user"
+                            : invitation.role === "member"
                               ? t("MEMBER")
                               : t("ADMIN")}
                         </p>

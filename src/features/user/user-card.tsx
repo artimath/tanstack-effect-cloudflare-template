@@ -30,8 +30,7 @@ import { useAuthHelpers, useLogout } from "@/features/auth/auth-hooks";
 import { ChangePassword } from "@/features/auth/change-password";
 import { ChangeUser } from "@/features/auth/change-user";
 import { ListPasskeys } from "@/features/auth/list-passkeys";
-import type { AuthClient } from "@/lib/auth/auth-client";
-import { authClient } from "@/lib/auth/auth-client";
+import { authClient, type Session } from "@/lib/auth/auth-client";
 
 // Validation schemas
 const qrCodePasswordSchema = z.object({
@@ -46,7 +45,7 @@ const twoFactorOtpSchema = z.object({
   otp: z.string().length(6, "OTP must be exactly 6 digits").regex(/^\d+$/, "OTP must contain only digits"),
 });
 
-export default function UserCard(props: { activeSessions: AuthClient["$Infer"]["Session"]["session"][] }) {
+export default function UserCard(props: { activeSessions: Session["session"][] }) {
   const { t } = useTranslation();
   const logout = useLogout();
   const navigate = useNavigate();
@@ -187,7 +186,7 @@ export default function UserCard(props: { activeSessions: AuthClient["$Infer"]["
     );
   };
 
-  const handleRevokeSession = async (item: AuthClient["$Infer"]["Session"]["session"]) => {
+  const handleRevokeSession = async (item: Session["$Infer"]["Session"]["session"]) => {
     setIsTerminating(item.id);
     const res = await revokeSession.mutateAsync({
       token: item.token,

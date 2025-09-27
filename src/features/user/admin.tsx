@@ -27,7 +27,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { authClient } from "@/lib/auth/auth-client";
 import { useTranslation } from "@/lib/intl/react";
 import { cn } from "@/lib/utils";
-import type { BetterAuthErrorContext } from "@/types/better-auth-augment";
 
 export default function AdminDashboard() {
   const queryClient = useQueryClient();
@@ -461,7 +460,7 @@ export default function AdminDashboard() {
                                   userId: user.id,
                                 },
                                 {
-                                  onError(context: BetterAuthErrorContext) {
+                                  onError(context: any) {
                                     toast.error(context.error.message || t("FAILED_TO_UNBAN_USER"));
                                     setIsLoading(undefined);
                                   },

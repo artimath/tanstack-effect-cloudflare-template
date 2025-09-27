@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import * as z from "zod";
 import CopyButton from "@/components/copy-button";
-import type { OrganizationInvitation } from "@/types/better-auth-augment";
 import { FormField } from "@/components/form/form-field";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -39,14 +38,14 @@ import {
   useRemoveMember,
   useSetActiveOrganization,
 } from "@/features/organization/organization-hooks";
-import type { AuthClient } from "@/lib/auth/auth-client";
-import { authClient } from "@/lib/auth/auth-client";
+import { authClient, type Session } from "@/lib/auth/auth-client";
 import { useTranslation } from "@/lib/intl/react";
 
-type ActiveOrganization = Awaited<ReturnType<typeof authClient.organization.getFullOrganization>>;
+type ActiveOrganization = typeof authClient.$Infer.ActiveOrganization;
+type OrganizationInvitation = ActiveOrganization["invitations"][0];
 
 export function OrganizationCard(props: {
-  session: AuthClient["$Infer"]["Session"] | null;
+  session: Session | null;
   activeOrganization: ActiveOrganization | null;
 }) {
   const { t } = useTranslation();
@@ -57,9 +56,7 @@ export function OrganizationCard(props: {
   const removeMember = useRemoveMember();
   const cancelInvitation = useCancelInvitation();
 
-  const optimisticOrg =
-    // TODO: Fix this type
-    props.activeOrganization as typeof setActiveOrganization.data.data;
+  const optimisticOrg = props.activeOrganization;
 
   const [isRevoking, setIsRevoking] = useState<string[]>([]);
   const inviteVariants = {
@@ -71,7 +68,7 @@ export function OrganizationCard(props: {
   const { data } = useSession();
   const session = data || props.session;
 
-   const currentMember = optimisticOrg?.members?.find((member: any) => member.userId === session?.user.id);
+  const currentMember = optimisticOrg?.members?.find((member: any) => member.userId === session?.user.id);
 
   return (
     <Card className="w-full">
@@ -99,7 +96,7 @@ export function OrganizationCard(props: {
               >
                 <p className="sm text-sm">{t("PERSONAL")}</p>
               </DropdownMenuItem>
-              {organizations?.map((org) => (
+              {organizations?.map((org: any) => (
                 <DropdownMenuItem
                   className=" py-1"
                   key={org.id}
@@ -154,7 +151,7 @@ export function OrganizationCard(props: {
                       </p>
                     </div>
                   </div>
-                  {member.role !== "owner" && (currentMember?.role === "owner" || currentMember?.role === "admin") && (
+                  {member.role !== "owner" && (currentMember?.role === "superadmin" || currentMember?.role === "admin") && (
                     <Button
                       size="sm"
                       variant="destructive"
@@ -204,9 +201,9 @@ export function OrganizationCard(props: {
                       <div>
                         <p className="text-sm">{invitation.email}</p>
                         <p className="text-muted-foreground text-xs">
-                          {invitation.role === "owner"
+                          {invitation.role === "superadmin"
                             ? t("OWNER")
-                            : invitation.role === "member"
+                            : invitation.role === "user"
                               ? t("MEMBER")
                               : t("ADMIN")}
                         </p>
@@ -230,7 +227,7 @@ export function OrganizationCard(props: {
                                 onError: () => {
                                   setIsRevoking(isRevoking.filter((id) => id !== invitation.id));
                                 },
-                              },
+                              }
                             );
                           }}
                         >
@@ -328,7 +325,7 @@ function CreateOrganizationDialog() {
             onError: (error) => {
               toast.error(error.message);
             },
-          },
+          }
         );
       } catch (error) {
         toast.error("An error occurred while creating organization");
@@ -513,7 +510,7 @@ function InviteMemberDialog() {
           onError: (error) => {
             toast.error(error.message);
           },
-        },
+        }
       );
     },
   });

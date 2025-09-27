@@ -60,7 +60,7 @@ export function SignUpForm() {
           image: value.image ? await convertImageToBase64(value.image) : "",
           callbackURL: "/dashboard",
           fetchOptions: {
-            onError: (ctx) => {
+            onError: (ctx: any) => {
               toast.error(ctx.error.message);
             },
             onSuccess: async () => {

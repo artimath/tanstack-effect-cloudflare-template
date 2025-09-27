@@ -53,7 +53,7 @@ export function EnhancedUserProfile() {
             <AvatarFallback className="text-lg">
               {session?.user?.name
                 ?.split(" ")
-                .map((n) => n[0])
+                .map((n: string) => n[0])
                 .join("")}
             </AvatarFallback>
           </Avatar>
@@ -82,7 +82,8 @@ export function EnhancedUserProfile() {
             )}
             <div className="flex items-center gap-1">
               <Calendar className="h-4 w-4" />
-              Member since {session?.user?.createdAt ? new Date(session.user.createdAt).getFullYear() : new Date().getFullYear()}
+              Member since{" "}
+              {session?.user?.createdAt ? new Date(session.user.createdAt).getFullYear() : new Date().getFullYear()}
             </div>
           </div>
         </div>

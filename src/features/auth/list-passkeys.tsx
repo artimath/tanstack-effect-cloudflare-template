@@ -64,7 +64,7 @@ export function ListPasskeys() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((passkey) => (
+              {data.map((passkey: any) => (
                 <TableRow key={passkey.id} className="flex items-center justify-between">
                   <TableCell>{passkey.name || t("NEW_PASSKEY")}</TableCell>
                   <TableCell className="text-right">

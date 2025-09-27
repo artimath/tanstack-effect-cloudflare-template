@@ -6,7 +6,7 @@ import * as z from "zod";
 import { FormField } from "@/components/form/form-field";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { authClient } from "@/lib/auth/auth-client";
+import * as AuthClient from "@/lib/auth/auth-client";
 import { useTranslation } from "@/lib/intl/react";
 
 const twoFactorSchema = z.object({
@@ -35,7 +35,7 @@ export default function Component() {
     },
     onSubmit: async ({ value }) => {
       try {
-        const res = await authClient.twoFactor.verifyTotp({
+        const res = await AuthClient.authClient.twoFactor.verifyTotp({
           code: value.totpCode,
         });
         if (res.data?.token) {

@@ -17,11 +17,10 @@ import { sendEmail } from "@/lib/resend";
 import { env } from "../env.server";
 import { ac, admin as adminRole, superadmin as superAdminRole, user as userRole } from "./permissions";
 
-export const auth = createServerOnlyFn(() =>
+export const auth =
   betterAuth({
     database: drizzleAdapter(db, {
       provider: "pg",
-      schema,
     }),
     secret: env.BETTER_AUTH_SECRET,
     basePath: "/api/auth",
@@ -104,36 +103,40 @@ export const auth = createServerOnlyFn(() =>
           superadmin: superAdminRole,
         },
       }),
-      organization(),
+      organization({
+
+      }),
       mcp({
         loginPage: "/login",
       }),
-      emailOTP({
-        async sendVerificationOTP({ email, otp }) {
-          await sendEmail({
-            subject: "Verify your email",
-            template: SendVerificationOTP({
-              username: email,
-              otp,
-            }),
-            to: email,
-          });
-        },
-      }),
-      magicLink({
-        sendMagicLink: async ({ email, token, url }) => {
-          await sendEmail({
-            subject: "Magic Link",
-            template: SendMagicLinkEmail({
-              username: email,
-              url,
-              token,
-            }),
-            to: email,
-          });
-        },
-      }),
+      // emailOTP({
+      //   // async sendVerificationOTP({ email, otp }) {
+      //   //   await sendEmail({
+      //   //     subject: "Verify your email",
+      //   //     template: SendVerificationOTP({
+      //   //       username: email,
+      //   //       otp,
+      //   //     }),
+      //   //     to: email,
+      //   //   });
+      //   // },
+      // }),
+      // magicLink({
+      //   sendMagicLink: async ({ email, token, url }) => {
+      //     await sendEmail({
+      //       subject: "Magic Link",
+      //       template: SendMagicLinkEmail({
+      //         username: email,
+      //         url,
+      //         token,
+      //       }),
+      //       to: email,
+      //     });
+      //   },
+      // }),
       reactStartCookies(), // make sure this is the last plugin in the array
     ],
   })
-)();
+;
+
+type Session = typeof auth.$Infer.Session

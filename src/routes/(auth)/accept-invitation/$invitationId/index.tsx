@@ -7,7 +7,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { InvitationError } from "@/features/organization/invitation-error";
 import { authClient } from "@/lib/auth/auth-client";
 import { useTranslation } from "@/lib/intl/react";
-import type { BetterAuthApiResponse } from "@/types/better-auth-augment";
 
 export const Route = createFileRoute("/(auth)/accept-invitation/$invitationId/")({
   component: RouteComponent,
@@ -24,7 +23,7 @@ function RouteComponent() {
       .acceptInvitation({
         invitationId: params.invitationId,
       })
-      .then((res: BetterAuthApiResponse) => {
+      .then((res: any) => {
         if (res.error) {
           setError(res.error.message || "An error occurred");
         } else {
@@ -39,7 +38,7 @@ function RouteComponent() {
       .rejectInvitation({
         invitationId: params.invitationId,
       })
-      .then((res: BetterAuthApiResponse) => {
+      .then((res: any) => {
         if (res.error) {
           setError(res.error.message || "An error occurred");
         } else {
@@ -70,7 +69,7 @@ function RouteComponent() {
           id: params.invitationId,
         },
       })
-      .then((res: BetterAuthApiResponse) => {
+      .then((res: any) => {
         if (res.error) {
           setError(res.error.message || "An error occurred");
         } else {

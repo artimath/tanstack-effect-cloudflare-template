@@ -1,0 +1,10 @@
+onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - '@sentry/cli'
+  - '@tailwindcss/oxide'
+  - esbuild
+  - msgpackr-extract
+  - protobufjs
+  - sharp
+  - unrs-resolver
+  - workerd

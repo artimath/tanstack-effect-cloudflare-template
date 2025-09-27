@@ -24,7 +24,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import type { OrganizationInvitation } from "@/types/better-auth-augment";
 import {
   Dialog,
   DialogClose,
@@ -58,17 +57,17 @@ import {
   useOrganizations,
   useRemoveMember,
   useSetActiveOrganization,
+  useActiveOrganization,
 } from "@/features/organization/organization-hooks";
-import type { AuthClient } from "@/lib/auth/auth-client";
 import { authClient } from "@/lib/auth/auth-client";
 import { useTranslation } from "@/lib/intl/react";
 
-type ActiveOrganization = Awaited<ReturnType<typeof authClient.organization.getFullOrganization>>;
+type ActiveOrganization = typeof authClient.$Infer.ActiveOrganization;
+type OrganizationInvitation = ActiveOrganization["invitations"][0];
 
 const inviteMemberSchema = z.object({
   email: z.email("Please enter a valid email address"),
-  role: z.enum(["admin", "member"], {
-
+  role: z.enum(["admin", "user"], {
     error: "Please select a role",
   }),
 });
@@ -81,7 +80,7 @@ function InviteMemberDialog() {
   const form = useForm({
     defaultValues: {
       email: "",
-      role: "member" as "admin" | "member",
+      role: "user" as "admin" | "user",
     },
     validators: {
       onChange: ({ value }) => {
@@ -146,7 +145,7 @@ function InviteMemberDialog() {
               <form.Field
                 children={(field) => (
                   <Select
-                    onValueChange={(value) => field.handleChange(value as "admin" | "member")}
+                    onValueChange={(value) => field.handleChange(value as "admin" | "user")}
                     value={field.state.value}
                   >
                     <SelectTrigger>
@@ -154,7 +153,7 @@ function InviteMemberDialog() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="admin">Admin</SelectItem>
-                      <SelectItem value="member">Member</SelectItem>
+                      <SelectItem value="user">User</SelectItem>
                     </SelectContent>
                   </Select>
                 )}
@@ -194,14 +193,14 @@ export async function WorkspacePage() {
   const { t } = useTranslation();
   const { data: session } = useSession();
   const { data: organizations } = useOrganizations();
-  const data = await authClient.organization.getFullOrganization();
+  const { data } = useActiveOrganization();
   const setActiveOrganization = useSetActiveOrganization();
   const removeMember = useRemoveMember();
   const cancelInvitation = useCancelInvitation();
 
   const [isRevoking, setIsRevoking] = useState<string[]>([]);
 
-  const optimisticOrg = data?.data;
+  const optimisticOrg = data;
   const currentMember = optimisticOrg?.members?.find((member: any) => member.userId === session?.user.id);
 
   const inviteVariants = {
@@ -214,7 +213,7 @@ export async function WorkspacePage() {
     totalMembers: optimisticOrg?.members?.length || 0,
     pendingInvitations: optimisticOrg?.invitations?.filter((inv: any) => inv.status === "pending").length || 0,
     adminMembers:
-      optimisticOrg?.members?.filter((member: any ) => member.role === "admin" || member.role === "owner").length || 0,
+      optimisticOrg?.members?.filter((member: any) => member.role === "admin" || member.role === "superadmin").length || 0,
   };
 
   const handleRemoveMember = (memberId: string) => {
@@ -271,7 +270,7 @@ export async function WorkspacePage() {
               >
                 Personal
               </DropdownMenuItem>
-              {organizations?.map((org) => (
+              {organizations?.map((org: any) => (
                 <DropdownMenuItem
                   key={org.id}
                   onClick={() => {
@@ -415,7 +414,8 @@ export async function WorkspacePage() {
                 <CardDescription>Manage and track your organization invitations</CardDescription>
               </CardHeader>
               <CardContent>
-                {optimisticOrg?.invitations?.filter((inv: OrganizationInvitation) => inv.status === "pending").length === 0 ? (
+                {optimisticOrg?.invitations?.filter((inv: OrganizationInvitation) => inv.status === "pending")
+                  .length === 0 ? (
                   <div className="py-8 text-center">
                     <MailPlus className="mx-auto mb-2 h-8 w-8 text-muted-foreground" />
                     <p className="text-muted-foreground">No pending invitations</p>
@@ -452,7 +452,9 @@ export async function WorkspacePage() {
                               </TableCell>
                               <TableCell>
                                 <div className="text-muted-foreground text-sm">
-                                  {new Date(invitation.expiresAt).toLocaleDateString()}
+                                  {invitation.expiresAt
+                                    ? new Date(invitation.expiresAt).toLocaleDateString()
+                                    : "No expiry"}
                                 </div>
                               </TableCell>
                               <TableCell>

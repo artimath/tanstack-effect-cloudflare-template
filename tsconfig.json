@@ -7,7 +7,7 @@
     "vite.config.js",
     "src/lib/intl/react-i18next.d.ts",
     "src/lib/intl/i18next.d.ts"
-, "src/routes/dashboard/tanstack-db-example.tsx.skip"  ],
+,  ],
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "react-jsx",
@@ -25,18 +25,62 @@
     "strict": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
+    "noErrorTruncation": true,
+    "exactOptionalPropertyTypes": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
     "strictNullChecks": true,
     "incremental": true,
-    "tsBuildInfoFile": "tsconfig.tsbuildinfo",
+
+    "isolatedModules": true,
+    "tsBuildInfoFile": "./tsbuildinfo/tsconfig.tsbuildinfo",
     "plugins": [
       {
         "name": "@effect/language-service",
-        "transform": "@effect/language-service/transform"
+        "transform": "@effect/language-service/transform",
+        "namespaceImportPackages": [
+          "effect",
+          "@effect/ai",
+          "@effect/ai-anthropic",
+          "@effect/ai-openai",
+          "@effect/cli",
+          "@effect/cluster",
+          "@effect/experimental",
+          "@effect/opentelemetry",
+          "@effect/platform",
+          "@effect/platform-browser",
+          "@effect/platform-bun",
+          "@effect/platform-node",
+          "@effect/platform-node-shared",
+          "@effect/printer",
+          "@effect/printer-ansi",
+          "@effect/rpc",
+          "@effect/sql",
+          "@effect/sql-clickhouse",
+          "@effect/sql-d1",
+          "@effect/sql-drizzle",
+          "@effect/sql-kysely",
+          "@effect/sql-libsql",
+          "@effect/sql-mssql",
+          "@effect/sql-mysql2",
+          "@effect/sql-pg",
+          "@effect/sql-sqlite-bun",
+          "@effect/sql-sqlite-do",
+          "@effect/sql-sqlite-node",
+          "@effect/sql-sqlite-react-native",
+          "@effect/sql-sqlite-wasm",
+          "@effect/typeclass",
+          "@effect/vitest",
+          "@effect/workflow"
+        ]
       }
-    ]
-  }
+    ],
+  },
+  "exclude": [
+    "node_modules",
+    ".output",
+    "dist"
+  ]
 }

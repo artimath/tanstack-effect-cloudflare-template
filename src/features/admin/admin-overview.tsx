@@ -24,9 +24,9 @@ export function AdminOverview() {
   }
 
   const totalUsers = users?.length || 0;
-  const activeUsers = users?.filter((user) => user.emailVerified && !user.banned).length || 0;
-  const bannedUsers = users?.filter((user) => user.banned).length || 0;
-  const adminUsers = users?.filter((user) => user.role === 'admin' || user.role === 'superadmin').length || 0;
+  const activeUsers = users?.filter((user: any) => user.emailVerified && !user.banned).length || 0;
+  const bannedUsers = users?.filter((user: any) => user.banned).length || 0;
+  const adminUsers = users?.filter((user: any) => user.role === 'admin' || user.role === 'superadmin').length || 0;
 
   return (
     <div className="space-y-6">

@@ -38,14 +38,13 @@ import {
   useRemoveMember,
   useSetActiveOrganization,
 } from "@/features/organization/organization-hooks";
-import type { AuthClient } from "@/lib/auth/auth-client";
-import { authClient } from "@/lib/auth/auth-client";
+import { authClient, type ActiveOrganization, type Session } from "@/lib/auth/auth-client";
 import { useTranslation } from "@/lib/intl/react";
 
-type ActiveOrganization = Awaited<ReturnType<typeof authClient.organization.getFullOrganization>>;
+type OrganizationInvitation = ActiveOrganization["invitations"][0];
 
 export function OrganizationCard(props: {
-  session: AuthClient["$Infer"]["Session"] | null;
+  session: Session | null;
   activeOrganization: ActiveOrganization | null;
 }) {
   const { t } = useTranslation();
@@ -56,10 +55,7 @@ export function OrganizationCard(props: {
   const removeMember = useRemoveMember();
   const cancelInvitation = useCancelInvitation();
 
-  const optimisticOrg =
-    // TODO: Fix this type
-    // @ts-expect-error
-    props.activeOrganization as typeof setActiveOrganization.data.data;
+  const optimisticOrg = props.activeOrganization;
 
   const [isRevoking, setIsRevoking] = useState<string[]>([]);
   const inviteVariants = {
@@ -71,7 +67,7 @@ export function OrganizationCard(props: {
   const { data } = useSession();
   const session = data || props.session;
 
-  const currentMember = optimisticOrg?.members?.find((member) => member.userId === session?.user.id);
+  const currentMember = optimisticOrg?.members?.find((member: any) => member.userId === session?.user.id);
 
   return (
     <Card className="w-full">
@@ -99,7 +95,7 @@ export function OrganizationCard(props: {
               >
                 <p className="sm text-sm">{t("PERSONAL")}</p>
               </DropdownMenuItem>
-              {organizations?.map((org) => (
+              {organizations?.map((org: any) => (
                 <DropdownMenuItem
                   className=" py-1"
                   key={org.id}
@@ -140,7 +136,7 @@ export function OrganizationCard(props: {
           <div className="flex flex-grow flex-col gap-2">
             <p className="border-b-2 border-b-foreground/10 font-medium">{t("MEMBERS")}</p>
             <div className="flex flex-col gap-2">
-              {optimisticOrg?.members.map((member) => (
+              {optimisticOrg?.members.map((member: any) => (
                 <div key={member.id} className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Avatar className="h-9 w-9 sm:flex">
@@ -190,8 +186,8 @@ export function OrganizationCard(props: {
             <div className="flex flex-col gap-2">
               <AnimatePresence>
                 {optimisticOrg?.invitations
-                  .filter((invitation) => invitation.status === "pending")
-                  .map((invitation) => (
+                  .filter((invitation: OrganizationInvitation) => invitation.status === "pending")
+                  .map((invitation: OrganizationInvitation) => (
                     <motion.div
                       key={invitation.id}
                       className="flex items-center justify-between"
@@ -230,7 +226,7 @@ export function OrganizationCard(props: {
                                 onError: () => {
                                   setIsRevoking(isRevoking.filter((id) => id !== invitation.id));
                                 },
-                              },
+                              }
                             );
                           }}
                         >
@@ -315,7 +311,7 @@ function CreateOrganizationDialog() {
           {
             name: value.name,
             slug: value.slug,
-            logo: logoBase64,
+            ...(logoBase64 && { logo: logoBase64 }),
           },
           {
             onSuccess: () => {
@@ -328,7 +324,7 @@ function CreateOrganizationDialog() {
             onError: (error) => {
               toast.error(error.message);
             },
-          },
+          }
         );
       } catch (error) {
         toast.error("An error occurred while creating organization");
@@ -513,7 +509,7 @@ function InviteMemberDialog() {
           onError: (error) => {
             toast.error(error.message);
           },
-        },
+        }
       );
     },
   });

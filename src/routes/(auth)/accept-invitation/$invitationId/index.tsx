@@ -23,7 +23,7 @@ function RouteComponent() {
       .acceptInvitation({
         invitationId: params.invitationId,
       })
-      .then((res) => {
+      .then((res: any) => {
         if (res.error) {
           setError(res.error.message || "An error occurred");
         } else {
@@ -38,7 +38,7 @@ function RouteComponent() {
       .rejectInvitation({
         invitationId: params.invitationId,
       })
-      .then((res) => {
+      .then((res: any) => {
         if (res.error) {
           setError(res.error.message || "An error occurred");
         } else {
@@ -69,7 +69,7 @@ function RouteComponent() {
           id: params.invitationId,
         },
       })
-      .then((res) => {
+      .then((res: any) => {
         if (res.error) {
           setError(res.error.message || "An error occurred");
         } else {

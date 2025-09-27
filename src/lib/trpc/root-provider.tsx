@@ -61,6 +61,7 @@ export const trpcClient = createTRPCClient<TRPCRouter>({
           return fetch(url, {
             ...options,
             credentials: "include",
+            signal: options?.signal ?? null,
           });
         },
         headers,
@@ -73,6 +74,7 @@ export const trpcClient = createTRPCClient<TRPCRouter>({
           return fetch(url, {
             ...options,
             credentials: "include",
+            signal: options?.signal ?? null,
           });
         },
       }),
